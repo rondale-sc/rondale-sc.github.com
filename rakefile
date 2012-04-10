@@ -2,7 +2,6 @@ require 'rake'
 
 task :default => [:deploy]
 
-
 task :deploy do |t,args|
   system('jekyll')
   system("cp -R ./_site/ ../rondale-sc.github.com/")
