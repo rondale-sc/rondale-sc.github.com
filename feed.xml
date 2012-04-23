@@ -6,6 +6,41 @@
     <description>Ruby, Javascript, and all else under the sun.</description>
     
     <item>
+      <title>Hitchhiker's Guide to Metaprogramming: Class/Module Hooks</title>
+      <link>http://www.jonathan-jackson.net/2012/04/23/hitchhikers-guide-to-metaprogramming-classmodule-hooks.html</link>
+      <pubDate>Mon, 23 Apr 2012 00:00:00 -0400</pubDate>
+      <guid>http://www.jonathan-jackson.net/2012/04/23/hitchhikers-guide-to-metaprogramming-classmodule-hooks</guid>
+      <description>&lt;h1&gt;Hitchhiker's Guide to Metaprogramming: Class/Module Hooks&lt;/h1&gt;
+
+&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+                                         data-count=&quot;horizontal&quot;
+                                         data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;I've written another article for &lt;a href=&quot;http://rubysource.com/hitchhikers-guide-to-metaprogramming-classmodule-hooks&quot;&gt;Rubysource&lt;/a&gt;.&lt;/h2&gt;
+
+&lt;p&gt;In it I cover some of Ruby's class/module hook, as well as some of the basic tenents of metaprogramming.  This is the first of several post I plan on writing up on the topic.  You should go and check it out if you have a minute.&lt;/p&gt;
+
+&lt;h3&gt;If you are here from Rubysource...&lt;/h3&gt;
+
+&lt;p&gt;I've linked from Rubysource to this blog to provide some additional reference material.  Below you'll find some of the resources that helped me to better understand metaprogramming.  Be sure to &lt;strong&gt;subscribe&lt;/strong&gt; to &amp;quot;Run With It&amp;quot; (via RSS or email) to keep up to date with this series.  ^_^ &amp;rarr;&lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://rubyrogues.com/metaprogramming-in-ruby/&quot;&gt;Ruby Rogues 012&lt;/a&gt; - Referenced in the post.  Great discussion on what constitues metaprogramming, and some of the best practices you'll want to know in order to use them properly.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.infoq.com/presentations/metaprogramming-ruby&quot;&gt;Dave Thomas's talk on metaprogramming&lt;/a&gt; - Referenced in the post.  Amazing screencast by Dave Thomas(@pragdave).  Given in 2007, it is still my favorite intro piece on metaprogramming.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ruby-metaprogramming.rubylearning.com/&quot;&gt;Rubylearning&lt;/a&gt; - Another great reference for learning to metaprogram.  Be sure to check out Study 3, as it directly relates to the hooks covered in the post.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://pragprog.com/book/ppmetr/metaprogramming-ruby&quot;&gt;Paolo Perrotta Metaprogramming Ruby&lt;/a&gt; - Paolo Perrotta gives great insight into metaprogramming in Ruby.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://railstips.org/blog/archives/2009/05/15/include-vs-extend-in-ruby/&quot;&gt;John Nunemaker on include/extend&lt;/a&gt; - Good article on include vs extend.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Metaprogramming&quot;&gt;Wiki entry on Metaprogramming&lt;/a&gt; - Suprisingly detailed wikipedia article on metaprogramming.  Not directly applicable to Ruby, but a good read.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you have any questions feel free to send me a message or leave a comment (here or on Rubysource).  Also, there will likely be more references in the next part of &lt;em&gt;Hitchhiker's Guide to Metaprogramming&lt;/em&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Introducing Pivot.js</title>
       <link>http://www.jonathan-jackson.net/2012/04/10/introducing-pivotjs.html</link>
       <pubDate>Tue, 10 Apr 2012 00:00:00 -0400</pubDate>
