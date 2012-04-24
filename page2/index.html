@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-  <title>Back Soon</title>
+  <title>Run With It</title>
 
   <!-- Twitter Bootstrap -->
   <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
@@ -43,54 +43,68 @@
 
     <div class="container">
       <div id="content">
-       <div id="post">
-<h1>Back Soon</h1>
+       <div class="span9" id="articles">
+  <h1>Articles</h1>
+  <ul>
+  
+  <li><a href="/give-it-a-pry">Give it a Pry</a> (<span>10 Oct 2011</span>)<br/>
+    <p>Pry is an amazing tool for code exploration, and a great addition to your utility belt.  Here I'll highlight a few of the reasons why I think Pry is worth your time.</p>
+  </li>
+  
+  <li><a href="/rvm-and-rbenv">RVM and rbenv</a> (<span>03 Oct 2011</span>)<br/>
+    <p>RVM is the reigning champion of Ruby versioning.  Here I take a look at rbenv and how it pairs with RVM.</p>
+  </li>
+  
+  <li><a href="/playin-with-the-ruby-gc">Playin' with the Ruby GC</a> (<span>27 Sep 2011</span>)<br/>
+    <p>Here I walk you through my attempt at finding the increase (or decrease) in performance from ruby 1.9.2-p290  to 1.9.3-preview1 garbage collection.  I use GC profiler which is a wonderful tool, and some hacks to print a nice little graph.  Check it out.</p>
+  </li>
+  
+  <li><a href="/ruby-hough-hack">Ruby Hough Hack</a> (<span>21 Sep 2011</span>)<br/>
+    <p>The hough transform is an algorithm used to detect edges/objects in an image.  I recently needed to use it to straighten an image so that I could process it.  Here is the (imperfect) solution me and my brother hacked out today.</p>
+  </li>
+  
+  <li><a href="/hippo-your-friend-for-5010">Hippo: your friend in 5010</a> (<span>20 Sep 2011</span>)<br/>
+    <p>HIPAA 5010 can be quite overwhelming at first.  The complexity the X12 people have fit into a simple flat file consisting a string separated by tildes is very impressive.  However, now you have hippo. A DSL to create and read transactions sets  in pure ruby!</p>
+  </li>
+  
+  <li><a href="/encapsulation-in-javascript">We're here to encapsulate</a> (<span>12 Sep 2011</span>)<br/>
+    <p>The concept is familiar to most programmers.  Put simply it is bringing data and the methods that operate on it together under a single namespace. This article will showcase a few ways to encapsulate data in javascript.  Specifically we will create a constructor class, and a module.</p>
+  </li>
+  
+  <li><a href="/ruby-loves-sass">Ruby <3's Sass</a> (<span>06 Sep 2011</span>)<br/>
+    <p>SCSS is now standard in rails.  I previously have not used SASS because I don't particularly care for significant white space.  However, now having use SCSS just a little I know that I should have been on this bandwagon a long time ago.  Here I'll how to use ruby to define your own functions and then how to write a dynamic CSS grid using SCSS.</p>
+  </li>
+  
+  </ul>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
-                                         data-count="horizontal"
-                                         data-via="rondale_sc">Tweet</a>
-</span></p>
-
-<p>Hello everyone,</p>
-
-<p>I just want to reassure you that I've not forgotten about this blog.  I'm eager to continue writing.  Unfortunately over the Thanksgiving holiday I suffered a loss in my family.  I will hopefully have a new article next week once I get back to work in ernest.  Until then check out my other blog posts or follow me on Twitter.</p>
-
-<p>Warmest regards,
-Jonathan Jackson</p>
-
-<p><img src="http://www.jonathan-jackson.net/images/be_back_soon.png" width="630"/></p>
-
-<span><a href="http://twitter.com/share" class="twitter-share-button"
-                                         data-count="horizontal"
-                                         data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
-<!-- Place this render call where appropriate -->
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
-
-
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'run-with-it';
-    var disqus_identifier = '/be-back-soon';
-    var disqus_url = 'http://www.jonathan-jackson.net/be-back-soon';
-    var disqus_developer = 1;
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-
+<div class="pagination">
+  <ul>
+    
+      
+        <li>
+          <a href="/">&larr;</a>
+        </li>
+      
+    
+    
+      <li>
+        <a href="/">1</a>
+      </li>
+    
+    
+      
+        <li class="active">
+          <a href="#">2</a>
+        </li>
+      
+    
+    
+      <li class="disabled">
+        <a href="#">&rarr;</a>
+      </li>
+    
+  </ul>
+</div>
 </div>
       </div>
 
