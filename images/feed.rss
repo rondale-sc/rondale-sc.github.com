@@ -5,9 +5,559 @@
     <link>http://coyled.com/</link>
     <description>Ruby, Javascript, and all else under the sun./description>
     <language>en-us</language>
-    <pubDate>Tue, 24 Apr 2012 12:27:18 -0400</pubDate>
-    <lastBuildDate>Tue, 24 Apr 2012 12:27:18 -0400</lastBuildDate>
+    <pubDate>Fri, 04 May 2012 09:14:03 -0400</pubDate>
+    <lastBuildDate>Fri, 04 May 2012 09:14:03 -0400</lastBuildDate>
 
+    
+    <item>
+      <title>Pry 102: Advanced Features</title>
+      <link>http://jonathan-jackson.net/2012/05/03/pry-session-102.html</link>
+      <pubDate>Thu, 03 May 2012 00:00:00 -0400</pubDate>
+      <author>Jonathan Jackson</author>
+      <guid>http://jonathan-jackson.net/2012/05/03/pry-session-102</guid>
+      <description>&lt;h1&gt;Pry 102: Advanced Features&lt;/h1&gt;
+
+&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+                                         data-count=&quot;horizontal&quot;
+                                         data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Many of you have read my previous posts about the ruby REPL Pry.  If not, you should check them out: &lt;a href=&quot;http://jonathan-jackson.net/give-it-a-pry&quot;&gt;Give it a Pry&lt;/a&gt; and &lt;a href=&quot;http://jonathan-jackson.net/make-it-your-own&quot;&gt;Make It Your Own&lt;/a&gt;.  During the months since writing those articles, Pry has made major strides in many areas.  I'd like to spend the next few minutes going through some of the newer features and re-invigorate your interested in Pry.  Remember, just like before, Pry has amazing documentation, helpful maintainers, and solid community backing.  So be sure to look around for additional information.&lt;/p&gt;
+
+&lt;p&gt;&lt;img style=&quot;margin:auto;&quot; src='http://www.jonathan-jackson.net/images/pry_image.png'/&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;small&gt;This post is a little code heavy. Beware... :)&lt;/small&gt;&lt;/p&gt;
+
+&lt;h2&gt;1.) Input Buffer Manipulation&lt;/h2&gt;
+
+&lt;h6&gt;# (Section References)&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/User-Input#wiki-Amend_line&quot;&gt;amend-line&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Editor-integration&quot;&gt;editor-integration&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Special-Locals#wiki-In_and_out&quot;&gt;play-print&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Writing multi-line commands in a REPL can often be quite annoying.  Usually, if you make an error on any line, you'll need to rewrite from the beginning.  This is why I typically recommend integrating your REPL with a gem like interactive_editor, which gives you a tempfile to edit in your default editor and calls &lt;code&gt;eval()&lt;/code&gt; when you close.  With Pry, you have these features built in along with several additional features.&lt;/p&gt;
+
+&lt;p&gt;Before we move on, let's cover Pry's prompt.  The Pry prompt has a lot of information available for you at a glance.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;[1] pry(main)&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The number is the current input buffer line number and it will increment as you enter more lines.  Many Pry commands will allow you to specify the line you'd like to work with by setting the &lt;code&gt;-i&lt;/code&gt; flag and passing the input buffer line number.  The word in parenthesis is the current &lt;code&gt;self&lt;/code&gt; and can be changed using the &lt;code&gt;cd&lt;/code&gt; and &lt;code&gt;cd ..&lt;/code&gt; commands.&lt;/p&gt;
+
+&lt;p&gt;Be sure to set your default editor in your ~/.pryrc file by adding the following line &lt;code&gt;Pry.config.editor = &amp;quot;mate&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5&gt;Ex. 1 (amend-line)&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;amend-line&lt;/code&gt; command which allows you to modify specific lines in your input buffer.&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; def hello
+[1] pry(main)*   puts &amp;quot;Howdy, #{name}&amp;quot;
+[1] pry(main)*   amend-line 1 def hello(name)  # Pry goodness
+#  1: def hello(name)
+#  2:   puts &amp;quot;Howdy, #{name}&amp;quot;
+[1] pry(main)*   end
+#  =&amp;gt; nil
+[2] pry(main)&amp;gt; hello &amp;quot;Jon&amp;quot;
+#  =&amp;gt; Howdy, Jon
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;If we wanted to edit the method in our default editor instead of using &lt;code&gt;amend-line&lt;/code&gt;, we could use the &lt;code&gt;edit&lt;/code&gt; command.   The &lt;code&gt;edit&lt;/code&gt; command acts identically to interactive editor with a few notable exceptions.  Without any arguments, &lt;code&gt;edit&lt;/code&gt; will open a tempfile and insert the contents of your input buffer.  Give it a try:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 1.1 (Edit)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; puts 'blah'
+# =&amp;gt; blah
+[2] pry(main)&amp;gt; edit
+# editor opens with `puts 'blah'`
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;edit&lt;/code&gt; command takes optional arguments to increase its usefulness.  Pass &lt;code&gt;-t&lt;/code&gt; to open an empty tmpfile.&lt;/p&gt;
+
+&lt;h5&gt;Ex 1.2 (Edit empty tempfile)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-3.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; puts 'blah'
+# =&amp;gt; blah
+[2] pry(main)&amp;gt; edit
+# editor opens empty tempfile
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;One of the neatest features of the &lt;code&gt;edit&lt;/code&gt; commands is the &lt;code&gt;-ex&lt;/code&gt; flag.  The &lt;code&gt;-ex&lt;/code&gt; flag will open the relevant file at the line that generated the last exception.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 1.3 (Edit from last exception)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;# cat /Users/jjackson/Desktop/hello-exception.rb
+# def hello
+#  raise StandardError
+# end
+#
+[2] pry(main)&amp;gt; hello
+# =&amp;gt; StandardError: StandardError
+#    from /Users/jjackson/Desktop/hello-exception.rb:2:in `hello'
+[3] pry(main)&amp;gt; edit -ex
+# Will open file in editor on line that produced error.
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Lastly, using &lt;code&gt;edit&lt;/code&gt; with the &lt;code&gt;-i&lt;/code&gt; flag you can open a specific line into your editor:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 1.4 (Edit specific line with edit -i)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-23.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; puts &amp;quot;Won't be opened&amp;quot;
+# Won't be opened
+[2] pry(main)&amp;gt; puts &amp;quot;Will be opened.&amp;quot;
+# Will be opened.
+[3] pry(main)&amp;gt; edit -i 2
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Pretty sweet amarite?&lt;/p&gt;
+
+&lt;p&gt;There are several methods for manipulating the input buffer without using the &lt;code&gt;edit&lt;/code&gt; command.  To view the contents of your buffer type &lt;code&gt;cat -i &amp;lt;n&amp;gt;&lt;/code&gt;, and play them back with &lt;code&gt;play -i &amp;lt;n&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5&gt;Ex. 1.5 (Print/Play input_buffer)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-5.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; puts &amp;quot;Blah&amp;quot;
+#=&amp;gt; Blah
+[2] pry(main)&amp;gt; cat -i # pass line number or range to restrict output
+#=&amp;gt; puts &amp;quot;Blah&amp;quot;
+[3] pry(main)&amp;gt; play -i 1
+#=&amp;gt; Blah
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;h2&gt;2.) ExceptionzzzzZz&lt;/h2&gt;
+
+&lt;h6&gt;# (Section References)&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Exceptions&quot;&gt;Exception Handling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://gist.github.com/88d542675890acd117d4&quot;&gt;John Mair example&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Pry has a few methods that make dealing with exceptions pretty trivial.  The first of these methods is the humorously named &lt;code&gt;wtf?&lt;/code&gt;.  The &lt;code&gt;wtf?&lt;/code&gt; command will show the stack trace of your last exception.  For example:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 2 (Print exception with wtf?)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-6.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; called_this_method_without_defining_it_first
+# NameError: undefined local variable or method `called_this_method_without_defining_it_first' for main:Object
+# from (pry):1:in `&amp;lt;main&amp;gt;'
+[2] pry(main)&amp;gt; wtf?
+# Exception: NameError: undefined local variable or method `called_this_without_defining_it_first' for main:Object
+# --
+# 0: (pry):1:in `&amp;lt;main&amp;gt;'
+# 1: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/# pry_instance.rb:249:in `eval'
+# 2: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb:249:in `re'
+# 3: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb:227:in `rep'
+# etc..
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;The next method is &lt;code&gt;cat -ex&lt;/code&gt; which allows you to specify the backtrace level you'd like to see.  This is great when you'd like to get a little more context from your backtrace.  It is called &lt;code&gt;cat -ex &amp;lt;n&amp;gt;&lt;/code&gt;, where &lt;code&gt;n&lt;/code&gt; is the backtrace level you'd like to explore.  For example:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 2.1 (Print context of exception with cat -ex)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-7.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; called_this_without_defining_it_first
+# NameError: undefined local variable or method `called_this_without_defining_it_first' for main:Object
+# from (pry):1:in `&amp;lt;main&amp;gt;'
+[2] pry(main)&amp;gt; cat -ex
+# Exception: NameError: undefined local # variable or method `called_this_without_defining_it_first' for main:Object
+# --
+# From: (pry) @ line 1 @ level: 0 of backtrace (of 19).
+#
+# =&amp;gt; 1: called_this_without_defining_it_first
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Let me clarify the above code.  I called the variable &lt;code&gt;called_this_without_defining_it_first&lt;/code&gt; which triggered an exception.  Once I had the exception I called &lt;code&gt;cat -ex&lt;/code&gt;, which printed the context surounding level 0 of the backtrace.  If I needed to see the next level, I would simply passed 1 like so:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 2.2 (Print context of exception explicitly setting stack level)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-8.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[3] pry(main)&amp;gt; cat -ex 1
+# Exception: NameError: undefined local variable or method # `called_this_without_defining_it_first' for main:Object
+# --
+# From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb @ line 249 @ level: 1 of backtrace (of 19).
+#
+#    244:     # moved into the scope of a new Binding (e.g the user typed `cd`)
+#    245:     inject_sticky_locals(target)
+#    246:
+#    247:     code = r(target)
+#    248:
+# =&amp;gt; 249:     result = target.eval(code, Pry.eval_path, Pry.current_line)
+#    250:     set_last_result(result, target, code)
+#    251:
+#    252:     result
+#    253:   rescue RescuableException =&amp;gt; e
+#    254:     self.last_exception = e
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Which displays the context surounding the next level of the backtrace.  This allows you to really dig into your exceptions without all the tedium that normally surrounds the process.  +1&lt;/p&gt;
+
+&lt;h2&gt;3.) Navigation and Exploration&lt;/h2&gt;
+
+&lt;h6&gt;# (Section References)&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Source-browsing&quot;&gt;Source Browsing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Documentation-browsing&quot;&gt;Documentation Browsing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Pry-rc&quot;&gt;The ~/.pryrc file&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In &lt;a href=&quot;http://jonathan-jackson.net/give-it-a-pry&quot;&gt;Give it a Pry&lt;/a&gt;, I talk about how easy it is to become familiar with navigation in Pry.  One oft-overlooked feature of Pry navigation that has helped me recently is &lt;code&gt;Pry::NAV_PROMPT&lt;/code&gt;, which let's you more easily visualize where you are within your Pry session.&lt;/p&gt;
+
+&lt;p&gt;Imagine you have a class that looks like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-9.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;class MyClass
+  class MySubClass
+    class MySubSubClass
+      class Incepted
+
+        def self.spinning_top
+          while true do
+            puts &amp;quot;**Spinning**&amp;quot;
+            sleep 2
+          end
+          puts &amp;quot;trolololo&amp;quot;
+        end
+
+      end
+    end
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Now set &lt;code&gt;Pry.config.prompt = Pry::NAV_PROMPT&lt;/code&gt; in your &lt;code&gt;~/.pryrc&lt;/code&gt; file.  Start up Pry and require &lt;code&gt;MyClass&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 3 (Using Pry::NAV_PROMPT)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-10.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[2] (pry) main: 0&amp;gt; cd MyClass::MySubClass::MySubSubClass::Incepted
+[2] (pry) main / MyClass::MySubClass::MySubSubClass::Incepted: 1&amp;gt; spinning_top
+#=&amp;gt; **Spinning**
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;We've changed the context of self and &lt;code&gt;Pry::NAV_PROMPT&lt;/code&gt; is allowing us to see how deep we are.  In this case, since we changed directly to the innermost class, we see only one context.  If we were to &lt;code&gt;cd&lt;/code&gt; through these classes individually, we'd see each individual context switch we've made.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 3.1 (Using Pry::NAV_PROMPT cont.)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-11.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[8] (pry) main: 0&amp;gt; cd MyClass
+[9] (pry) main / MyClass: 1&amp;gt; cd MySubClass
+[10] (pry) main / MyClass / MyClass::MySubClass: 2&amp;gt; cd MySubSubClass
+[11] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&amp;gt; cd Incepted
+[12] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass / MyClass::MySubClass::MySubSubClass::Incepted: 4&amp;gt;spinning_top
+#=&amp;gt;  **Spinning**
+#=&amp;gt;  **Spinning**
+#
+# Now if we wanted to go back into MySubSubClass we could type `exit` or:
+#
+[12] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass / MyClass::MySubClass::MySubSubClass::Incepted: 4&amp;gt; cd ..
+[13] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&amp;gt;
+# or to exit completely
+[16] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&amp;gt; !!!
+$~
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Pretty awesome stuff here.&lt;/p&gt;
+
+&lt;p&gt;Let's assume for a minute that you'd like to explore some of the different methods available to you.  Pry enables you to find methods based off of patterns then view and edit them without ever leaving your prompt.  We'll continue to use &lt;code&gt;MyClass&lt;/code&gt; for simpicity's sake.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 3.2 (Using find-method)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-12.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[2] pry(main)&amp;gt; find-method spinning_top
+#
+# MyClass::MySubClass::MySubSubClass::Incepted.spinning_top: def self.spinning_top
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;I just searched for spinning_top without giving Pry any more instructions.  It found the exact method I was looking for, dispite being several levels deep.  Once again, Awesome!&lt;/p&gt;
+
+&lt;p&gt;Now to open that method in my editor:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 3.3 (edit-method in editor)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-13.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[5] pry(main)&amp;gt; edit-method MyClass::MySubClass::MySubSubClass::Incepted.spinning_top
+# or
+[5] pry(main)&amp;gt; cd MyClass::MySubClass::MySubSubClass::Incepted
+[6] pry(MyClass::MySubClass::MySubSubClass::Incepted):1&amp;gt; edit-method spinning_top
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Alternatively, with &lt;code&gt;find-method -c&lt;/code&gt; you can grep your source code for specific strings.  Here we'll look in Pry itself.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 3.4 (Find method with -c flag to grep for string)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-14.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[1] pry(main)&amp;gt; cd  Pry
+[2] pry(Pry):1&amp;gt; find-method -c save_history
+#
+# Pry.save_history: def self.save_history
+# Pry
+# Pry#repl_epilogue:   Pry.save_history if Pry.config.history.should_save &amp;amp;&amp;amp; # Pry.active_sessions == 0
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Sexy.&lt;/p&gt;
+
+&lt;h2&gt;4.) show-source, _in_, and _out_&lt;/h2&gt;
+
+&lt;h6&gt;# (Section References)&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Special-Locals#wiki-Last_file_and_dir&quot;&gt;_file_ and _dir_&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pry/pry/wiki/Source-browsing#wiki-Show_method&quot;&gt;show-source -a&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The keywords _file_ and _dir_ are available after using methods like show-source, edit-method, and several others.  These special keywords allow you to manipulate the file where methods/classes/modules exist.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 4 (Using _file_ and _dir_)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-15.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[3] pry(main)&amp;gt; show-method Pry#backtrace=
+#
+# From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/ pry_instance.rb @ line 27:
+# Number of lines: 1
+# Owner: Pry
+# Visibility: public
+#
+# attr_accessor :backtrace
+[4] pry(main)&amp;gt; _file_
+# =&amp;gt; &amp;quot;/Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb&amp;quot;
+[5] pry(main)&amp;gt; _dir_
+# =&amp;gt; &amp;quot;/Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry&amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;To view the contents of the above file you can do something like:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 4.1 (Using _file_ to view source)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-16.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[6] pry(main)&amp;gt; cat #{_file_}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Another amazing feature: passing &lt;code&gt;show-source&lt;/code&gt; the &lt;code&gt;-a&lt;/code&gt; flag.  This will show all active monkey-patches, which is great for when you stumble on code that does things like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-17.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;# cat devil.rb
+ class TrueClass
+    def to_s
+      &amp;quot;false&amp;quot;
+    end
+  end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;To see this insidiousness:&lt;/p&gt;
+
+&lt;h5&gt;Ex. 4.2 (Using show-source -a to view active monkey-patches)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-18.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;[6] pry(main)&amp;gt; show-source -a TrueClass
+# Found 2 candidates for `TrueClass` definition:
+#
+# Candidate 1/2:  @ line :
+#
+#
+# Candidate 2/2: (pry) @ line 1:
+#
+# class TrueClass
+#   def to_s
+#     &amp;quot;false&amp;quot;
+#   end
+# end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;h2&gt;5.) Remote Debugging with pry-remote &amp;amp;&amp;amp; pry-remote-em&lt;/h2&gt;
+
+&lt;h6&gt;# (Section References)&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/simulacre/pry-remote-em&quot;&gt;pry-remote-em Github&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/Mon-Ouie/pry-remote&quot;&gt;pry-remote Github&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I'm going to briefly run through some really neat features available in Pry from its plugin system.  Briefly, because they've been covered in more depth by &lt;a href=&quot;https://github.com/banister&quot;&gt;John Mair&lt;/a&gt; on his &lt;a href=&quot;http://banisterfiend.wordpress.com/2012/02/14/the-pry-ecosystem/&quot;&gt;blog&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;pry-remote&lt;/code&gt; uses the DRb library and allows you to use calls to &lt;code&gt;binding.pry&lt;/code&gt; remotely.  All you need to do is use &lt;code&gt;binding.remote_pry&lt;/code&gt; and run your program.&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-19.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;require 'pry-remote'
+
+class Hello
+  def hello(name)
+    binding.remote_pry
+    &amp;quot;Howdy, #{name}.&amp;quot;
+  end
+end
+
+Hello.new.hello &amp;quot;Jon&amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you've run your program you simply run &lt;code&gt;pry-remote&lt;/code&gt;, which will toss you into a Pry session with the appropriate binding.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 5 (Using binding.remote-pry)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-20.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;# From: test.rb @ line 4 Hello#hello:
+#
+#    4:   def hello(name)
+# =&amp;gt; 5:     binding.remote_pry
+#    6:     &amp;quot;Howdy, #{name}.&amp;quot;
+#    7:   end
+#
+[1] pry(#&amp;lt;Hello&amp;gt;)&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Alternatively, you could use &lt;code&gt;pry-remote-em&lt;/code&gt;, which works similarly to &lt;code&gt;remote-pry&lt;/code&gt;, but uses event-machine and has support for authentication and SSL.&lt;/p&gt;
+
+&lt;h2&gt;6.) Debugging with Pry-nav&lt;/h2&gt;
+
+&lt;h6&gt;# (Section References)&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/nixme/pry-nav&quot;&gt;pry-nav Github&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A Pry call to &lt;code&gt;binding.pry&lt;/code&gt; is a truly powerful thing, but if you are like most of the Ruby community, you'll find this limiting at some point.  Enter &lt;code&gt;pry-nav&lt;/code&gt; after installing this plugin and you will have access to &lt;code&gt;next&lt;/code&gt;, &lt;code&gt;continue&lt;/code&gt;, and &lt;code&gt;step&lt;/code&gt; commands from within the context of your bindings.&lt;/p&gt;
+
+&lt;h5&gt;Ex. 6 (Using Pry-nav)&lt;/h5&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-21.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;# Using test.rb from above
+$~ ruby test.rb
+#
+# From: test.rb @ line 4 Hello#hello:
+#
+#    4:   def hello(name)
+# =&amp;gt; 5:     binding.pry
+#    6:     &amp;quot;Howdy, #{name}.&amp;quot;
+#    7:   end
+#
+ [1] pry(#&amp;lt;Hello&amp;gt;)&amp;gt; next
+#
+# From: test.rb @ line 4 Hello#hello:
+#
+#    4:   def hello(name)
+#    5:     binding.pry
+# =&amp;gt; 6:     &amp;quot;Howdy, #{name}.&amp;quot;
+#    7:   end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;This allows you to step through your code easily.  Alias your commands in your &lt;code&gt;~/.pryrc&lt;/code&gt; file like so:&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-22.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;Pry.commands.alias_command 'c', 'continue'
+Pry.commands.alias_command 's', 'step'
+Pry.commands.alias_command 'n', 'next'
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+
+&lt;p&gt;So, that's all for now folks.  Understand that this is still only barely scratching the surface of what Pry can do.  It's a REPL with truly wonderful capabilities. If you incorporate it into your daily coding, you'll definitely be glad you did.  I hope that this article has convinced some more of you to &lt;em&gt;Give it a Pry&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The Pry team is led by &lt;a href=&quot;https://github.com/banister&quot;&gt;John Mair&lt;/a&gt;. See the &lt;a href=&quot;https://github.com/pry/pry/blob/master/CONTRIBUTORS&quot;&gt;CONTRIBUTORS&lt;/a&gt; file to learn more about them.&lt;/p&gt;
+
+&lt;p&gt;Maybe even say thanks for making such an awesome tool.  :)&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading, be sure to subscribe via RSS (and now email also) to &lt;em&gt;Run With It&lt;/em&gt; for more articles.  ^_^&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Hitchhiker's Guide to Metaprogramming: Class/Module Hooks</title>
