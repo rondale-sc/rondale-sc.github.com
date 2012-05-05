@@ -41,7 +41,7 @@
 
 &lt;p&gt;The number is the current &lt;s&gt;input buffer line number&lt;/s&gt; &lt;em&gt;expression number&lt;/em&gt; and it will increment as you enter &lt;s&gt;more lines&lt;/s&gt; another expression.  Many Pry commands will allow you to specify the line you'd like to work with by setting the &lt;code&gt;-i&lt;/code&gt; flag and passing the &lt;s&gt;input buffer line number&lt;/s&gt; &lt;em&gt;expression number&lt;/em&gt;.  The word in parenthesis is the current &lt;code&gt;self&lt;/code&gt; and can be changed using the &lt;code&gt;cd&lt;/code&gt; and &lt;code&gt;cd ..&lt;/code&gt; commands.&lt;/p&gt;
 
-&lt;p&gt;&lt;small&gt;&lt;em&gt;edit&lt;/em&gt; - John Mair asked me to correct my usage of the term input buffer line number.  I've made corrections through the post but to summarize:  The number in the Pry prompt is not the input buffer line, but rather the expression number.  In a multi-line expression (for example a method definition) each line associated is assigned an expression number.  In short, it's not a line number.&lt;/small&gt;&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;&lt;em&gt;edit&lt;/em&gt; - John Mair asked me to correct my usage of the term input buffer line number.  I've made corrections through the post but to summarize:  The number in the Pry prompt is not the input buffer line, but rather the expression number.  In a multi-line expression (for example a method definition) each line associated is assigned a shared expression number which increments per expression.  In short, it's not a line number.&lt;/small&gt;&lt;/p&gt;
 
 &lt;p&gt;Be sure to set your default editor in your ~/.pryrc file by adding the following line &lt;code&gt;Pry.config.editor = &amp;quot;mate&amp;quot;&lt;/code&gt;&lt;/p&gt;
 

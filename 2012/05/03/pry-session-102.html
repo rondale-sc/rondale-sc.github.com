@@ -75,7 +75,7 @@
 
 <p>The number is the current <s>input buffer line number</s> <em>expression number</em> and it will increment as you enter <s>more lines</s> another expression.  Many Pry commands will allow you to specify the line you'd like to work with by setting the <code>-i</code> flag and passing the <s>input buffer line number</s> <em>expression number</em>.  The word in parenthesis is the current <code>self</code> and can be changed using the <code>cd</code> and <code>cd ..</code> commands.</p>
 
-<p><small><em>edit</em> - John Mair asked me to correct my usage of the term input buffer line number.  I've made corrections through the post but to summarize:  The number in the Pry prompt is not the input buffer line, but rather the expression number.  In a multi-line expression (for example a method definition) each line associated is assigned an expression number.  In short, it's not a line number.</small></p>
+<p><small><em>edit</em> - John Mair asked me to correct my usage of the term input buffer line number.  I've made corrections through the post but to summarize:  The number in the Pry prompt is not the input buffer line, but rather the expression number.  In a multi-line expression (for example a method definition) each line associated is assigned a shared expression number which increments per expression.  In short, it's not a line number.</small></p>
 
 <p>Be sure to set your default editor in your ~/.pryrc file by adding the following line <code>Pry.config.editor = &quot;mate&quot;</code></p>
 
