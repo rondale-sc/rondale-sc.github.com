@@ -49,99 +49,121 @@
 
     <div class="container">
       <div id="content">
-       <div class="span9" id="articles">
-  <h1>Articles</h1>
-  <ul>
-  
-  <li><a href="/2012/05/03/pry-session-102">Pry 102: Advanced Features</a> (<span>03 May 2012</span>)<br/>
-    <p>Give this link a click if you are interested in learning more about the advanced features of the ruby REPL Pry.</p>
-  </li>
-  
-  <li><a href="/2012/04/23/hitchhikers-guide-to-metaprogramming-classmodule-hooks">Hitchhiker's Guide to Metaprogramming: Class/Module Hooks</a> (<span>23 Apr 2012</span>)<br/>
-    <p>I wrote another article for Rubysource about metaprogramming in ruby.  In part one of this series I cover some of the basic class/module hooks.  Maybe you should check it out. ;)</p>
-  </li>
-  
-  <li><a href="/2012/04/10/introducing-pivotjs">Introducing Pivot.js</a> (<span>10 Apr 2012</span>)<br/>
-    <p>Here I'll talk a little bit about Pivot.js a new reporting library that let's you create extremely flexible reports on the fly.</p>
-  </li>
-  
-  <li><a href="/2012/04/04/zero-to-jekyll-in-twenty-minutes">Zero to Jekyll in Twenty Minutes</a> (<span>04 Apr 2012</span>)<br/>
-    <p>Hey everyone I've posted an article over on Rubysource.com be sure to check it out.</p>
-  </li>
-  
-  <li><a href="/2012/03/22/new-site-new-style">New Site, New Style</a> (<span>22 Mar 2012</span>)<br/>
-    <p>I've migrated Run With It to jekyll.  The migration introduces a bunch of changes that will let me write more while still keeping the code clean.</p>
-  </li>
-  
-  <li><a href="/setting-up-a-remote-environment">Setting Up a Remote Environment</a> (<span>20 Mar 2012</span>)<br/>
-    <p>Here I'll show you how easy it is to set up an alternate remote dev environment in Rails.  Allowing you to work from home.  ^_^</p>
-  </li>
-  
-  <li><a href="/introducing-espn-rb">Introducing EspnRb</a> (<span>12 Mar 2012</span>)<br/>
-    <p>Announcing EspnRb my wrapper around the ESPN developer API.  It covers some basic usage examples and where you can learn more about it.</p>
-  </li>
-  
-  <li><a href="/life-in-a-shade-of-ruby">Life in a shade of ruby</a> (<span>27 Feb 2012</span>)<br/>
-    <p>Conway's Game of Life is a mainstay in Hacker culture.  Here I'll go in depth about it's rules and my implementation.</p>
-  </li>
-  
-  <li><a href="/omniauth-and-other-drugs">Omniauth and Other Drugs</a> (<span>08 Feb 2012</span>)<br/>
-    <p>Hello everyone, I'm back.  Here to share a neat piece of code with you.  It isn't very practical but it illustrates how easy it is to use Omniauth</p>
-  </li>
-  
-  <li><a href="/be-back-soon">Back Soon</a> (<span>30 Nov 2011</span>)<br/>
-    <p></p>
-  </li>
-  
-  <li><a href="/man-and-ruby">Man and Ruby</a> (<span>17 Nov 2011</span>)<br/>
-    <p>If you've had any experience with Unix operating systems you undoubtedly know the value of a good man page.  Here I'll show you how to incorporate man pages into your work flow and maybe even author your own.</p>
-  </li>
-  
-  <li><a href="/string-theory">String Theory</a> (<span>08 Nov 2011</span>)<br/>
-    <p>I like many of you have often idly wondered about the inner workings of Ruby.  This time I wanted to see if I was correct.  Here I'll show whether single quoted strings or double quoted strings are faster in 1.9.</p>
-  </li>
-  
-  <li><a href="/an-introduction-to-logging">An Introduction to Logging</a> (<span>01 Nov 2011</span>)<br/>
-    <p>In this screencast I'll give you a brief introduction to the Logging framework.  It's a popular logging tool that allows for greater transparency in your applications.</p>
-  </li>
-  
-  <li><a href="/caller-method">Caller Method</a> (<span>27 Oct 2011</span>)<br/>
-    <p>It's Friday and this week has been fraught with complicated bugs.  Here I share a method I found useful while trying to hack through these issues.</p>
-  </li>
-  
-  <li><a href="/make-the-most-of-your-tweet">Make the most of your tweet</a> (<span>25 Oct 2011</span>)<br/>
-    <p>Here I'll show you how to integrate google's url shortening service, and Twitter's tweet button to help make your site's tweet a little more friendly.</p>
-  </li>
-  
-  </ul>
+       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+<script src="/javascripts/run_with_it.js"></script>
 
-<div class="pagination">
-  <ul>
+<div class="span9" id="articles">
+  <div id="search_container"></div>
+  <div id="search_results"></div>
+  <h1>Articles</h1><hr style="width:675px;"/>
+  <div id="article-listing">
+    <ul>
     
-      <li class="disabled">
-        <a href="#">&larr;</a>
+      <li><a href="/2012/05/03/pry-session-102">Pry 102: Advanced Features</a> (<span>03 May 2012</span>)<br/>
+        <p>Give this link a click if you are interested in learning more about the advanced features of the ruby REPL Pry.</p>
       </li>
     
-    
-      <li class="active">
-        <a href="#">1</a>
+      <li><a href="/2012/04/23/hitchhikers-guide-to-metaprogramming-classmodule-hooks">Hitchhiker's Guide to Metaprogramming: Class/Module Hooks</a> (<span>23 Apr 2012</span>)<br/>
+        <p>I wrote another article for Rubysource about metaprogramming in ruby.  In part one of this series I cover some of the basic class/module hooks.  Maybe you should check it out. ;)</p>
       </li>
     
-    
-      
-        <li>
-          <a href="/page2">2</a>
-        </li>
-      
-    
-    
-      <li>
-        <a href="/page2">&rarr;</a>
+      <li><a href="/2012/04/10/introducing-pivotjs">Introducing Pivot.js</a> (<span>10 Apr 2012</span>)<br/>
+        <p>Here I'll talk a little bit about Pivot.js a new reporting library that let's you create extremely flexible reports on the fly.</p>
       </li>
     
-  </ul>
+      <li><a href="/2012/04/04/zero-to-jekyll-in-twenty-minutes">Zero to Jekyll in Twenty Minutes</a> (<span>04 Apr 2012</span>)<br/>
+        <p>Hey everyone I've posted an article over on Rubysource.com be sure to check it out.</p>
+      </li>
+    
+      <li><a href="/2012/03/22/new-site-new-style">New Site, New Style</a> (<span>22 Mar 2012</span>)<br/>
+        <p>I've migrated Run With It to jekyll.  The migration introduces a bunch of changes that will let me write more while still keeping the code clean.</p>
+      </li>
+    
+      <li><a href="/setting-up-a-remote-environment">Setting Up a Remote Environment</a> (<span>20 Mar 2012</span>)<br/>
+        <p>Here I'll show you how easy it is to set up an alternate remote dev environment in Rails.  Allowing you to work from home.  ^_^</p>
+      </li>
+    
+      <li><a href="/introducing-espn-rb">Introducing EspnRb</a> (<span>12 Mar 2012</span>)<br/>
+        <p>Announcing EspnRb my wrapper around the ESPN developer API.  It covers some basic usage examples and where you can learn more about it.</p>
+      </li>
+    
+      <li><a href="/life-in-a-shade-of-ruby">Life in a shade of ruby</a> (<span>27 Feb 2012</span>)<br/>
+        <p>Conway's Game of Life is a mainstay in Hacker culture.  Here I'll go in depth about it's rules and my implementation.</p>
+      </li>
+    
+      <li><a href="/omniauth-and-other-drugs">Omniauth and Other Drugs</a> (<span>08 Feb 2012</span>)<br/>
+        <p>Hello everyone, I'm back.  Here to share a neat piece of code with you.  It isn't very practical but it illustrates how easy it is to use Omniauth</p>
+      </li>
+    
+      <li><a href="/be-back-soon">Back Soon</a> (<span>30 Nov 2011</span>)<br/>
+        <p></p>
+      </li>
+    
+      <li><a href="/man-and-ruby">Man and Ruby</a> (<span>17 Nov 2011</span>)<br/>
+        <p>If you've had any experience with Unix operating systems you undoubtedly know the value of a good man page.  Here I'll show you how to incorporate man pages into your work flow and maybe even author your own.</p>
+      </li>
+    
+      <li><a href="/string-theory">String Theory</a> (<span>08 Nov 2011</span>)<br/>
+        <p>I like many of you have often idly wondered about the inner workings of Ruby.  This time I wanted to see if I was correct.  Here I'll show whether single quoted strings or double quoted strings are faster in 1.9.</p>
+      </li>
+    
+      <li><a href="/an-introduction-to-logging">An Introduction to Logging</a> (<span>01 Nov 2011</span>)<br/>
+        <p>In this screencast I'll give you a brief introduction to the Logging framework.  It's a popular logging tool that allows for greater transparency in your applications.</p>
+      </li>
+    
+      <li><a href="/caller-method">Caller Method</a> (<span>27 Oct 2011</span>)<br/>
+        <p>It's Friday and this week has been fraught with complicated bugs.  Here I share a method I found useful while trying to hack through these issues.</p>
+      </li>
+    
+      <li><a href="/make-the-most-of-your-tweet">Make the most of your tweet</a> (<span>25 Oct 2011</span>)<br/>
+        <p>Here I'll show you how to integrate google's url shortening service, and Twitter's tweet button to help make your site's tweet a little more friendly.</p>
+      </li>
+    
+    </ul>
+    <div class="pagination">
+      <ul>
+        
+          <li class="disabled">
+            <a href="#">&larr;</a>
+          </li>
+        
+        
+          <li class="active">
+            <a href="#">1</a>
+          </li>
+        
+        
+          
+            <li>
+              <a href="/page2">2</a>
+            </li>
+          
+        
+        
+          <li>
+            <a href="/page2">&rarr;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
 </div>
-</div>
+
+<!-- Search Template -->
+<script type="text/template" id="search_template">
+    <div class="form-horizontal" style="margin-bottom:10px;">
+      <input type="text" id="search_input" placeholder="Search by Title" />
+      <input type="button" id="search_button" value="Search" class="btn" />
+    </div>
+</script>
+
+<!-- Backbone View -->
+<script type="text/javascript">
+  var sitemap = new SiteMap
+  var search_view = new  SearchView({el: $("#search_container"), sitemap: sitemap});
+</script>
       </div>
 
       <div id="side-bar">
