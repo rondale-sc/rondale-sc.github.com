@@ -136,7 +136,7 @@ end
 
 &lt;p&gt;** Side note **&lt;/p&gt;
 
-&lt;p&gt;The use of Struct.new to describe the supervisor array is taken from both Ben, who mentioned something similar in his talk, and from Sandi Metz' book &lt;strong&gt;&lt;em&gt;Practical Object Oriented Design&lt;/em&gt;&lt;/strong&gt; [2]&lt;/p&gt;
+&lt;p&gt;The use of Struct.new to reveal the intent of the supervisor array is taken from both Ben, who mentioned something similar in his talk, and from Sandi Metz' book &lt;strong&gt;&lt;em&gt;Practical Object Oriented Design&lt;/em&gt;&lt;/strong&gt; [2]&lt;/p&gt;
 
 &lt;h2&gt;The Downside&lt;/h2&gt;
 
