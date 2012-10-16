@@ -6,6 +6,169 @@
     <description>Ruby, Javascript, and all else under the sun.</description>
     
     <item>
+      <title>Try and Try Again</title>
+      <link>http://www.jonathan-jackson.net/2012/10/15/try-and-try-again.html</link>
+      <pubDate>Mon, 15 Oct 2012 00:00:00 -0400</pubDate>
+      <guid>http://www.jonathan-jackson.net/2012/10/15/try-and-try-again</guid>
+      <description>&lt;h1&gt;Try and Try Again&lt;/h1&gt;
+
+&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+                                         data-count=&quot;horizontal&quot;
+                                         data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Attending MagicRuby this year provided me with many take-aways that I would like to discuss.  One of these is that of the NullObject Pattern (NOP).  There were a number of great presentations there, and I know this topic probably old hat for some of the longer-bearded fellows, but I really like the idea.&lt;/p&gt;
+
+&lt;p&gt;I saw a brief glimpse into the NullObject pattern during Ben Orenstein's talk about refactoring [1].  Essentially, the Null Object pattern allows you to create a neutral object that takes the place of Nil.  In fancy terms, the NOP lets the client to ignore the difference between a null operation and a real operation via an abstraction layer.&lt;/p&gt;
+
+&lt;p&gt;I know your first question will invariablly be: Why?&lt;/p&gt;
+
+&lt;h2&gt;The Why&lt;/h2&gt;
+
+&lt;p&gt;Why would you use the Null Object pattern?  Let's go into a simple example.&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;class Project
+  attr_reader :supervisor
+
+  # assume supervisor looks like:
+  # [&amp;quot;Harry&amp;quot;, &amp;quot;Henderson&amp;quot;, &amp;quot;hhendersonfake@me.com&amp;quot;]
+
+  def initialize(supervisor)
+    @supervisor = supervisor
+  end
+
+  def display_name
+    if !supervisor
+      supervisor[0] + &amp;quot;, &amp;quot; + supervisor[1] # yuck
+    else
+      &amp;quot;No supervisor assigned.&amp;quot;
+    end
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;So this is pretty straightforward.  We want to be able to display the assigned supervisors' name, and if the supervisor hasn't been set yet, we'd like to display the message &amp;quot;No supervisor assigned.&amp;quot;  And this code does that pretty well.  However, as we build this class out this gets pretty messy.  We'll continually have to check for the existence of &lt;code&gt;supervisor&lt;/code&gt;.  The NullObject pattern helps us to remove this smell.&lt;/p&gt;
+
+&lt;h2&gt;The How&lt;/h2&gt;
+
+&lt;p&gt;Alright, so hopefully you are all on board with at least contemplating using the NullObject pattern, but what's next?  The first thing we need to do is refactor our class a bit.  Supervisor will likely have other methods defined and therefore merits its own class.  So let's do that now:&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;class Project
+  attr_reader :supervisor
+
+  # assume supervisor looks like:
+  # [&amp;quot;Harry&amp;quot;, &amp;quot;Henderson&amp;quot;, &amp;quot;hhendersonfake@me.com&amp;quot;]
+
+  def initialize(supervisor)
+    @supervisor = Supervisor.new(*supervisor)
+  end
+
+  Supervisor = Struct.new(:first_name, :last_name, :email) do
+    def display_name
+      if !first_name.nil? || !last_name.nil?
+        first_name + &amp;quot;, &amp;quot; + last_name
+      else
+        &amp;quot;No supervisor assigned.&amp;quot;
+      end
+    end
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;That looks a little better; the supervisor class is now isolated and we have more of a clue as to what the supervisor object is responsible for.  However, we still have the same issue.  We are asking the object if it's nil in order to display the right #display_name.  This is where we'll actually create a NullObject and make it respond to the methods we expect supervisor to know.&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-3.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;NullSupervisor = Struct.new() do
+  def display_name
+    &amp;quot;No supervisor assigned.&amp;quot;
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;So now our class, incorporated with the NullObject, looks like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+
+&lt;pre lang=&quot;sh&quot;&gt;&lt;code&gt;class Project
+  attr_reader :supervisor
+
+  # assume supervisor looks like:
+  # [&amp;quot;Harry&amp;quot;, &amp;quot;Henderson&amp;quot;, &amp;quot;hhendersonfake@me.com&amp;quot;]
+
+  def initialize(supervisor=nil)
+    @supervisor = supervisor.nil? ? NullSupervisor.new : Supervisor.new(*supervisor)
+  end
+
+  Supervisor = Struct.new(:first_name, :last_name, :email) do
+    def display_name
+      first_name + &amp;quot;, &amp;quot; + last_name
+    end
+  end
+
+  NullSupervisor = Struct.new() do
+    def display_name
+      &amp;quot;No supervisor assigned.&amp;quot;
+    end
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;h2&gt;What did we just do?&lt;/h2&gt;
+
+&lt;p&gt;We placed an abstraction layer between Project and 'Supervisor'.  Depending on how you initialize Project supervisor will be a class of either Supervisor or NullSupervisor.  This difference is transparent to the Client, in this case class Project, and allows you to be more declarative in your code.&lt;/p&gt;
+
+&lt;p&gt;** Side note **&lt;/p&gt;
+
+&lt;p&gt;The use of Struct.new to describe the supervisor array is taken from both Ben, who mentioned something similar in his talk, and from Sandi Metz' book &lt;strong&gt;&lt;em&gt;Practical Object Oriented Design&lt;/em&gt;&lt;/strong&gt; [2]&lt;/p&gt;
+
+&lt;h2&gt;The Downside&lt;/h2&gt;
+
+&lt;p&gt;The downside that was immediately brought to bear during the Q&amp;amp;A section was that the creation of the NullObject introduces coupling between NullObject and Object (In this case NullSupervisor &amp;amp; Supervisor).&lt;/p&gt;
+
+&lt;p&gt;A quick definition of coupling is &amp;quot;the degree to which each program module relies on each one of the other modules.&amp;quot;[3]  In this case, any time you add a method to Supervisor you must create a mirror of it on NullSupervisor.&lt;/p&gt;
+
+&lt;p&gt;Personally, I think if you want to have custom fuctions for a NullObject represenation of a particular data structure, you should actually put some thought into it, so this coupling doesn't bother me too much.  It's pretty easy to understand and allows you to write code with authority.  However, sometimes this just isn't the right fit, and if it's not, go with something else.&lt;/p&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;The NullObject pattern can be used in many more cases than this, and in many different ways. Learning about this pattern has helped me to think through the instances where I would normally have just used a conditional.  Thinking about how your code works, and what callers will send to your object, will help you write more understandable code.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading.&lt;/p&gt;
+
+&lt;h4&gt;References&lt;/h4&gt;
+
+&lt;p&gt;&lt;span  style=&quot;font-size:12px;&quot;&gt;1.) &lt;a href=&quot;http://programme.scottishrubyconference.com/proposals/78/video&quot;&gt;Ben Orenstein's talk from Scottish Ruby&lt;/a&gt;&lt;/span&gt;&lt;br/&gt;
+&lt;span  style=&quot;font-size:12px;&quot;&gt;2.) &lt;a href=&quot;http://www.amazon.com/dp/0321721330&quot;&gt;Practical Object-Oriented Design in Ruby - Sandi Metz&lt;/a&gt;&lt;/span&gt;&lt;br/&gt;
+&lt;span  style=&quot;font-size:12px;&quot;&gt;3.) &lt;a href=&quot;http://en.wikipedia.org/wiki/Null_Object_pattern&quot;&gt;Wiki Entry on Null Object Pattern&lt;/a&gt;&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;small&gt;I hadn't read all of the additional references section until after I'd finished work on this article.  Some really great stuff here.  Take special note of Avdi's article, as it covers this topic in more depth.&lt;/small&gt;&lt;/p&gt;
+
+&lt;h4&gt;Additional References&lt;/h4&gt;
+
+&lt;p&gt;&lt;span style=&quot;font-size:12px;&quot;&gt;&lt;a href=&quot;http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/&quot;&gt;Null Objects and Falsiness - Avdi Grimm &lt;/a&gt;&lt;/span&gt;&lt;br/&gt;
+&lt;span style=&quot;font-size:12px;&quot;&gt;&lt;a href=&quot;http://www.oodesign.com/null-object-pattern.html&quot;&gt;Old school article with very useful graph describing NOP (Java - yuck)&lt;/a&gt;&lt;/span&gt;&lt;br/&gt;
+&lt;span style=&quot;font-size:12px;&quot;&gt;&lt;a href=&quot;http://robots.thoughtbot.com/post/12179019201/design-patterns-in-the-wild-null-object&quot;&gt;Design Patterns in the Wild: Null Object - Josh Clayton&lt;/a&gt;&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Pry 102: Advanced Features</title>
       <link>http://www.jonathan-jackson.net/2012/05/03/pry-session-102.html</link>
       <pubDate>Thu, 03 May 2012 00:00:00 -0400</pubDate>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <title>Try and Try Again</title>
+
+  <!-- Twitter Bootstrap -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
+
+  <!-- My Custom CSS -->
+  <link rel="stylesheet" href="/css/custom.css" type="text/css" />
+
+  <link href="/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+
+  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
+  
+    <meta name="description" content="I'll breifly go through a simple implementation of the NullOjbect pattern.  Also some refactoring. :)" />
+  
+
+  
+    <meta http-equiv="date" content="Monday, 15  2012 00:00:00 GMT" />
+  
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25565068-1']);
+  _gaq.push(['_setDomainName', 'jonathan-jackson.net']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div id="header">
+      <h1>run<span class="kern">_</span>with_it <span style="font-size:12px;">Learning, sharing, coding.</span></h1>
+      <div class="row">
+        <div class="nav-offset site-nav"><a href="/" alt="home">Home</a></div>
+        <div class="site-nav"><a href="/about-me.html" alt="about-me">About Me</a></div>
+        <div class="site-nav"><a href="/mail.html" alt="contact-me">Email Me</a></div>
+      </div>
+    </div>
+    <div id="header-border"></div>
+
+    <div class="container">
+      <div id="content">
+       <div id="post">
+<h1>Try and Try Again</h1>
+
+<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+                                         data-count="horizontal"
+                                         data-via="rondale_sc">Tweet</a>
+</span></p>
+
+<p>Attending MagicRuby this year provided me with many take-aways that I would like to discuss.  One of these is that of the NullObject Pattern (NOP).  There were a number of great presentations there, and I know this topic probably old hat for some of the longer-bearded fellows, but I really like the idea.</p>
+
+<p>I saw a brief glimpse into the NullObject pattern during Ben Orenstein's talk about refactoring [1].  Essentially, the Null Object pattern allows you to create a neutral object that takes the place of Nil.  In fancy terms, the NOP lets the client to ignore the difference between a null operation and a real operation via an abstraction layer.</p>
+
+<p>I know your first question will invariablly be: Why?</p>
+
+<h2>The Why</h2>
+
+<p>Why would you use the Null Object pattern?  Let's go into a simple example.</p>
+
+<p><script src='https://gist.github.com/3896565.js?file=gist-1.rb'></script><noscript></p>
+
+<pre lang="sh"><code>class Project
+  attr_reader :supervisor
+
+  # assume supervisor looks like:
+  # [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]
+
+  def initialize(supervisor)
+    @supervisor = supervisor
+  end
+
+  def display_name
+    if !supervisor
+      supervisor[0] + &quot;, &quot; + supervisor[1] # yuck
+    else
+      &quot;No supervisor assigned.&quot;
+    end
+  end
+end
+
+</code></pre>
+
+<p></noscript></p>
+
+<p>So this is pretty straightforward.  We want to be able to display the assigned supervisors' name, and if the supervisor hasn't been set yet, we'd like to display the message &quot;No supervisor assigned.&quot;  And this code does that pretty well.  However, as we build this class out this gets pretty messy.  We'll continually have to check for the existence of <code>supervisor</code>.  The NullObject pattern helps us to remove this smell.</p>
+
+<h2>The How</h2>
+
+<p>Alright, so hopefully you are all on board with at least contemplating using the NullObject pattern, but what's next?  The first thing we need to do is refactor our class a bit.  Supervisor will likely have other methods defined and therefore merits its own class.  So let's do that now:</p>
+
+<p><script src='https://gist.github.com/3896565.js?file=gist-2.rb'></script><noscript></p>
+
+<pre lang="sh"><code>class Project
+  attr_reader :supervisor
+
+  # assume supervisor looks like:
+  # [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]
+
+  def initialize(supervisor)
+    @supervisor = Supervisor.new(*supervisor)
+  end
+
+  Supervisor = Struct.new(:first_name, :last_name, :email) do
+    def display_name
+      if !first_name.nil? || !last_name.nil?
+        first_name + &quot;, &quot; + last_name
+      else
+        &quot;No supervisor assigned.&quot;
+      end
+    end
+  end
+end
+
+</code></pre>
+
+<p></noscript></p>
+
+<p>That looks a little better; the supervisor class is now isolated and we have more of a clue as to what the supervisor object is responsible for.  However, we still have the same issue.  We are asking the object if it's nil in order to display the right #display_name.  This is where we'll actually create a NullObject and make it respond to the methods we expect supervisor to know.</p>
+
+<p><script src='https://gist.github.com/3896565.js?file=gist-3.rb'></script><noscript></p>
+
+<pre lang="sh"><code>NullSupervisor = Struct.new() do
+  def display_name
+    &quot;No supervisor assigned.&quot;
+  end
+end
+
+</code></pre>
+
+<p></noscript></p>
+
+<p>So now our class, incorporated with the NullObject, looks like this:</p>
+
+<p><script src='https://gist.github.com/3896565.js?file=gist-4.rb'></script><noscript></p>
+
+<pre lang="sh"><code>class Project
+  attr_reader :supervisor
+
+  # assume supervisor looks like:
+  # [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]
+
+  def initialize(supervisor=nil)
+    @supervisor = supervisor.nil? ? NullSupervisor.new : Supervisor.new(*supervisor)
+  end
+
+  Supervisor = Struct.new(:first_name, :last_name, :email) do
+    def display_name
+      first_name + &quot;, &quot; + last_name
+    end
+  end
+
+  NullSupervisor = Struct.new() do
+    def display_name
+      &quot;No supervisor assigned.&quot;
+    end
+  end
+end
+
+</code></pre>
+
+<p></noscript></p>
+
+<h2>What did we just do?</h2>
+
+<p>We placed an abstraction layer between Project and 'Supervisor'.  Depending on how you initialize Project supervisor will be a class of either Supervisor or NullSupervisor.  This difference is transparent to the Client, in this case class Project, and allows you to be more declarative in your code.</p>
+
+<p>** Side note **</p>
+
+<p>The use of Struct.new to describe the supervisor array is taken from both Ben, who mentioned something similar in his talk, and from Sandi Metz' book <strong><em>Practical Object Oriented Design</em></strong> [2]</p>
+
+<h2>The Downside</h2>
+
+<p>The downside that was immediately brought to bear during the Q&amp;A section was that the creation of the NullObject introduces coupling between NullObject and Object (In this case NullSupervisor &amp; Supervisor).</p>
+
+<p>A quick definition of coupling is &quot;the degree to which each program module relies on each one of the other modules.&quot;[3]  In this case, any time you add a method to Supervisor you must create a mirror of it on NullSupervisor.</p>
+
+<p>Personally, I think if you want to have custom fuctions for a NullObject represenation of a particular data structure, you should actually put some thought into it, so this coupling doesn't bother me too much.  It's pretty easy to understand and allows you to write code with authority.  However, sometimes this just isn't the right fit, and if it's not, go with something else.</p>
+
+<h2>Conclusion</h2>
+
+<p>The NullObject pattern can be used in many more cases than this, and in many different ways. Learning about this pattern has helped me to think through the instances where I would normally have just used a conditional.  Thinking about how your code works, and what callers will send to your object, will help you write more understandable code.</p>
+
+<p>Thanks for reading.</p>
+
+<h4>References</h4>
+
+<p><span  style="font-size:12px;">1.) <a href="http://programme.scottishrubyconference.com/proposals/78/video">Ben Orenstein's talk from Scottish Ruby</a></span><br/>
+<span  style="font-size:12px;">2.) <a href="http://www.amazon.com/dp/0321721330">Practical Object-Oriented Design in Ruby - Sandi Metz</a></span><br/>
+<span  style="font-size:12px;">3.) <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">Wiki Entry on Null Object Pattern</a></span><br/></p>
+
+<p><small>I hadn't read all of the additional references section until after I'd finished work on this article.  Some really great stuff here.  Take special note of Avdi's article, as it covers this topic in more depth.</small></p>
+
+<h4>Additional References</h4>
+
+<p><span style="font-size:12px;"><a href="http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/">Null Objects and Falsiness - Avdi Grimm </a></span><br/>
+<span style="font-size:12px;"><a href="http://www.oodesign.com/null-object-pattern.html">Old school article with very useful graph describing NOP (Java - yuck)</a></span><br/>
+<span style="font-size:12px;"><a href="http://robots.thoughtbot.com/post/12179019201/design-patterns-in-the-wild-null-object">Design Patterns in the Wild: Null Object - Josh Clayton</a></span><br/></p>
+
+<span><a href="http://twitter.com/share" class="twitter-share-button"
+                                         data-count="horizontal"
+                                         data-via="rondale_sc">Tweet</a>
+</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'run-with-it';
+    var disqus_identifier = '/2012/10/15/try-and-try-again';
+    var disqus_url = 'http://www.jonathan-jackson.net/2012/10/15/try-and-try-again';
+    var disqus_developer = 1;
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</div>
+      </div>
+
+      <div id="side-bar">
+       <div><a href="http://feeds.feedburner.com/jonathan-jackson/WZqA" title="Subscribe to my feed" rel="alternate" type="application/rss+xml"><img src="/images/feeds.png" alt="" style="border:0;width:100px;height:100px;"/></a></div>
+<div><img src="/images/gravatar.png" width="167px;" height="167px;"/></div>
+<div><a href="https://twitter.com/rondale_sc" class="twitter-follow-button" alt="follow me on twitter" data-width="150px" data-show-count="false">Follow @rondale_sc</a></div>
+<div style="margin-top:5px;">
+  <h3>Hi, I'm Jon.</h3>
+  <p>I love learning new things.  Here is where I'll share what I learn.  Typically code, sometimes my experience, sometimes just a neat trick.</p>
+</div>
+<div>
+  <h3>Subscribe via Email</h3>
+  <!-- Begin MailChimp Signup Form -->
+  <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <div id="mc_embed_signup">
+  <form action="http://jonathan-jackson.us5.list-manage.com/subscribe/post?u=266baf97eddd87cfd15f1d015&amp;id=1ffe6549dc" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn"></div>
+  </form>
+  </div>
+  <!--End mc_embed_signup-->
+</div>
+<div>
+  <h3>Projects</h3>
+  <ul>
+    <li><a href="http://rondale-sc.github.com/EspnRb/" alt="espn_rb, a lightweight ruby wrapper around the ESPN api." title="EspnRb">EspnRb</a></li>
+    <li><a href="https://github.com/rondale-sc/image_viewer" alt="ImageViewer image browser w/controls" title="Image Viewer">ImageViewer</a></li>
+    <li><a href="https://github.com/rjackson/pivot.js" alt="Pivot.js - reporting lib" title="Pivot.js">Pivot.js</a></li>
+    <li><a href="https://github.com/rondale-sc/run_with_it_redux" alt="This blog's Github Repo" title="Run With It Repo">Run With It</a></li>
+  </ul>
+</div>
+      </div>
+    </div>
+    <div class="push"></div>
+  </div>
+  <div class="footer">
+    <p>Site designed by Jonathan Jackson.  With help from <a href="http://twitter.github.com/bootstrap/" alt="twitter bootstrap">@twbootstrap</a>, <a href="https://github.com/mojombo/jekyll" alt="jekyll">Jekyll</a>, and <a href="https://github.com/" alt="github">github</a></p>
+  </div>
+</body>
+</html>
