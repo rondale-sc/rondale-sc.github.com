@@ -52,112 +52,108 @@
     <div class="container">
       <div id="content">
        <div id="post">
-<h1>Playin' with the Ruby GC</h1>
+<h1>Playin&#39; with the Ruby GC</h1>
 
 <p><span><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>So I, like many of you geeks out there heard about the changes to Ruby in 1.9.3-rc1.  Upon hearing the news, I hurriedly scanned the intra-webz to see if there were any cool features that would affect me or my production apps.  Some of the changes in the release candidate were pleasantly surprising, especially file loading (which saw a notable ~38% speed boost).  When I saw the garbage collector was being changed to something called &quot;Lazy Sweeping&quot; I had to figure out how much this was going to impact performance.  I mean c'mon &quot;lazy sweeping&quot;, sounds so interesting right?  So I started writing a script to tell me just that.</p>
+<p>So I, like many of you geeks out there heard about the changes to Ruby in 1.9.3-rc1.  Upon hearing the news, I hurriedly scanned the intra-webz to see if there were any cool features that would affect me or my production apps.  Some of the changes in the release candidate were pleasantly surprising, especially file loading (which saw a notable ~38% speed boost).  When I saw the garbage collector was being changed to something called &quot;Lazy Sweeping&quot; I had to figure out how much this was going to impact performance.  I mean c&#39;mon &quot;lazy sweeping&quot;, sounds so interesting right?  So I started writing a script to tell me just that.</p>
 
-<p>Let's start this in reverse order.</p>
+<p>Let&#39;s start this in reverse order.</p>
 
 <h2>The results</h2>
 
-<p>I found that the the new &quot;lazy sweeping&quot; (still super cool name) was about <em>8%</em> faster on average.  Here's the pretty graph I created from Excel.</p>
+<p>I found that the the new &quot;lazy sweeping&quot; (still super cool name) was about <em>8%</em> faster on average.  Here&#39;s the pretty graph I created from Excel.</p>
 
 <p><img src="http://www.jonathan-jackson.net/images/gc_graph.png" alt="gc graph" style="width:600px"/></p>
 
-<p>The vertical axis is the time in milliseconds, and the horizontal axis represents the GC cycle during the creation of ~10,000 objects.  Alright alright alright.  I'll explain the methodology so you can actually understand the graph.</p>
+<p>The vertical axis is the time in milliseconds, and the horizontal axis represents the GC cycle during the creation of ~10,000 objects.  Alright alright alright.  I&#39;ll explain the methodology so you can actually understand the graph.</p>
 
 <h2>The Methodology</h2>
 
 <p>While doing the research I came across a nifty little script by the Narihiro Nakamura <a href="http://redmine.ruby-lang.org/attachments/959/bm_gc_fragmentation.rb">here</a>.  I modified it slightly, but kept the same idea of creating a number of objects to fill up the heap.</p>
 
 <p><script src='https://gist.github.com/2156260.js?file=gist-1.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># &#39;./gc_test.rb&#39;</span>
 
-<pre lang="sh"><code># './gc_test.rb'
+@m <span class="o">=</span> 1000000
+@b <span class="o">=</span> 2 * 5 * <span class="o">(</span>4**3<span class="o">)</span> + 1
+@a <span class="o">=</span> 100001
 
-@m = 1000000
-@b = 2 * 5 * (4**3) + 1
-@a = 100001
-
-def make_fragmentation(h, seed)
-  i = seed
-  10000.times {|m| h &lt;&lt; Object.new}
-  10000.times do |m|
-    i = ((@a * i) + @b) % @m
-    h[i % h.length] = nil
+def make_fragmentation<span class="o">(</span>h, seed<span class="o">)</span>
+  <span class="nv">i</span> <span class="o">=</span> seed
+  10000.times <span class="o">{</span>|m| h &lt;&lt; Object.new<span class="o">}</span>
+  10000.times <span class="k">do</span> |m|
+    <span class="nv">i</span> <span class="o">=</span> <span class="o">((</span>@a * i<span class="o">)</span> + @b<span class="o">)</span> % @m
+    h<span class="o">[</span>i % h.length<span class="o">]</span> <span class="o">=</span> nil
  end
 end
 
 def run_test
   GC::Profiler.enable
-  heaps = []
-  100.times{|i| make_fragmentation(heaps, i) }
+  <span class="nv">heaps</span> <span class="o">=</span> <span class="o">[]</span>
+  100.times<span class="o">{</span>|i| make_fragmentation<span class="o">(</span>heaps, i<span class="o">)</span> <span class="o">}</span>
   GC::Profiler.result
 end
 
 puts run_test
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>This returns a result set from the GC profiler.  Which I call about a hundred times like so:</p>
 
 <p><script src='https://gist.github.com/2156260.js?file=gist-2.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;bigdecimal&#39;</span>
+require <span class="s1">&#39;pp&#39;</span>
 
-<pre lang="sh"><code>require 'bigdecimal'
-require 'pp'
+<span class="nv">output</span> <span class="o">=</span> Hash.new<span class="o">([])</span>
+@totals <span class="o">=</span> <span class="o">{}</span>
 
-output = Hash.new([])
-@totals = {}
+<span class="nv">path</span> <span class="o">=</span> <span class="s1">&#39;./gc_test.rb&#39;</span>
 
-path = './gc_test.rb'
-
-100.times do |test_run|
- result_set = `ruby #{path}` # this is where we get the result from the previous script
- result_set.split(&quot;\n&quot;).each_with_index do |result, index|
-   next if [0,1].include?(index)
-   result = result.split(&quot; &quot;)
-   output[result[0]] += [result[5]]
+100.times <span class="k">do</span> |test_run|
+ <span class="nv">result_set</span> <span class="o">=</span> <span class="sb">`</span>ruby <span class="c">#{path}` # this is where we get the result from the previous script</span>
+ result_set.split<span class="o">(</span><span class="s2">&quot;\n&quot;</span><span class="o">)</span>.each_with_index <span class="k">do</span> |result, index|
+   next <span class="k">if</span> <span class="o">[</span>0,1<span class="o">]</span>.include?<span class="o">(</span>index<span class="o">)</span>
+   <span class="nv">result</span> <span class="o">=</span> result.split<span class="o">(</span><span class="s2">&quot; &quot;</span><span class="o">)</span>
+   output<span class="o">[</span>result<span class="o">[</span>0<span class="o">]]</span> +<span class="o">=</span> <span class="o">[</span>result<span class="o">[</span>5<span class="o">]]</span>
  end
 end
 
-# This is where we take the cumulative values of the previous 100 results sets by GC cycle
-# and grab the average.  Big decimal because we want to be precise and the numbers are already
-# strings.
+<span class="c"># This is where we take the cumulative values of the previous 100 results sets by GC cycle</span>
+<span class="c"># and grab the average.  Big decimal because we want to be precise and the numbers are already</span>
+<span class="c"># strings.</span>
 
-output.each do |k,v|
-  length = BigDecimal.new(v.length.to_s)
-  nv = v.map! {|i| BigDecimal.new(i)}
-  @totals[k] = (nv.inject(:+) / length).to_s(&quot;F&quot;)
+output.each <span class="k">do</span> |k,v|
+  <span class="nv">length</span> <span class="o">=</span> BigDecimal.new<span class="o">(</span>v.length.to_s<span class="o">)</span>
+  <span class="nv">nv</span> <span class="o">=</span> v.map! <span class="o">{</span>|i| BigDecimal.new<span class="o">(</span>i<span class="o">)}</span>
+  @totals<span class="o">[</span>k<span class="o">]</span> <span class="o">=</span> <span class="o">(</span>nv.inject<span class="o">(</span>:+<span class="o">)</span> / length<span class="o">)</span>.to_s<span class="o">(</span><span class="s2">&quot;F&quot;</span><span class="o">)</span>
 end
-puts @totals.map{|k,v| v + &quot;\n&quot;}
-
-</code></pre>
-
+puts @totals.map<span class="o">{</span>|k,v| v + <span class="s2">&quot;\n&quot;</span><span class="o">}</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>I attempted to run this ten thousand times but it just took too long.  I wanted to get a large sample because the GC can run at off times and isn't at all guaranteed to be consistent. I ended up just going with a 100 run set for sake of speed.  Once I had the script all set I just used RVM to set my ruby and ran it.  As of writing this article RVM didn't offer 1.9.3-rc1 so I used 1.9.3-preview1 instead.</p>
+<p>I attempted to run this ten thousand times but it just took too long.  I wanted to get a large sample because the GC can run at off times and isn&#39;t at all guaranteed to be consistent. I ended up just going with a 100 run set for sake of speed.  Once I had the script all set I just used RVM to set my ruby and ran it.  As of writing this article RVM didn&#39;t offer 1.9.3-rc1 so I used 1.9.3-preview1 instead.</p>
 
 <h2>The interpretation</h2>
 
 <p>Well as I said before &quot;lazy sweeping&quot; is about 8% faster on average.  The largest increases in speed was when there were a small/medium number of objects in memory, the larger the number of objects the more 1.9.2 won out over 1.9.3. <a href="http://www.infoq.com/">InfoQ</a> talked to Narihiro Nakamura <a href="#footnote_2">[2]</a> where he explains why these results are likely accurate.</p>
+
 <blockquote>
 <p>If the program creates many long-lived objects, lazy sweep may not be able to find a free object. In that case, lazy sweep spends a long time on a single object allocation. I think that in most cases, the performance of this should still be better than M&amp;S GC.</p>
 </blockquote>
-<p>This InfoQ article was especially enlightening so I recommend giving it a glance through (it's in the footnote).</p>
+
+<p>This InfoQ article was especially enlightening so I recommend giving it a glance through (it&#39;s in the footnote).</p>
 
 <h2>Try it yourself</h2>
 
-<p>The GC module offers many ways to examine the garbage collector. If you want something more, then you should look into ruby-prof which has options that show you GC_TIME, GC_RUNS and a whole host of other useful profiling tools.  @wycats recently pushed a branch to ruby-prof that enables those GC operations, you can find it <a href="https://github.com/wycats/ruby-prof">here</a>.  You'll note that it requires ruby to be patched.  So try ruby-prof out!</p>
+<p>The GC module offers many ways to examine the garbage collector. If you want something more, then you should look into ruby-prof which has options that show you GC<em>TIME, GC</em>RUNS and a whole host of other useful profiling tools.  @wycats recently pushed a branch to ruby-prof that enables those GC operations, you can find it <a href="https://github.com/wycats/ruby-prof">here</a>.  You&#39;ll note that it requires ruby to be patched.  So try ruby-prof out!</p>
 
-<p>Anyways, I know this wasn't exactly scientific but it was certainly fun and helped me understand some things about ruby a little better. Hope it helps you too.</p>
+<p>Anyways, I know this wasn&#39;t exactly scientific but it was certainly fun and helped me understand some things about ruby a little better. Hope it helps you too.</p>
 
-<p>Have an improvement to the scripts above?  Think I'm doing something completely wrong? Maybe you have an entirely different approach.  Let me know in the comments below, and don't forget to subscribe to 'Run With It'.</p>
+<p>Have an improvement to the scripts above?  Think I&#39;m doing something completely wrong? Maybe you have an entirely different approach.  Let me know in the comments below, and don&#39;t forget to subscribe to &#39;Run With It&#39;.</p>
 
 <h4>References</h4>
 

@@ -59,7 +59,7 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p><img src="http://www.jonathan-jackson.net/images/hippo.png" alt="hippo" class="span3" style="float:left;"/>If you are unfamiliar with the Health Insurance Portability and Accountability Act (HIPAA) then you probably don't work in the medical field and can safely disregard this article.  HIPAA was enacted by congress in 1996 and governs the way electronic transmissions must take place in order to be legitimate. <a href="footnote_1">[1]</a> The specific section that pertains to electronic transmissions is HIPAA/EDI, and was scheduled to take effect on October 16, 2003.  However, due to implementation problems Congress granted a one-year extension to make version 4010 the standard in 2004.  The standard by which transaction sets are accepted by HIPAA was created by the X12 organization  <a href="footnote_2">[2]</a> (i.e. Claims, Remittances, Eligibility, Claim Status).</p>
+<p><img src="http://www.jonathan-jackson.net/images/hippo.png" alt="hippo" class="span3" style="float:left;"/>If you are unfamiliar with the Health Insurance Portability and Accountability Act (HIPAA) then you probably don&#39;t work in the medical field and can safely disregard this article.  HIPAA was enacted by congress in 1996 and governs the way electronic transmissions must take place in order to be legitimate. <a href="footnote_1">[1]</a> The specific section that pertains to electronic transmissions is HIPAA/EDI, and was scheduled to take effect on October 16, 2003.  However, due to implementation problems Congress granted a one-year extension to make version 4010 the standard in 2004.  The standard by which transaction sets are accepted by HIPAA was created by the X12 organization  <a href="footnote_2">[2]</a> (i.e. Claims, Remittances, Eligibility, Claim Status).</p>
 
 <p>This article will walk you through installation of Hippo, the generation of a simple 835 transaction set, and hopefully illustrate how easy Hippo makes HIPAA</p>
 
@@ -76,40 +76,33 @@
 <h2>Installation</h2>
 
 <p>Hippo is available as a gem so simply type the following command once you have ruby:</p>
-
-<pre><code># gem install hippo
-</code></pre>
-
+<div class="highlight"><pre><code class="text"># gem install hippo
+</code></pre></div>
 <p>Once you have it installed all you have to do is require it like so to begin.</p>
-
-<pre><code>require 'rubygems'
-require 'hippo'
-</code></pre>
-
+<div class="highlight"><pre><code class="text">require &#39;rubygems&#39;
+require &#39;hippo&#39;
+</code></pre></div>
 <h2>Your first Transaction Set with Hippo</h2>
 
-<p>Remember, a transaction set is that long string with fields separated by tildes, asterisks, colons, et al.  The structure of most Transaction Sets have been created as Ruby classes in Hippo. For example, the 835 class (Remittance) is in 'hippo/lib/transaction_sets/HIPAA_835.rb'.  If you take a look in that file you will notice that it auto loads the 835 base class as well as all the loops that are permissible within X12's 835 format. This fact is important because the structure was parsed directly from the X12 published table date (the official X12 implementation guide/CSV).</p>
+<p>Remember, a transaction set is that long string with fields separated by tildes, asterisks, colons, et al.  The structure of most Transaction Sets have been created as Ruby classes in Hippo. For example, the 835 class (Remittance) is in &#39;hippo/lib/transaction<em>sets/HIPAA</em>835.rb&#39;.  If you take a look in that file you will notice that it auto loads the 835 base class as well as all the loops that are permissible within X12&#39;s 835 format. This fact is important because the structure was parsed directly from the X12 published table date (the official X12 implementation guide/CSV).</p>
 
 <p>The classes per transaction set have all of the segments (fields) that are permissible by X12 standards. They provide the structure by which we will store, and print our data.</p>
 
 <p>The following code illustrates how you would create an instance of an 835 transaction set and populate its ST(Transaction Set Header) segment in Hippo.</p>
 
 <p><script src='https://gist.github.com/2156191.js?file=gist-1.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;hippo&#39;</span>
 
-<pre lang="sh"><code>require 'hippo'
-
-  ts = Hippo::TransactionSets::HIPAA_835::Base.new
-  ts.ST do |st|
-    st.TransactionSetControlNumber = '0021'
-    st.ImplementationConventionReference = '1234random1241'
+  <span class="nv">ts</span> <span class="o">=</span> Hippo::TransactionSets::HIPAA_835::Base.new
+  ts.ST <span class="k">do</span> |st|
+    st.TransactionSetControlNumber <span class="o">=</span> <span class="s1">&#39;0021&#39;</span>
+    st.ImplementationConventionReference <span class="o">=</span> <span class="s1">&#39;1234random1241&#39;</span>
   end
 
   puts ts.to_s
 
-  # =&gt; ST*837*0021*005010X222A1~
-
-</code></pre>
-
+  <span class="c"># =&gt; ST*837*0021*005010X222A1~</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h2>To loop, or not to loop?</h2>
@@ -117,35 +110,32 @@ require 'hippo'
 <p>One of the fundamental constructs found in the X12 transaction set standard is the loop. Loops repeat within a section of the final output, sometimes an arbitrary number of times. Creating this structure with Hippo is easy. Simply call the loop by name like so:</p>
 
 <p><script src='https://gist.github.com/2156191.js?file=gist-2.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># These two forms are functionally equivalent.</span>
 
-<pre lang="sh"><code># These two forms are functionally equivalent.
-
-  ts.L1000A do |l1000a|
-    l1000a.NM1.EntityTypeQualifier        = '2'
-    l1000a.NM1.NameLastOrOrganizationName = 'PREMIER BILLING SERVICE'
-    l1000a.NM1.IdentificationCode         = 'TGJ23'
+  ts.L1000A <span class="k">do</span> |l1000a|
+    l1000a.NM1.EntityTypeQualifier        <span class="o">=</span> <span class="s1">&#39;2&#39;</span>
+    l1000a.NM1.NameLastOrOrganizationName <span class="o">=</span> <span class="s1">&#39;PREMIER BILLING SERVICE&#39;</span>
+    l1000a.NM1.IdentificationCode         <span class="o">=</span> <span class="s1">&#39;TGJ23&#39;</span>
   end
 
   puts ts.to_s
 
-  # =&gt; NM1*41*2*PREMIER BILLING SERVICE*****46*TGJ23~
+  <span class="c"># =&gt; NM1*41*2*PREMIER BILLING SERVICE*****46*TGJ23~</span>
 
-  # OR
+  <span class="c"># OR</span>
 
-  ts.L1000A do |l1000a|
-     l1000a.NM1 do |nm1|
-       nm1.EntityTypeQualifier        = '2'
-       nm1.NameLastOrOrganizationName = 'PREMIER BILLING SERVICE'
-       nm1.IdentificationCode         = 'TGJ23'
+  ts.L1000A <span class="k">do</span> |l1000a|
+     l1000a.NM1 <span class="k">do</span> |nm1|
+       nm1.EntityTypeQualifier        <span class="o">=</span> <span class="s1">&#39;2&#39;</span>
+       nm1.NameLastOrOrganizationName <span class="o">=</span> <span class="s1">&#39;PREMIER BILLING SERVICE&#39;</span>
+       nm1.IdentificationCode         <span class="o">=</span> <span class="s1">&#39;TGJ23&#39;</span>
      end
    end
 
    puts ts.to_s
 
-   # =&gt; NM1*41*2*PREMIER BILLING SERVICE*****46*TGJ23~
-
-</code></pre>
-
+   <span class="c"># =&gt; NM1*41*2*PREMIER BILLING SERVICE*****46*TGJ23~</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Here the loop is created by simply calling the L1000A loop directly on the transaction set. In the code above are two forms that are functionally equivalent and can be used according to preference. Each form will create a loop at that position within the transaction set.</p>

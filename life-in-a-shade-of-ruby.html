@@ -59,7 +59,7 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>Conway's Game of Life is a great way to practice your craft.  I recently created my own rendition in Ruby, and have plans to implement it in Javascript and Erlang.  If you haven't heard of Conway's Game of life (CGOL), it is a cellular automaton <a href="http://en.wikipedia.org/wiki/Cellular_automaton">[1]</a>, essentially a mathematical model, consisting of a two dimensional grid where each x and y coordinate are either alive or dead.  Whether a cell is alive or dead is governed by a simple set of rules, and the game advances/evolves by applying the rules to each cell based on the previous generation's configuration and then repeating.  Wow, that was seriously a mouthful.  I would go into why this game has kept programmers interested in it despite being ~forty years old, but as soon as you start with CGOL you'll see how fascinating it is to see an entire world of complexity arise from low level constructs. Let's go through the rules and then meet back up to discuss the code.</p>
+<p>Conway&#39;s Game of Life is a great way to practice your craft.  I recently created my own rendition in Ruby, and have plans to implement it in Javascript and Erlang.  If you haven&#39;t heard of Conway&#39;s Game of life (CGOL), it is a cellular automaton <a href="http://en.wikipedia.org/wiki/Cellular_automaton">[1]</a>, essentially a mathematical model, consisting of a two dimensional grid where each x and y coordinate are either alive or dead.  Whether a cell is alive or dead is governed by a simple set of rules, and the game advances/evolves by applying the rules to each cell based on the previous generation&#39;s configuration and then repeating.  Wow, that was seriously a mouthful.  I would go into why this game has kept programmers interested in it despite being ~forty years old, but as soon as you start with CGOL you&#39;ll see how fascinating it is to see an entire world of complexity arise from low level constructs. Let&#39;s go through the rules and then meet back up to discuss the code.</p>
 
 <h1>Rules</h1>
 
@@ -67,92 +67,82 @@
 
 <p><img src="http://www.jonathan-jackson.net/images/game_of_life_rules.png" alt="game_of_life_rules"/></p>
 
-<p>That's it.  For real.  The entire list of rules can be summarized in Ruby like so.</p>
+<p>That&#39;s it.  For real.  The entire list of rules can be summarized in Ruby like so.</p>
 
 <p><script src='https://gist.github.com/2156522.js?file=gist-1.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># If cell is alive then it continues to stay alive if it has</span>
+<span class="c"># 2 or 3 alive neighbors.  If the cell is dead then it comes</span>
+<span class="c"># back to life only if it has exactly 3 alive neighbors.</span>
 
-<pre lang="sh"><code># If cell is alive then it continues to stay alive if it has
-# 2 or 3 alive neighbors.  If the cell is dead then it comes
-# back to life only if it has exactly 3 alive neighbors.
-
-@alive ? [2,3].include?(alive_neighbors) : alive_neighbors == 3
-
-</code></pre>
-
+@alive ? <span class="o">[</span>2,3<span class="o">]</span>.include?<span class="o">(</span>alive_neighbors<span class="o">)</span> : <span class="nv">alive_neighbors</span> <span class="o">==</span> 3
+</code></pre></div>
 <p></noscript></p>
 
-<p>After seeing that, you get an idea of why this CGOL is so interesting.  Its set of rules create extreme complexity from little input. Take a look at the pattern, acorn. It is a methuselah that takes 5206 generations to generate 633 cells including 13 escaped gliders <a href="http://en.wikipedia.org/wiki/Methuselah_(cellular_automaton">[2]</a>).  (It won't mature fully in the video because it's on a 50x50 grid)</p>
+<p>After seeing that, you get an idea of why this CGOL is so interesting.  Its set of rules create extreme complexity from little input. Take a look at the pattern, acorn. It is a methuselah that takes 5206 generations to generate 633 cells including 13 escaped gliders <a href="http://en.wikipedia.org/wiki/Methuselah_(cellular_automaton">[2]</a>).  (It won&#39;t mature fully in the video because it&#39;s on a 50x50 grid)</p>
 
 <iframe src="http://player.vimeo.com/video/37406843" width="488" height="274" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
 <h1>The Code</h1>
 
-<p>Now that you understand Conway's Game of Life, we can start talking about how to implement it.  The examples found here are from my first attempt at creating CGOL.  It's not perfect, but it'll serve to illustrate why this is such a fun problem.  <a href="https://github.com/radar">Ryan Bigg</a> did a screencast in which he creates CGOL through a test driven approach <a href="http://www.rubyinside.com/screencast-coding-conways-game-of-life-in-ruby-the-tdd-way-with-rspec-5564.html">[3]</a>.  It's well worth your time and probably a better implementation.  For now, we'll just go off my version.</p>
+<p>Now that you understand Conway&#39;s Game of Life, we can start talking about how to implement it.  The examples found here are from my first attempt at creating CGOL.  It&#39;s not perfect, but it&#39;ll serve to illustrate why this is such a fun problem.  <a href="https://github.com/radar">Ryan Bigg</a> did a screencast in which he creates CGOL through a test driven approach <a href="http://www.rubyinside.com/screencast-coding-conways-game-of-life-in-ruby-the-tdd-way-with-rspec-5564.html">[3]</a>.  It&#39;s well worth your time and probably a better implementation.  For now, we&#39;ll just go off my version.</p>
 
 <h1>The Cell</h1>
 
 <p><script src='https://gist.github.com/2156522.js?file=gist-2.rb'></script><noscript></p>
-
-<pre lang="sh"><code>class Cell
+<div class="highlight"><pre><code class="sh">class Cell
   attr_accessor :y, :x, :alive, :future_alive
 
-  def initialize(x,y,alive=false)
-    @x = x
-    @y = y
-    @alive = alive
+  def initialize<span class="o">(</span>x,y,alive<span class="o">=</span><span class="nb">false</span><span class="o">)</span>
+    @x <span class="o">=</span> x
+    @y <span class="o">=</span> y
+    @alive <span class="o">=</span> alive
   end
 
-  def is_alive?(sum)
-    self.future_alive = if @alive
-                          [2,3].include?(sum)
-                        else
-                          sum == 3
+  def is_alive?<span class="o">(</span>sum<span class="o">)</span>
+    self.future_alive <span class="o">=</span> <span class="k">if</span> @alive
+                          <span class="o">[</span>2,3<span class="o">]</span>.include?<span class="o">(</span>sum<span class="o">)</span>
+                        <span class="k">else</span>
+<span class="k">                          </span><span class="nv">sum</span> <span class="o">==</span> 3
                         end
   end
 
   def set_next_generation
-    self.alive        = self.future_alive
-    self.future_alive = nil
+    self.alive        <span class="o">=</span> self.future_alive
+    self.future_alive <span class="o">=</span> nil
   end
 
-  def to_s; @alive ? ' O ' : &quot;   &quot; end
+  def to_s; @alive ? <span class="s1">&#39; O &#39;</span> : <span class="s2">&quot;   &quot;</span> end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>This is your basic cell.  It stores its own coordinates and whether it is alive or not.  The Cell#is_alive? sets a variable called future_alive which dictates its state in the next generation.  The reason we need to store its future state in its own variable is because if we change its alive status (while iterating over each celll) it will alter its neighbors calculations.  Each new generation must be computed using the previous generation's information.  To avoid violating this principle, we need to store the calculated value while operating on the original state.</p>
+<p>This is your basic cell.  It stores its own coordinates and whether it is alive or not.  The Cell#is<em>alive? sets a variable called future</em>alive which dictates its state in the next generation.  The reason we need to store its future state in its own variable is because if we change its alive status (while iterating over each celll) it will alter its neighbors calculations.  Each new generation must be computed using the previous generation&#39;s information.  To avoid violating this principle, we need to store the calculated value while operating on the original state.</p>
 
 <p>It might be better not to save the coordinates within the cell itself, but it makes working with the object much, much easier.  Basically, with the Cell class we have a mini state machine.</p>
 
 <p>After that, creating the grid of cells is as easy as:</p>
 
 <p><script src='https://gist.github.com/2156522.js?file=gist-3.rb'></script><noscript></p>
-
-<pre lang="sh"><code># Array#new accepts a block....radical!
-@cells = Array.new(@height) { |y| Array.new(@width) { |x| Cell.new(x,y) }}
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="c"># Array#new accepts a block....radical!</span>
+@cells <span class="o">=</span> Array.new<span class="o">(</span>@height<span class="o">)</span> <span class="o">{</span> |y| Array.new<span class="o">(</span>@width<span class="o">)</span> <span class="o">{</span> |x| Cell.new<span class="o">(</span>x,y<span class="o">)</span> <span class="o">}}</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h1>The Game</h1>
 
-<p>To tie all the cells together, I created the Game class.  It creates the playing board and processes each generation.  We initialize it with the dimensions of the board and how many generations we'd like to process, and tell it to #play.</p>
+<p>To tie all the cells together, I created the Game class.  It creates the playing board and processes each generation.  We initialize it with the dimensions of the board and how many generations we&#39;d like to process, and tell it to #play.</p>
 
 <p><script src='https://gist.github.com/2156522.js?file=gist-4.rb'></script><noscript></p>
-
-<pre lang="sh"><code>class Game
-  def initialize(w,h,steps)
-    @width,@height,@steps = w,h,steps
-    @cells   = Array.new(@height) { |y| Array.new(@width) { |x| Cell.new(x,y) }}
-    @neighbors = [[-1, 0],[1, 0],[-1, 1],[0, 1],[1, 1],[-1, -1],[0, -1], [1, -1]]
+<div class="highlight"><pre><code class="sh">class Game
+  def initialize<span class="o">(</span>w,h,steps<span class="o">)</span>
+    @width,@height,@steps <span class="o">=</span> w,h,steps
+    @cells   <span class="o">=</span> Array.new<span class="o">(</span>@height<span class="o">)</span> <span class="o">{</span> |y| Array.new<span class="o">(</span>@width<span class="o">)</span> <span class="o">{</span> |x| Cell.new<span class="o">(</span>x,y<span class="o">)</span> <span class="o">}}</span>
+    @neighbors <span class="o">=</span> <span class="o">[[</span>-1, 0<span class="o">]</span>,<span class="o">[</span>1, 0<span class="o">]</span>,<span class="o">[</span>-1, 1<span class="o">]</span>,<span class="o">[</span>0, 1<span class="o">]</span>,<span class="o">[</span>1, 1<span class="o">]</span>,<span class="o">[</span>-1, -1<span class="o">]</span>,<span class="o">[</span>0, -1<span class="o">]</span>, <span class="o">[</span>1, -1<span class="o">]]</span>
   end
 
   def play
-    (1..@steps).each_with_index do |i|
-      system('clear')
+    <span class="o">(</span>1..@steps<span class="o">)</span>.each_with_index <span class="k">do</span> |i|
+      system<span class="o">(</span><span class="s1">&#39;clear&#39;</span><span class="o">)</span>
       puts self.to_s
       step
       sleep 0.1
@@ -160,97 +150,86 @@ end
   end
 
   def step
-    @cells.reverse.each do |row|
-      row.each do |cell|
-        cell.is_alive? alive_neighbors(cell.x, cell.y)
+    @cells.reverse.each <span class="k">do</span> |row|
+      row.each <span class="k">do</span> |cell|
+        cell.is_alive? alive_neighbors<span class="o">(</span>cell.x, cell.y<span class="o">)</span>
       end
     end
-    @cells.each {|r| r.each {|c| c.set_next_generation }}
+    @cells.each <span class="o">{</span>|r| r.each <span class="o">{</span>|c| c.set_next_generation <span class="o">}}</span>
   end
 
-  def alive_neighbors(x,y)
-    @neighbors.inject(0) do |sum, (neighbor_x, neighbor_y)|
-      sum += 1 if @cells[y + neighbor_y][x + neighbor_x].alive; sum
+  def alive_neighbors<span class="o">(</span>x,y<span class="o">)</span>
+    @neighbors.inject<span class="o">(</span>0<span class="o">)</span> <span class="k">do</span> |sum, <span class="o">(</span>neighbor_x, neighbor_y<span class="o">)</span>|
+      sum +<span class="o">=</span> 1 <span class="k">if</span> @cells<span class="o">[</span>y + neighbor_y<span class="o">][</span>x + neighbor_x<span class="o">]</span>.alive; sum
     end
   end
 
   def to_s
-    @cells.reverse.map { |row| row.join }.join(&quot;\n&quot;)
+    @cells.reverse.map <span class="o">{</span> |row| row.join <span class="o">}</span>.join<span class="o">(</span><span class="s2">&quot;\n&quot;</span><span class="o">)</span>
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>The cool part is Game#alive_neighbors it's here where we determine how many neighbors are alive.  I've said before that when you have Ennumerable#inject everything looks like a nail.  It's definitely my favorite ennumerable method, and here I use it to get a count of neighboring cells with their internal state set to alive.  We just take the point we are testing and add the points from the @neighbors array and add to sum if that cell is alive.  Super simple.</p>
+<p>The cool part is Game#alive_neighbors it&#39;s here where we determine how many neighbors are alive.  I&#39;ve said before that when you have Ennumerable#inject everything looks like a nail.  It&#39;s definitely my favorite ennumerable method, and here I use it to get a count of neighboring cells with their internal state set to alive.  We just take the point we are testing and add the points from the @neighbors array and add to sum if that cell is alive.  Super simple.</p>
 
 <p><img src="http://www.jonathan-jackson.net/images/alive_neighbors.png" width="630" alt="skitch outline of #alive_neighbors"/></p>
 
 <h1>The Pattern</h1>
 
-<p>Alright, that's all well and good, but we don't actually have any cells alive in the initial state so our entire program (though perfectly functional) does exactly nothing.  So I created a pattern Class:</p>
+<p>Alright, that&#39;s all well and good, but we don&#39;t actually have any cells alive in the initial state so our entire program (though perfectly functional) does exactly nothing.  So I created a pattern Class:</p>
 
 <p><script src='https://gist.github.com/2156522.js?file=gist-5.rb'></script><noscript></p>
-
-<pre lang="sh"><code>class Pattern
-  def initialize(x, y, pattern=nil)
-    @origin_x, @origin_y = origin_x, origin_y
-    @default_patterns = {:acorn =&gt; [[-3,0],[-2,0],[-2,2],[0,1],[1,0],[2,0],[3,0]]}
-    @pattern = @default_patterns[pattern].nil? ? @default_patterns[:acorn] : @default_patterns[pattern]
+<div class="highlight"><pre><code class="sh">class Pattern
+  def initialize<span class="o">(</span>x, y, <span class="nv">pattern</span><span class="o">=</span>nil<span class="o">)</span>
+    @origin_x, @origin_y <span class="o">=</span> origin_x, origin_y
+    @default_patterns <span class="o">=</span> <span class="o">{</span>:acorn <span class="o">=</span>&gt; <span class="o">[[</span>-3,0<span class="o">]</span>,<span class="o">[</span>-2,0<span class="o">]</span>,<span class="o">[</span>-2,2<span class="o">]</span>,<span class="o">[</span>0,1<span class="o">]</span>,<span class="o">[</span>1,0<span class="o">]</span>,<span class="o">[</span>2,0<span class="o">]</span>,<span class="o">[</span>3,0<span class="o">]]}</span>
+    @pattern <span class="o">=</span> @default_patterns<span class="o">[</span>pattern<span class="o">]</span>.nil? ? @default_patterns<span class="o">[</span>:acorn<span class="o">]</span> : @default_patterns<span class="o">[</span>pattern<span class="o">]</span>
   end
 
-  def set_cells(cells)
-    @pattern.each  do |(x,y)|
-      unless cells[@origin_x + x].nil? || cells[@origin_x + x][@origin_y + y].nil?
-        cells[@origin_y + y][@origin_x + x].alive = true;
+  def set_cells<span class="o">(</span>cells<span class="o">)</span>
+    @pattern.each  <span class="k">do</span> |<span class="o">(</span>x,y<span class="o">)</span>|
+      unless cells<span class="o">[</span>@origin_x + x<span class="o">]</span>.nil? <span class="o">||</span> cells<span class="o">[</span>@origin_x + x<span class="o">][</span>@origin_y + y<span class="o">]</span>.nil?
+        cells<span class="o">[</span>@origin_y + y<span class="o">][</span>@origin_x + x<span class="o">]</span>.alive <span class="o">=</span> <span class="nb">true</span>;
       end
     end
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>You'll notice that the Pattern#set_cells method looks a lot like the alive_neighbors method and it is.  This allows you to trigger certain cells alive by calculating their points relative to an origin point.  It sounds complicated, but it's actually quite simple, assuming you have a pattern you just call:</p>
+<p>You&#39;ll notice that the Pattern#set<em>cells method looks a lot like the alive</em>neighbors method and it is.  This allows you to trigger certain cells alive by calculating their points relative to an origin point.  It sounds complicated, but it&#39;s actually quite simple, assuming you have a pattern you just call:</p>
 
 <p><script src='https://gist.github.com/2156522.js?file=gist-6.rb'></script><noscript></p>
-
-<pre lang="sh"><code>Pattern.new(somepoint_x, somepoint_y, :acorn).set_cells(@cells)
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh">Pattern.new<span class="o">(</span>somepoint_x, somepoint_y, :acorn<span class="o">)</span>.set_cells<span class="o">(</span>@cells<span class="o">)</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>Call that directly before you begin iterating over @steps in Game#Play and you'll create your origin points.  Once you've gotten familiar with that, you can create any pattern you like (there are many great patterns online).  Here is the famous gospers-glider-gun:</p>
+<p>Call that directly before you begin iterating over @steps in Game#Play and you&#39;ll create your origin points.  Once you&#39;ve gotten familiar with that, you can create any pattern you like (there are many great patterns online).  Here is the famous gospers-glider-gun:</p>
 
 <iframe src="http://player.vimeo.com/video/37540376" width="488" height="274" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
 <p>Defined like so:</p>
 
 <p><script src='https://gist.github.com/2156522.js?file=gist-7.rb'></script><noscript></p>
-
-<pre lang="sh"><code>:glider_gun =&gt; [[0,0],[-1,0],[-1,1],[-1,-1],[-2,2],[-2,-2],[-3,0],
-                      [-4,3],[-5,3],[-4,-3],[-5,-3],[-6, 2],[-6,-2],
-                      [-7,1],[-7,0],[-7,-1],[-16,0],[-17,0],[-16,1],
-                      [-17,1],[3,3],[3,2],[3,1],[4,3],[4,2],[4,1],[5,4],
-                      [5,0],[7,4],[7,5],[7,0],[7,-1],[17,2],[17,3],[18,2],
-                      [18,3]]
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh">:glider_gun <span class="o">=</span>&gt; <span class="o">[[</span>0,0<span class="o">]</span>,<span class="o">[</span>-1,0<span class="o">]</span>,<span class="o">[</span>-1,1<span class="o">]</span>,<span class="o">[</span>-1,-1<span class="o">]</span>,<span class="o">[</span>-2,2<span class="o">]</span>,<span class="o">[</span>-2,-2<span class="o">]</span>,<span class="o">[</span>-3,0<span class="o">]</span>,
+                      <span class="o">[</span>-4,3<span class="o">]</span>,<span class="o">[</span>-5,3<span class="o">]</span>,<span class="o">[</span>-4,-3<span class="o">]</span>,<span class="o">[</span>-5,-3<span class="o">]</span>,<span class="o">[</span>-6, 2<span class="o">]</span>,<span class="o">[</span>-6,-2<span class="o">]</span>,
+                      <span class="o">[</span>-7,1<span class="o">]</span>,<span class="o">[</span>-7,0<span class="o">]</span>,<span class="o">[</span>-7,-1<span class="o">]</span>,<span class="o">[</span>-16,0<span class="o">]</span>,<span class="o">[</span>-17,0<span class="o">]</span>,<span class="o">[</span>-16,1<span class="o">]</span>,
+                      <span class="o">[</span>-17,1<span class="o">]</span>,<span class="o">[</span>3,3<span class="o">]</span>,<span class="o">[</span>3,2<span class="o">]</span>,<span class="o">[</span>3,1<span class="o">]</span>,<span class="o">[</span>4,3<span class="o">]</span>,<span class="o">[</span>4,2<span class="o">]</span>,<span class="o">[</span>4,1<span class="o">]</span>,<span class="o">[</span>5,4<span class="o">]</span>,
+                      <span class="o">[</span>5,0<span class="o">]</span>,<span class="o">[</span>7,4<span class="o">]</span>,<span class="o">[</span>7,5<span class="o">]</span>,<span class="o">[</span>7,0<span class="o">]</span>,<span class="o">[</span>7,-1<span class="o">]</span>,<span class="o">[</span>17,2<span class="o">]</span>,<span class="o">[</span>17,3<span class="o">]</span>,<span class="o">[</span>18,2<span class="o">]</span>,
+                      <span class="o">[</span>18,3<span class="o">]]</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h1>Conclusions</h1>
 
-<p>In Ruby, I completed my first working prototype CGOL in an hour or two.  It was a lot of fun. It's a great problem and has probably been written in every language ever created. The reasons for that are clear; it's a fun problem that forces you to use many different aspects of the language.  In Ruby, this was pretty simple, but I've been writing in Ruby for years.  I'm going to try writing this in a language I don't know well and use it for what it is: a fun learning tool.  Some of the patterns I've seen around the web have truly impressed me.  While rules of the game are simple, the resulting complexity is truly amazing.  Take some time and try coding this in your language of choice, or improve this one.  Either way, have fun with it.  ^_^</p>
+<p>In Ruby, I completed my first working prototype CGOL in an hour or two.  It was a lot of fun. It&#39;s a great problem and has probably been written in every language ever created. The reasons for that are clear; it&#39;s a fun problem that forces you to use many different aspects of the language.  In Ruby, this was pretty simple, but I&#39;ve been writing in Ruby for years.  I&#39;m going to try writing this in a language I don&#39;t know well and use it for what it is: a fun learning tool.  Some of the patterns I&#39;ve seen around the web have truly impressed me.  While rules of the game are simple, the resulting complexity is truly amazing.  Take some time and try coding this in your language of choice, or improve this one.  Either way, have fun with it.  ^_^</p>
 
 <h4>References</h4>
 
 <p><span  style="font-size:12px;">1.) <a href="http://en.wikipedia.org/wiki/Cellular_automaton">Wiki Entry on Cellular Automaton</a></span><br/>
 <span  style="font-size:12px;">2.) <a href="http://en.wikipedia.org/wiki/Methuselah_(cellular_automaton)">Methuselah Definition</a></span><br/>
-<span  style="font-size:12px;">3.) <a href="http://www.rubyinside.com/screencast-coding-conways-game-of-life-in-ruby-the-tdd-way-with-rspec-5564.html">Ryan Bigg's Solution TDD</a></span><br/></p>
+<span  style="font-size:12px;">3.) <a href="http://www.rubyinside.com/screencast-coding-conways-game-of-life-in-ruby-the-tdd-way-with-rspec-5564.html">Ryan Bigg&#39;s Solution TDD</a></span><br/></p>
 
 <h4>Additional References</h4>
 

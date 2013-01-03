@@ -59,7 +59,7 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>The other day I found myself in an argument about whether or not a single quoted string was faster than a double quoted string. I know that there are conventions that dictate the use of one over the other for clarity, but I was curious to see if there was actually a performance component.  I being on the side of the single quoted string(SQ) thought surely since SQ strings aren't interpolated they'd be loads faster.  Unfortunately, proving myself right was not as easy as I had initially thought.</p>
+<p>The other day I found myself in an argument about whether or not a single quoted string was faster than a double quoted string. I know that there are conventions that dictate the use of one over the other for clarity, but I was curious to see if there was actually a performance component.  I being on the side of the single quoted string(SQ) thought surely since SQ strings aren&#39;t interpolated they&#39;d be loads faster.  Unfortunately, proving myself right was not as easy as I had initially thought.</p>
 
 <h2>Define the parameters</h2>
 
@@ -77,33 +77,30 @@
 
 <p>Right out of the shoots you can see that there is actually very little difference.  I found that single quoted strings were about ~0.19% faster than double quoted strings. This is hardly the victory I was hoping for.  The difference was more pronounced in jruby, but the test was significantly more erratic.</p>
 
-<p>Anyways, I won right?  Wrong! Let's move onto the methodology and dig into why it might still be too early to bust out the ticker tape.</p>
+<p>Anyways, I won right?  Wrong! Let&#39;s move onto the methodology and dig into why it might still be too early to bust out the ticker tape.</p>
 
 <h2>Methodology</h2>
 
 <p><script src='https://gist.github.com/2156488.js?file=gist-1.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># ./test_single_or_double.rb</span>
 
-<pre lang="sh"><code># ./test_single_or_double.rb
+require <span class="s1">&#39;./stats.rb&#39;</span>
 
-require './stats.rb'
+<span class="nv">test_strings</span> <span class="o">=</span> <span class="o">{</span>:double <span class="o">=</span>&gt; <span class="s1">&#39;ruby -e &quot;start_time = Time.now; 100_000.times { \&quot;a\&quot; }; puts Time.now - start_time&quot;&#39;</span>,
+                :single <span class="o">=</span>&gt; <span class="s2">&quot;ruby -e \&quot;start_time = Time.now; 100_000.times { &#39;a&#39; }; puts Time.now - start_time\&quot;&quot;</span><span class="o">}</span>
 
-test_strings = {:double =&gt; 'ruby -e &quot;start_time = Time.now; 100_000.times { \&quot;a\&quot; }; puts Time.now - start_time&quot;',
-                :single =&gt; &quot;ruby -e \&quot;start_time = Time.now; 100_000.times { 'a' }; puts Time.now - start_time\&quot;&quot;}
+<span class="nv">sr</span> <span class="o">=</span>  1000.times.inject<span class="o">([])</span> <span class="o">{</span>|memo, result| memo &lt;&lt; <span class="sb">`</span><span class="c">#{test_strings[:single]}`.strip }</span>
+<span class="nv">dr</span> <span class="o">=</span> 1000.times.inject<span class="o">([])</span> <span class="o">{</span>|memo, result| memo &lt;&lt; <span class="sb">`</span><span class="c">#{test_strings[:double]}`.strip }</span>
 
-sr =  1000.times.inject([]) {|memo, result| memo &lt;&lt; `#{test_strings[:single]}`.strip }
-dr = 1000.times.inject([]) {|memo, result| memo &lt;&lt; `#{test_strings[:double]}`.strip }
+<span class="nv">single_quotes</span> <span class="o">=</span> Stats.new<span class="o">(</span>sr<span class="o">)</span>
+<span class="nv">double_quotes</span> <span class="o">=</span> Stats.new<span class="o">(</span>dr<span class="o">)</span>
 
-single_quotes = Stats.new(sr)
-double_quotes = Stats.new(dr)
-
-single_quotes.to_csv(&quot;/path/to/file/single_quote_#{RUBY_VERSION}.csv&quot;)
-double_quotes.to_csv(&quot;/path/to/file/double_quote_#{RUBY_VERSION}.csv&quot;)
-
-</code></pre>
-
+single_quotes.to_csv<span class="o">(</span><span class="s2">&quot;/path/to/file/single_quote_#{RUBY_VERSION}.csv&quot;</span><span class="o">)</span>
+double_quotes.to_csv<span class="o">(</span><span class="s2">&quot;/path/to/file/double_quote_#{RUBY_VERSION}.csv&quot;</span><span class="o">)</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>In the above code I'm requiring './stats.rb' which is just a down and dirty stats class that I created <a href="https://gist.github.com/1346872">[1]</a>. All it does is let me calculate standard deviation and export the results to a csv file.  So here I ran each test string a thousand times calculating and storing the result(seconds) for each.  The test string simply instantiates a hundred thousand <em>a</em>'s and returns the time it took.  Sure enough we get that ~0.19% increase.  Nothing too fancy here.</p>
+<p>In the above code I&#39;m requiring &#39;./stats.rb&#39; which is just a down and dirty stats class that I created <a href="https://gist.github.com/1346872">[1]</a>. All it does is let me calculate standard deviation and export the results to a csv file.  So here I ran each test string a thousand times calculating and storing the result(seconds) for each.  The test string simply instantiates a hundred thousand <em>a</em>&#39;s and returns the time it took.  Sure enough we get that ~0.19% increase.  Nothing too fancy here.</p>
 
 <p>Not so fast.</p>
 
@@ -113,7 +110,7 @@ double_quotes.to_csv(&quot;/path/to/file/double_quote_#{RUBY_VERSION}.csv&quot;)
 
 <h2>Conclusions</h2>
 
-<p>At first I thought that this entire endeavor was a waste.  But, I think this was actually quite good for me.  It made me think scientifically and outside the box.  Also, the pestering question about whether it's better to use a single quoted string vs a double quoted string can once again be relegated to a semantic/style argument and not a practical one.  Anyways I had fun writing this one for sure, hope you found it useful.</p>
+<p>At first I thought that this entire endeavor was a waste.  But, I think this was actually quite good for me.  It made me think scientifically and outside the box.  Also, the pestering question about whether it&#39;s better to use a single quoted string vs a double quoted string can once again be relegated to a semantic/style argument and not a practical one.  Anyways I had fun writing this one for sure, hope you found it useful.</p>
 
 <p>If you like this sort of thing you should subscribe to this blog, thanks for reading.</p>
 

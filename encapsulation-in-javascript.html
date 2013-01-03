@@ -52,7 +52,7 @@
     <div class="container">
       <div id="content">
        <div id="post">
-<h1>We're here to encapsulate</h1>
+<h1>We&#39;re here to encapsulate</h1>
 
 <p><span><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
@@ -64,82 +64,78 @@
 <h2>Be a Builder</h2>
 
 <p><script src='https://gist.github.com/2155999.js?file=gist-1.js'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="k">function </span>Mammal<span class="o">(</span>species, defining_characteristic<span class="o">)</span> <span class="o">{</span>
+  this.species <span class="o">=</span> species;
+  this.defining_characteristic <span class="o">=</span> defining_characteristic;
+ <span class="o">}</span>
 
-<pre lang="sh"><code>function Mammal(species, defining_characteristic) {
-  this.species = species;
-  this.defining_characteristic = defining_characteristic;
- }
+Mammal.prototype.print <span class="o">=</span> <span class="k">function</span><span class="o">(){</span>
+  <span class="k">return</span> <span class="s2">&quot;Hello I&#39;m a &quot;</span> + this.species + <span class="s2">&quot;. &quot;</span> +
+         <span class="s2">&quot;I have &quot;</span> + this.defining_characteristic + <span class="s2">&quot;.&quot;</span>
+<span class="o">}</span>
 
-Mammal.prototype.print = function(){
-  return &quot;Hello I'm a &quot; + this.species + &quot;. &quot; +
-         &quot;I have &quot; + this.defining_characteristic + &quot;.&quot;
-}
+var <span class="nv">cat</span> <span class="o">=</span> new Mammal<span class="o">(</span><span class="s2">&quot;Cat&quot;</span>, <span class="s2">&quot;claws&quot;</span><span class="o">)</span>;
+var <span class="nv">dog</span> <span class="o">=</span> new Mammal<span class="o">(</span><span class="s2">&quot;Dog&quot;</span>, <span class="s2">&quot;a wet nose&quot;</span><span class="o">)</span>
 
-var cat = new Mammal(&quot;Cat&quot;, &quot;claws&quot;);
-var dog = new Mammal(&quot;Dog&quot;, &quot;a wet nose&quot;)
+console.log<span class="o">(</span>cat.print<span class="o">())</span>;
+// <span class="s2">&quot;Hello I&#39;m a Cat. I have claws.&quot;</span>
 
-console.log(cat.print());
-// &quot;Hello I'm a Cat. I have claws.&quot;
-
-console.log(dog.print());
-// &quot;Hello I'm a Dog. I have a wet nose.&quot;
-
-</code></pre>
-
+console.log<span class="o">(</span>dog.print<span class="o">())</span>;
+// <span class="s2">&quot;Hello I&#39;m a Dog. I have a wet nose.&quot;</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>The above code creates an instance of Mammal for cat and dog.  Each instance is fully contained within itself.  You'll note that the prototype method is used to extend print() to Mammal without having to redefine it for each instance. Subsequently each Mammal has the prototype method print() defined.</p>
+<p>The above code creates an instance of Mammal for cat and dog.  Each instance is fully contained within itself.  You&#39;ll note that the prototype method is used to extend print() to Mammal without having to redefine it for each instance. Subsequently each Mammal has the prototype method print() defined.</p>
 
-<p>Likely none of this is new to you, after all javascript has been around for well over a decade.  The important concept here is not the construction of an instance in javascript, its the encapsulation of your code.  With the <strong>constructor pattern</strong> (as basic as it is) you can very easily create a namespace for sets of data that belong with one another without having to duplicate code needlessly.  The object &quot;Cat&quot; has claws, and &quot;Dog&quot; has a wet nose, yet I define both by setting <span style="background:#2A2D33;font-size:0.8em;"class="pre"><span class="k">this</span><span style="color:#F8F8F8">.defining_characteristic</span></span> and each object's data is scoped to its own namespace.</p>
+<p>Likely none of this is new to you, after all javascript has been around for well over a decade.  The important concept here is not the construction of an instance in javascript, its the encapsulation of your code.  With the <strong>constructor pattern</strong> (as basic as it is) you can very easily create a namespace for sets of data that belong with one another without having to duplicate code needlessly.  The object &quot;Cat&quot; has claws, and &quot;Dog&quot; has a wet nose, yet I define both by setting <span style="background:#2A2D33;font-size:0.8em;"class="pre"><span class="k">this</span><span style="color:#F8F8F8">.defining_characteristic</span></span> and each object&#39;s data is scoped to its own namespace.</p>
 
-<h2>Modules are where it's at.</h2>
+<h2>Modules are where it&#39;s at.</h2>
 
 <p><script src='https://gist.github.com/2155999.js?file=gist-2.js'></script><noscript></p>
-
-<pre lang="sh"><code>var Mammal = (function(){
+<div class="highlight"><pre><code class="sh">var <span class="nv">Mammal</span> <span class="o">=</span> <span class="o">(</span><span class="k">function</span><span class="o">(){</span>
   // These are private
   var species;
   var defining_char;
-  return {
-  // These are public because of the explicit return
-        init: function (sp, dc) {
-          species = sp;
-          defining_char = dc;
-        },
-        print: function() {
-          return &quot;Hello I'm a &quot; + species + &quot;. &quot; +
-                 &quot;I have &quot; + defining_char + &quot;.&quot;;
-        }
-      };
-});
+  <span class="k">return</span> <span class="o">{</span>
+  // These are public because of the explicit <span class="k">return</span>
+<span class="k">        </span>init: <span class="k">function</span> <span class="o">(</span>sp, dc<span class="o">)</span> <span class="o">{</span>
+          <span class="nv">species</span> <span class="o">=</span> sp;
+          <span class="nv">defining_char</span> <span class="o">=</span> dc;
+        <span class="o">}</span>,
+        print: <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="s2">&quot;Hello I&#39;m a &quot;</span> + species + <span class="s2">&quot;. &quot;</span> +
+                 <span class="s2">&quot;I have &quot;</span> + defining_char + <span class="s2">&quot;.&quot;</span>;
+        <span class="o">}</span>
+      <span class="o">}</span>;
+<span class="o">})</span>;
 
-// cat = Mammal(); cat.init(&quot;Cat&quot;, &quot;claws&quot;); cat.print();
-// &quot;Hello I'm a Cat. I have claws.&quot;
+// <span class="nv">cat</span> <span class="o">=</span> Mammal<span class="o">()</span>; cat.init<span class="o">(</span><span class="s2">&quot;Cat&quot;</span>, <span class="s2">&quot;claws&quot;</span><span class="o">)</span>; cat.print<span class="o">()</span>;
+// <span class="s2">&quot;Hello I&#39;m a Cat. I have claws.&quot;</span>
 
-// dog = Mammal(); dog.init(&quot;Dog&quot;, &quot;a wet nose&quot;); dog.print();
-// &quot;Hello I'm a Dog. I have a wet nose.&quot;
-
-</code></pre>
-
+// <span class="nv">dog</span> <span class="o">=</span> Mammal<span class="o">()</span>; dog.init<span class="o">(</span><span class="s2">&quot;Dog&quot;</span>, <span class="s2">&quot;a wet nose&quot;</span><span class="o">)</span>; dog.print<span class="o">()</span>;
+// <span class="s2">&quot;Hello I&#39;m a Dog. I have a wet nose.&quot;</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>The <strong>module pattern</strong> is similar to constructor pattern in many ways.  It offers a way to create an instance of an object, and limits namespace exposure.  However, the <strong>module pattern</strong> brings another useful feature to the table.  That is, it offers the ability to deliniate between public and private functions/variables.  The functions and methods you define inside the enclosure (the parenthesis surrounding the anonymous function) are only available publicly if they are explicitly returned.</p>
 
 <p>The internal state of each instance of Mammal can only be accessed on init.  You would need to create a getter/setter function to modify it after it has been initialized.  This is similar to the way Ruby handles object visiblity.  <s>The other way it differs from the constructor pattern is that the prototype class is not instantiated.  Which reduces the memory consumption of the object (among other things)</s>. Original <a href="#footnote_3">[3]edited</a></p>
+
 <blockquote>
 <p>By using new to invoke the function, the object holds onto a worthless prototype object. That wastes memory with no offsetting advantage. -Douglas Crockford<a href="#footnote_2">[2]</a></p>
 </blockquote>
-<p>Personally I like the module pattern over the constructor pattern not just because of the reasons outlined in Douglas Crockford's post from 2006 when he formalized the technique<a href="#footnote_2">[2]</a>, but because it is so logical. I define my module and initialize its internal state, if I want to further modify the internal state I have to create and explicitly call a function for that purpose.  Forcing yourself to be explicit will reduce the number of silly bugs hard to find bugs that occur when you forget about your scope.</p>
+
+<p>Personally I like the module pattern over the constructor pattern not just because of the reasons outlined in Douglas Crockford&#39;s post from 2006 when he formalized the technique<a href="#footnote_2">[2]</a>, but because it is so logical. I define my module and initialize its internal state, if I want to further modify the internal state I have to create and explicitly call a function for that purpose.  Forcing yourself to be explicit will reduce the number of silly bugs hard to find bugs that occur when you forget about your scope.</p>
 
 <h2>Conclusions</h2>
 
 <p>Encapsulation is one of the main pillars upon which Object Orientated Programming is built.  Understanding how to do it, and what pattern is the best fit for your needs is critical to creating easy to maintain, solid programs.  I come from a Ruby background so even though these encapsulation concepts are familiar to me researching how to do these things in Javascript has been immensely helpful.  It has given me insight into Object Oriented Design patterns, and has helped me in other languages.</p>
 
-<p>I hope you find this useful, don't forget to check the references below as many of these concepts have been fleshed out before. I'd especially like to note <span style="font-size:12px;"><a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/#creationalpatternjavascript">Essential JavaScript Design Patterns For Beginners, 2011</a></span> as I believe it is one of the better articles on the subject and will expose you to more than just constructor/module patterns.  Have fun!</p>
+<p>I hope you find this useful, don&#39;t forget to check the references below as many of these concepts have been fleshed out before. I&#39;d especially like to note <span style="font-size:12px;"><a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/#creationalpatternjavascript">Essential JavaScript Design Patterns For Beginners, 2011</a></span> as I believe it is one of the better articles on the subject and will expose you to more than just constructor/module patterns.  Have fun!</p>
 
 <p>**Edit fix typo in module pattern snippet, credit bruno-c</p>
 
-<p>**Edit in Crockford's article he referred to using &quot;new&quot; directly on a function definition, and in that case the prototype is useless, credit <a id="footnote_3" href="http://news.ycombinator.com/item?id=2992502">jugglinmike</a>
+<p>**Edit in Crockford&#39;s article he referred to using &quot;new&quot; directly on a function definition, and in that case the prototype is useless, credit <a id="footnote_3" href="http://news.ycombinator.com/item?id=2992502">jugglinmike</a>
 <br/></p>
 
 <h4>References</h4>

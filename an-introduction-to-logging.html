@@ -64,14 +64,11 @@
 <h3>Installation</h3>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-1.sh'></script><noscript></p>
-
-<pre lang="sh"><code>$ gem install logging
-#  Successfully installed logging-1.6.1
-#  1 gem installed
-#  Building YARD (yri) index for logging-1.6.1...
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="nv">$ </span>gem install logging
+<span class="c">#  Successfully installed logging-1.6.1</span>
+<span class="c">#  1 gem installed</span>
+<span class="c">#  Building YARD (yri) index for logging-1.6.1...</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h3>Features</h3>
@@ -79,75 +76,66 @@
 <p>Here we create individual logging objects rather than one monstrous global logger <a href="https://github.com/TwP/logging/blob/master/examples/loggers.rb">[1]</a>.  Once they have been individually created you can customize the behavior of each.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-2.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;logging&#39;</span>
 
-<pre lang="sh"><code>require 'logging'
+ Logging.logger.root.level <span class="o">=</span> :warn
 
- Logging.logger.root.level = :warn
+ Logging.logger.root.appenders <span class="o">=</span> Logging.appenders.stdout
 
- Logging.logger.root.appenders = Logging.appenders.stdout
+ <span class="nv">log1</span> <span class="o">=</span> Logging.logger<span class="o">[</span><span class="s1">&#39;log1&#39;</span><span class="o">]</span>
+ <span class="nv">log2</span> <span class="o">=</span> Logging.logger<span class="o">[</span><span class="s1">&#39;log2&#39;</span><span class="o">]</span>
 
- log1 = Logging.logger['log1']
- log2 = Logging.logger['log2']
+ log2.level <span class="o">=</span> :debug
 
- log2.level = :debug
-
- log1.info &quot;This will not be shown.&quot;
- log2.info &quot;This will be shown.&quot;
-
-</code></pre>
-
+ log1.info <span class="s2">&quot;This will not be shown.&quot;</span>
+ log2.info <span class="s2">&quot;This will be shown.&quot;</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Here we use multiple appenders <a href="https://github.com/TwP/logging/blob/master/examples/appenders.rb">[2]</a>. Appenders allow you to shunt your logging messages to different output media.  Here we set our messages to log to standard out and to a file.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-3.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;logging&#39;</span>
 
-<pre lang="sh"><code>require 'logging'
+<span class="nv">log1</span> <span class="o">=</span> Logging.logger<span class="o">[</span><span class="s1">&#39;log1&#39;</span><span class="o">]</span>
 
-log1 = Logging.logger['log1']
-
-log1.add_appenders(
+log1.add_appenders<span class="o">(</span>
     Logging.appenders.stdout,
-    Logging.appenders.file('example.log')
-)
-log1.level = :info
+    Logging.appenders.file<span class="o">(</span><span class="s1">&#39;example.log&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+log1.level <span class="o">=</span> :info
 
-log1.debug &quot;this debug message will not be output by the logger&quot;
-log1.info &quot;just some friendly advice&quot;
-
-</code></pre>
-
+log1.debug <span class="s2">&quot;this debug message will not be output by the logger&quot;</span>
+log1.info <span class="s2">&quot;just some friendly advice&quot;</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>Here we create log objects at initialization of class Foo and Foo::Bar <a href="https://github.com/TwP/logging/blob/master/examples/classes.rb">[3]</a>.  Once we've done that we can refine our logging parameters to reveal behavior specific to each class.</p>
+<p>Here we create log objects at initialization of class Foo and Foo::Bar <a href="https://github.com/TwP/logging/blob/master/examples/classes.rb">[3]</a>.  Once we&#39;ve done that we can refine our logging parameters to reveal behavior specific to each class.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-4.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;logging&#39;</span>
 
-<pre lang="sh"><code>require 'logging'
-
-Logging.logger.root.appenders = Logging.appenders.stdout
-Logging.logger.root.level = :info
+Logging.logger.root.appenders <span class="o">=</span> Logging.appenders.stdout
+Logging.logger.root.level <span class="o">=</span> :info
 
 class Foo
   attr_reader :log
-  def initialize; @log = Logging.logger[self]; end
+  def initialize; @log <span class="o">=</span> Logging.logger<span class="o">[</span>self<span class="o">]</span>; end
 end
 
 class Foo::Bar
   attr_reader :log
-  def initialize; @log = Logging.logger[self]; end
+  def initialize; @log <span class="o">=</span> Logging.logger<span class="o">[</span>self<span class="o">]</span>; end
 end
 
-foo = Foo.new.log
-bar = Foo::Bar.new.log
+<span class="nv">foo</span> <span class="o">=</span> Foo.new.log
+<span class="nv">bar</span> <span class="o">=</span> Foo::Bar.new.log
 
-# you'll notice in these log messages that the logger names were taken
-# from the class names of the Foo and Foo::Bar instances
-foo.info 'this message came from Foo'
-bar.warn 'this is a warning from Foo::Bar'
-
-</code></pre>
-
+<span class="c"># you&#39;ll notice in these log messages that the logger names were taken</span>
+<span class="c"># from the class names of the Foo and Foo::Bar instances</span>
+foo.info <span class="s1">&#39;this message came from Foo&#39;</span>
+bar.warn <span class="s1">&#39;this is a warning from Foo::Bar&#39;</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h3>Incorporating Rails</h3>
@@ -155,17 +143,14 @@ bar.warn 'this is a warning from Foo::Bar'
 <p>Incorporate rails easily with the logging-rails gem <a href="https://github.com/TwP/logging-rails">[4]</a>.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-5.rb'></script><noscript></p>
-
-<pre lang="sh"><code>gem 'logging-rails', :require =&gt; 'logging/rails'
+<div class="highlight"><pre><code class="sh">gem <span class="s1">&#39;logging-rails&#39;</span>, :require <span class="o">=</span>&gt; <span class="s1">&#39;logging/rails&#39;</span>
 rails generate logging:install
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <h3>Thanks for Watching</h3>
 
-<p>This was my first screen-cast so thank you for bearing with me.  The production quality on my next cast should be markedly increased as I have learned much by making this one.  The Logging framework has a lot to offer and I hope that you've found this helpful.  Thanks.</p>
+<p>This was my first screen-cast so thank you for bearing with me.  The production quality on my next cast should be markedly increased as I have learned much by making this one.  The Logging framework has a lot to offer and I hope that you&#39;ve found this helpful.  Thanks.</p>
 
 <h4>References</h4>
 

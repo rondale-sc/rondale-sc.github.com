@@ -59,13 +59,13 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>Twitter's 'Tweet Button' has become the standard for websites and blogs around the internet. Yeah, it's that little button to the right of this paragraph. <img alt="twitter bird" src="http://www.jonathan-jackson.net/images/single_bird.png" style="vertical-align:bottom;float:left"/> Run with it (this blog) has had that implemented since day one thanks in large part to the fact that Twitter makes including the button really simple.  Just grab the snippet of code and throw it into your html.  It took me a little while to realize that the default settings, while great for getting you up and running, do not result in the prettiest of tweets.  Here I'll walk you through how to utilize google's url shortener, and get the basic Tweet Button functionality down.</p>
+<p>Twitter&#39;s &#39;Tweet Button&#39; has become the standard for websites and blogs around the internet. Yeah, it&#39;s that little button to the right of this paragraph. <img alt="twitter bird" src="http://www.jonathan-jackson.net/images/single_bird.png" style="vertical-align:bottom;float:left"/> Run with it (this blog) has had that implemented since day one thanks in large part to the fact that Twitter makes including the button really simple.  Just grab the snippet of code and throw it into your html.  It took me a little while to realize that the default settings, while great for getting you up and running, do not result in the prettiest of tweets.  Here I&#39;ll walk you through how to utilize google&#39;s url shortener, and get the basic Tweet Button functionality down.</p>
 
 <p><br/><br/></p>
 
 <h2>Fundamentals</h2>
 
-<p>Twitter allows you to include the button with an iframe or via a snippet of javascript.  I'm going to walk through the javascript setup because it's the most convenient and it's also what Twitter recommends.  If you go to the <a href="https://twitter.com/about/resources/tweetbutton">Twitter Button</a> resource page you'll be given a set of options to configure your Tweet Button.  Once you've figure out how you want it laid out you should have something that looks like this.</p>
+<p>Twitter allows you to include the button with an iframe or via a snippet of javascript.  I&#39;m going to walk through the javascript setup because it&#39;s the most convenient and it&#39;s also what Twitter recommends.  If you go to the <a href="https://twitter.com/about/resources/tweetbutton">Twitter Button</a> resource page you&#39;ll be given a set of options to configure your Tweet Button.  Once you&#39;ve figure out how you want it laid out you should have something that looks like this.</p>
 
 <script src='https://gist.github.com/2156432.js?file=gist-1.html'></script><noscript>
 
@@ -75,10 +75,9 @@
                                     data-via="rondale_sc">Tweet</a>
 
 <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+<div class="highlight"><pre><code class="text">&lt;/noscript&gt;
 
-<pre><code>&lt;/noscript&gt;
-
-This is the basic outline for a tweet button.  The _data_ attributes allow you to customize the behavior of your button.  We'll focus on these [[1]](https://dev.twitter.com/docs/tweet-button):
+This is the basic outline for a tweet button.  The _data_ attributes allow you to customize the behavior of your button.  We&#39;ll focus on these [[1]](https://dev.twitter.com/docs/tweet-button):
 
 * _via_ - Screen name of the user to attribute the Tweet to
 * _count_ - Count box position
@@ -90,16 +89,16 @@ But before we get to that we need to get set up.
 ## Shortening
 
 
-First things first, generate a migration to add a short_url field to your Article/Post table (I'm going to assume a blog style app).
+First things first, generate a migration to add a short_url field to your Article/Post table (I&#39;m going to assume a blog style app).
 
 
     bundle exec rails g migration add_short_url_to_articles short_url:string
     bundle exec rake db:migrate
 
 
-Once that's done we can go into the Article model and get to the important stuff.
+Once that&#39;s done we can go into the Article model and get to the important stuff.
 
-&lt;script src='https://gist.github.com/2156432.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;
+&lt;script src=&#39;https://gist.github.com/2156432.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;
 
 ```sh
 class Article &lt; ActiveRecord::Base
@@ -115,8 +114,8 @@ class Article &lt; ActiveRecord::Base
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
     http.ca_file = File.join(Rails.root, &quot;lib&quot;, &quot;cacert.pem&quot;)
     key = File.read(File.join(Rails.root, &quot;lib&quot;, &quot;google_api.txt&quot;)).strip
-    params = {'longUrl' =&gt; get_article_url }.to_json # self.url is your article slug
-    resp = http.post(&quot;/urlshortener/v1/url?key=#{key}&quot;, params, {'Content-Type' =&gt; 'application/json'})
+    params = {&#39;longUrl&#39; =&gt; get_article_url }.to_json # self.url is your article slug
+    resp = http.post(&quot;/urlshortener/v1/url?key=#{key}&quot;, params, {&#39;Content-Type&#39; =&gt; &#39;application/json&#39;})
     body = JSON.parse(resp.body)
 
     if resp.code.to_i == 200
@@ -131,44 +130,36 @@ class Article &lt; ActiveRecord::Base
     &quot;YOUR_ROOT_URL&quot; + self.url
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>Now you'll immediately notice a few things about the above code.  First is the use of ssl.  Do it <a href="http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html">[2]</a>. I've snagged the curl PEM <a href="http://curl.haxx.se/ca/cacert.pem">[3]</a> which is a reliable authority and stored it in /lib/cacert.pem. Also set the <code>verify_mode</code> to OpenSSL::SSL::VERIFY_PEER.  The rest is pretty <a href="https://github.com/augustl/net-http-cheat-sheet">vanilla net/http stuff</a>.</p>
+<p>Now you&#39;ll immediately notice a few things about the above code.  First is the use of ssl.  Do it <a href="http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html">[2]</a>. I&#39;ve snagged the curl PEM <a href="http://curl.haxx.se/ca/cacert.pem">[3]</a> which is a reliable authority and stored it in /lib/cacert.pem. Also set the <code>verify_mode</code> to OpenSSL::SSL::VERIFY_PEER.  The rest is pretty <a href="https://github.com/augustl/net-http-cheat-sheet">vanilla net/http stuff</a>.</p>
 
-<p>The next thing you'll notice is the line directly under that, which is where I read in my google api key to keep it out of source control.  It makes sense to add an after hook on your cap-deploy script to link to a share location on your production server and then add the file to your ./gitignore. Strictly speaking <a href="http://goo.gl/">goo.gl</a> does not require that you submit an api key for url shortening, but it lets you track the urls if you do.</p>
+<p>The next thing you&#39;ll notice is the line directly under that, which is where I read in my google api key to keep it out of source control.  It makes sense to add an after hook on your cap-deploy script to link to a share location on your production server and then add the file to your ./gitignore. Strictly speaking <a href="http://goo.gl/">goo.gl</a> does not require that you submit an api key for url shortening, but it lets you track the urls if you do.</p>
 
 <h2>Bringing it back around</h2>
 
-<p>Alright so now you have the short url for your site we'll come back to our Tweet Button.  Only now we'll set the <em>data-url</em> to our short url.  Not so fast!  We also have to set the <em>data-counturl</em> to the original url so that your count bubble will be accurate.</p>
+<p>Alright so now you have the short url for your site we&#39;ll come back to our Tweet Button.  Only now we&#39;ll set the <em>data-url</em> to our short url.  Not so fast!  We also have to set the <em>data-counturl</em> to the original url so that your count bubble will be accurate.</p>
 
 <p><script src='https://gist.github.com/2156432.js?file=gist-3.erb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># app/views/_tweet_button.html.erb</span>
 
-<pre lang="sh"><code># app/views/_tweet_button.html.erb
-
-&lt;a href=&quot;https://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
-                                    data-url=&quot;&lt;%= @article.short_url %&gt;&quot;
-                                    data-counturl=&quot;&lt;%= request.url %&gt;&quot;
-                                    data-count=&quot;vertical&quot;
-                                    data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
-
-</code></pre>
-
+&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://twitter.com/share&quot;</span> <span class="nv">class</span><span class="o">=</span><span class="s2">&quot;twitter-share-button&quot;</span>
+                                    data-url<span class="o">=</span><span class="s2">&quot;&lt;%= @article.short_url %&gt;&quot;</span>
+                                    data-counturl<span class="o">=</span><span class="s2">&quot;&lt;%= request.url %&gt;&quot;</span>
+                                    data-count<span class="o">=</span><span class="s2">&quot;vertical&quot;</span>
+                                    data-via<span class="o">=</span><span class="s2">&quot;rondale_sc&quot;</span>&gt;Tweet&lt;/a&gt;
+</code></pre></div>
 <p></noscript></p>
 
-<p>Now we have a decent looking tweet.  It's going to use your &lt;title&gt; for your text by default.  I think this is a great default as it encourages you to use the &lt;title&gt; properly.  I think the easiest way of setting your title tag is to set '&lt;%= yield :head %&gt;' in your layout's &lt;head&gt; tag then:</p>
+<p>Now we have a decent looking tweet.  It&#39;s going to use your &lt;title&gt; for your text by default.  I think this is a great default as it encourages you to use the &lt;title&gt; properly.  I think the easiest way of setting your title tag is to set &#39;&lt;%= yield :head %&gt;&#39; in your layout&#39;s &lt;head&gt; tag then:</p>
 
 <p><script src='https://gist.github.com/2156432.js?file=gist-4.erb'></script><noscript></p>
-
-<pre lang="sh"><code># in app/view/articles/show
-&lt;% content_for :head do %&gt;
-  &lt;%= content_tag(&quot;title&quot;, @article.title) %&gt;
+<div class="highlight"><pre><code class="sh"><span class="c"># in app/view/articles/show</span>
+&lt;% content_for :head <span class="k">do</span> %&gt;
+  &lt;%<span class="o">=</span> content_tag<span class="o">(</span><span class="s2">&quot;title&quot;</span>, @article.title<span class="o">)</span> %&gt;
 &lt;% end %&gt;
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>And there you have it a nice looking tweet.</p>

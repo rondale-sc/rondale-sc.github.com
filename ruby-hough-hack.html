@@ -62,80 +62,77 @@
 <p>The hough transform<a href="#footnote_1">[1]</a> is an algorithm used to detect lines <s>detect edges/objects</s> in an image. I recently needed to use it to straighten an image so that I could process it. Here is the solution me and my brother hacked out today using Chunky PNG</p>
 
 <p><script src='https://gist.github.com/2156226.js?file=gist-1.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># Authors: Robert Jackson, Jonathan Jackson</span>
+<span class="c"># the formatting of this file has been altered in</span>
+<span class="c"># order to fit on this website. Check out</span>
+<span class="c"># https://gist.github.com/1233581 if you care</span>
 
-<pre lang="sh"><code># Authors: Robert Jackson, Jonathan Jackson
-# the formatting of this file has been altered in
-# order to fit on this website. Check out
-# https://gist.github.com/1233581 if you care
-
-require 'chunky_png' #or 'oily_png'
+require <span class="s1">&#39;chunky_png&#39;</span> <span class="c">#or &#39;oily_png&#39;</span>
 class Hough
-  def initialize(image_path, options={})
-    @image = ChunkyPNG::Image.from_file(image_path)
-    @image_path = image_path
-    @angles ||= {}
+  def initialize<span class="o">(</span>image_path, <span class="nv">options</span><span class="o">={})</span>
+    @image <span class="o">=</span> ChunkyPNG::Image.from_file<span class="o">(</span>image_path<span class="o">)</span>
+    @image_path <span class="o">=</span> image_path
+    @angles <span class="o">||=</span> <span class="o">{}</span>
   end
-  def is_dark?(color)
-    ChunkyPNG::Color.r(color) +
-    ChunkyPNG::Color.g(color) +
-    ChunkyPNG::Color.b(color) &lt; 40
+  def is_dark?<span class="o">(</span>color<span class="o">)</span>
+    ChunkyPNG::Color.r<span class="o">(</span>color<span class="o">)</span> +
+    ChunkyPNG::Color.g<span class="o">(</span>color<span class="o">)</span> +
+    ChunkyPNG::Color.b<span class="o">(</span>color<span class="o">)</span> &lt; 40
   end
-  def is_light?(color)
-    ChunkyPNG::Color.r(color) +
-    ChunkyPNG::Color.g(color) +
-    ChunkyPNG::Color.b(color) &gt; 600
+  def is_light?<span class="o">(</span>color<span class="o">)</span>
+    ChunkyPNG::Color.r<span class="o">(</span>color<span class="o">)</span> +
+    ChunkyPNG::Color.g<span class="o">(</span>color<span class="o">)</span> +
+    ChunkyPNG::Color.b<span class="o">(</span>color<span class="o">)</span> &gt; 600
   end
-  def angles(theta)
-    @angles[theta] ||= {
-      :cos =&gt; Math.cos(theta),
-      :sin =&gt; Math.sin(theta)
-    }
+  def angles<span class="o">(</span>theta<span class="o">)</span>
+    @angles<span class="o">[</span>theta<span class="o">]</span> <span class="o">||=</span> <span class="o">{</span>
+      :cos <span class="o">=</span>&gt; Math.cos<span class="o">(</span>theta<span class="o">)</span>,
+      :sin <span class="o">=</span>&gt; Math.sin<span class="o">(</span>theta<span class="o">)</span>
+    <span class="o">}</span>
   end
   def get_hough_matrix
-    hough = Hash.new(0)
+    <span class="nv">hough</span> <span class="o">=</span> Hash.new<span class="o">(</span>0<span class="o">)</span>
 
-    # iterate over every point of the image 'Hooray Chunky Png'
-    @image.height.times do |y|
-      @image.width.times do |x|
+    <span class="c"># iterate over every point of the image &#39;Hooray Chunky Png&#39;</span>
+    @image.height.times <span class="k">do</span> |y|
+      @image.width.times <span class="k">do</span> |x|
 
-        # run the point through hough transform only if the
-        # sum of the points' rgb values are less than 40 (are black)
-        # and the point directly below's( y+1 ) rgb values
-        # are greater than 600 (are white)
-        if is_dark?(@image[x,y]) &amp;&amp; is_light?(@image[x,y + 1])
+        <span class="c"># run the point through hough transform only if the</span>
+        <span class="c"># sum of the points&#39; rgb values are less than 40 (are black)</span>
+        <span class="c"># and the point directly below&#39;s( y+1 ) rgb values</span>
+        <span class="c"># are greater than 600 (are white)</span>
+        <span class="k">if </span>is_dark?<span class="o">(</span>@image<span class="o">[</span>x,y<span class="o">])</span> <span class="o">&amp;&amp;</span> is_light?<span class="o">(</span>@image<span class="o">[</span>x,y + 1<span class="o">])</span>
 
-          # run r = xcos(theta) + ysin(theta) from 0 to 20
-          # stepping 0.2 at a time
-          (0..20).step(0.2).each do |theta|
+          <span class="c"># run r = xcos(theta) + ysin(theta) from 0 to 20</span>
+          <span class="c"># stepping 0.2 at a time</span>
+          <span class="o">(</span>0..20<span class="o">)</span>.step<span class="o">(</span>0.2<span class="o">)</span>.each <span class="k">do</span> |theta|
 
-            # http://en.wikipedia.org/wiki/Hough_transform&quot;
-            distance = (
-                        x * angles(theta)[:cos] +
-                        y * angles(theta)[:sin]
-                      ).to_i
+            <span class="c"># http://en.wikipedia.org/wiki/Hough_transform&quot;</span>
+            <span class="nv">distance</span> <span class="o">=</span> <span class="o">(</span>
+                        x * angles<span class="o">(</span>theta<span class="o">)[</span>:cos<span class="o">]</span> +
+                        y * angles<span class="o">(</span>theta<span class="o">)[</span>:sin<span class="o">]</span>
+                      <span class="o">)</span>.to_i
 
-            # populate [theta, distance] as key to hough and increment
-            # the point's score
-            hough[[theta, distance]] += 1 if distance &gt;= 0
+            <span class="c"># populate [theta, distance] as key to hough and increment</span>
+            <span class="c"># the point&#39;s score</span>
+            hough<span class="o">[[</span>theta, distance<span class="o">]]</span> +<span class="o">=</span> 1 <span class="k">if </span>distance &gt;<span class="o">=</span> 0
           end
         end
       end
     end
-    return hough
+    <span class="k">return </span>hough
   end
 
   def average_theta
-    # sort by score, grab top twenty, sum (inject) and divide by length to
-    # get the average. (after #sort_by hough looks like
-    # [[theta, distance] score]) so v[0][0] is just score
-    get_hough_matrix.sort_by {|k,v| v }.take(20).inject(0.0) { |sum,v|
-      sum + v[0][0]
-     } / 20
+    <span class="c"># sort by score, grab top twenty, sum (inject) and divide by length to</span>
+    <span class="c"># get the average. (after #sort_by hough looks like</span>
+    <span class="c"># [[theta, distance] score]) so v[0][0] is just score</span>
+    get_hough_matrix.sort_by <span class="o">{</span>|k,v| v <span class="o">}</span>.take<span class="o">(</span>20<span class="o">)</span>.inject<span class="o">(</span>0.0<span class="o">)</span> <span class="o">{</span> |sum,v|
+      sum + v<span class="o">[</span>0<span class="o">][</span>0<span class="o">]</span>
+     <span class="o">}</span> / 20
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>Was fun to work on.  Hope someone finds a use for it.  Just remember that the important part here is how you define your restriction.  In my case I was looking for a straight black line.</p>
@@ -144,7 +141,7 @@ end
 
 <p>***edit zzgwon pointed out that the hough algorithm is used for line detection not object detection.</p>
 
-<p>*** edit RIP_Kashin pointed out a few errors in the initialize function, namely a stray 'a'.  Unfortunately I can't render strike through so you'll have to trust me.</p>
+<p>*** edit RIP_Kashin pointed out a few errors in the initialize function, namely a stray &#39;a&#39;.  Unfortunately I can&#39;t render strike through so you&#39;ll have to trust me.</p>
 
 <h4>References</h4>
 

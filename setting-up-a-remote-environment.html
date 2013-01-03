@@ -59,66 +59,57 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>Let's create a development_remote environment to tunnel our traffic through an ssh tunnel so we can work with your development environment from home.</p>
+<p>Let&#39;s create a development_remote environment to tunnel our traffic through an ssh tunnel so we can work with your development environment from home.</p>
 
 <h2>Set up your SSH forward</h2>
 
-<p>I'll assume that you are running a MySQL server on 192.168.0.1:3306 and you have a box with an external IP that has local access to it.</p>
+<p>I&#39;ll assume that you are running a MySQL server on 192.168.0.1:3306 and you have a box with an external IP that has local access to it.</p>
 
 <p><script src='https://gist.github.com/2156604.js?file=gist-1.sh'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="nv">$ </span>vi ~/.ssh/config
 
-<pre lang="sh"><code>$ vi ~/.ssh/config
-
-# Add the following information
+<span class="c"># Add the following information</span>
 
 Host rails_blog_db
-HostName 0.0.0.0 # your remote's public facing IP
+HostName 0.0.0.0 <span class="c"># your remote&#39;s public facing IP</span>
 Port 3122
-User jjackson # your username
+User jjackson <span class="c"># your username</span>
 LocalForward 3307 192.168.100.1:3306
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>Forward 3307 192.168.100.1:3306</p>
 
-<p>You'll want to copy your public key into the ~/.ssh/authorized_keys file to prevent those pesky password prompts.  With that done you simply ssh into the rails_blog_db box like so:</p>
-
-<pre><code>$ ssh rails_blog_db
+<p>You&#39;ll want to copy your public key into the ~/.ssh/authorized<em>keys file to prevent those pesky password prompts.  With that done you simply ssh into the rails</em>blog_db box like so:</p>
+<div class="highlight"><pre><code class="text">$ ssh rails_blog_db
 # Leave this running...
-</code></pre>
-
-<p>Alright that part was easy let's move on to the Rails stuff.</p>
+</code></pre></div>
+<p>Alright that part was easy let&#39;s move on to the Rails stuff.</p>
 
 <h2>Create your environment file</h2>
 
 <p><script src='https://gist.github.com/2156604.js?file=gist-2.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># ~$ touch rails_blog/config/environments/development_remote.rb</span>
+<span class="c"># ~$ vi config/environments/development_remote.rb</span>
 
-<pre lang="sh"><code># ~$ touch rails_blog/config/environments/development_remote.rb
-# ~$ vi config/environments/development_remote.rb
-
-# Add this and save!
-require File.join(File.expand_path(File.dirname(__FILE__)),'development')
-
-</code></pre>
-
+<span class="c"># Add this and save!</span>
+require File.join<span class="o">(</span>File.expand_path<span class="o">(</span>File.dirname<span class="o">(</span>__FILE__<span class="o">))</span>,<span class="s1">&#39;development&#39;</span><span class="o">)</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>This will load your development configuration file when you load your development_remote environment.</p>
 
 <h2>Edit your database YAML</h2>
 
-<p>Once you've done that you need to add another entry to your database.yml file.</p>
+<p>Once you&#39;ve done that you need to add another entry to your database.yml file.</p>
 
 <p><script src='https://gist.github.com/2156604.js?file=gist-3.yml'></script><noscript></p>
-
-<pre lang="sh"><code># rails_blog/config/database.yml
+<div class="highlight"><pre><code class="sh"><span class="c"># rails_blog/config/database.yml</span>
 
 default: &amp;default
   adapter: mysql
   username: rails_blog_user
-  password: ENV['your_super_secret_password']
+  password: ENV<span class="o">[</span><span class="s1">&#39;your_super_secret_password&#39;</span><span class="o">]</span>
   host: 192.168.100.1
 
 development:
@@ -129,52 +120,45 @@ production:
   database: rails_blog
   &lt;&lt;: *default
 
-# set the database option to your development db and the host to your
-# ssh forward
+<span class="c"># set the database option to your development db and the host to your</span>
+<span class="c"># ssh forward</span>
 
 development_remote:
   database: rails_blog_development
   host: 127.0.0.1
-  port: 3307  # This is where the ssh is forwarding your DB traffic
+  port: 3307  <span class="c"># This is where the ssh is forwarding your DB traffic</span>
   &lt;&lt;: *default
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>Some of the fancy YML syntax aside, it's pretty straightforward.  You are assigning the default attributes to development_remote, assigning the database attribute to the dev db, and assiging the host and port to your remote's forward.</p>
+<p>Some of the fancy YML syntax aside, it&#39;s pretty straightforward.  You are assigning the default attributes to development_remote, assigning the database attribute to the dev db, and assiging the host and port to your remote&#39;s forward.</p>
 
 <h2>Update your application.rb</h2>
 
-<p>In order to render the pages the environment needs to know how to serve assets.  To do that you'll need to edit your application.rb file.</p>
+<p>In order to render the pages the environment needs to know how to serve assets.  To do that you&#39;ll need to edit your application.rb file.</p>
 
 <p><script src='https://gist.github.com/2156604.js?file=gist-4.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># rails_blog/config/application.rb</span>
 
-<pre lang="sh"><code># rails_blog/config/application.rb
+require File.expand_path<span class="o">(</span><span class="s1">&#39;../boot&#39;</span>, __FILE__<span class="o">)</span>
 
-require File.expand_path('../boot', __FILE__)
+require <span class="s1">&#39;rails/all&#39;</span>
 
-require 'rails/all'
-
-if defined?(Bundler)
-  # Add your new development_remote environment to the assets hash below
-  Bundler.require(*Rails.groups(:assets =&gt; %w(development development_remote test)))
+<span class="k">if </span>defined?<span class="o">(</span>Bundler<span class="o">)</span>
+  <span class="c"># Add your new development_remote environment to the assets hash below</span>
+  Bundler.require<span class="o">(</span>*Rails.groups<span class="o">(</span>:assets <span class="o">=</span>&gt; %w<span class="o">(</span>development development_remote <span class="nb">test</span><span class="o">)))</span>
 end
 
-# Rest of file...
-
-</code></pre>
-
+<span class="c"># Rest of file...</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>Find the line for the bundler require and add development_remote to the assets array.  Once that's done you can simply run your server and everything will work as you expect:</p>
-
-<pre><code>$ rails s -e development_remote
-</code></pre>
-
+<p>Find the line for the bundler require and add development_remote to the assets array.  Once that&#39;s done you can simply run your server and everything will work as you expect:</p>
+<div class="highlight"><pre><code class="text">$ rails s -e development_remote
+</code></pre></div>
 <h2>Conclusions</h2>
 
-<p>Alright so now you are cruising and working from home.  Hopefully, this is a technique that will help you better interact with your code.  Don't think that you can only use this to tunnel to your dev setup, you can also use it to create a staging environment, run tests remotely, and a whole host of other things.  So by all means, go, be creative!</p>
+<p>Alright so now you are cruising and working from home.  Hopefully, this is a technique that will help you better interact with your code.  Don&#39;t think that you can only use this to tunnel to your dev setup, you can also use it to create a staging environment, run tests remotely, and a whole host of other things.  So by all means, go, be creative!</p>
 
 <span><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"

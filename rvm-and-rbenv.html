@@ -66,19 +66,15 @@
 <p><img src="http://www.jonathan-jackson.net/images/rvm-rbenv-install.png" alt="rvm and rbenv side by side install"/></p>
 
 <p>In RVM you need to add this to your profile to load the RVM function.</p>
-
-<pre><code># or ~/.zshrc
-$ echo '[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot; # Load RVM function' &gt;&gt; ~/.bash_profile
-</code></pre>
-
+<div class="highlight"><pre><code class="text"># or ~/.zshrc
+$ echo &#39;[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot; # Load RVM function&#39; &gt;&gt; ~/.bash_profile
+</code></pre></div>
 <p>In rbenv you need to add this to your profile to load the rbenv command-line function.</p>
-
-<pre><code># or ~/.zshrc
-$ echo 'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;' &gt;&gt; ~/.bash_profile
-$ echo 'eval &quot;$(rbenv init -)&quot;' &gt;&gt; ~/.bash_profile #to enable shims and auto-complete
-</code></pre>
-
-<p>Once you've restarted your shell you now have access to RVM/rbenv.  It is important to note that RVM and rbenv cannot be installed at the same time because of the way RVM handles the 'gem' command.</p>
+<div class="highlight"><pre><code class="text"># or ~/.zshrc
+$ echo &#39;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&#39; &gt;&gt; ~/.bash_profile
+$ echo &#39;eval &quot;$(rbenv init -)&quot;&#39; &gt;&gt; ~/.bash_profile #to enable shims and auto-complete
+</code></pre></div>
+<p>Once you&#39;ve restarted your shell you now have access to RVM/rbenv.  It is important to note that RVM and rbenv cannot be installed at the same time because of the way RVM handles the &#39;gem&#39; command.</p>
 
 <h1>Get Rubies</h1>
 
@@ -87,11 +83,9 @@ $ echo 'eval &quot;$(rbenv init -)&quot;' &gt;&gt; ~/.bash_profile #to enable sh
 <p>In RVM you install your rubies to <strong>/Users/$USER/.rvm/rubies/ruby-1.9.2-x</strong> in rbenv your rubies are installed to <strong>~/.rbenv/versions</strong>.  Sam Stephenson created a sister gem for rbenv called ruby-build which offers several convencience methods for installing/compiling your own rubies.</p>
 
 <p>For instance, once you have ruby-build installed you can type this:</p>
-
-<pre><code>$ rbenv install ruby-1.9.2-x
-</code></pre>
-
-<p>So now you have your rubies.  Best blog post EVAR! Wait, there's more...</p>
+<div class="highlight"><pre><code class="text">$ rbenv install ruby-1.9.2-x
+</code></pre></div>
+<p>So now you have your rubies.  Best blog post EVAR! Wait, there&#39;s more...</p>
 
 <h1>Gemsets</h1>
 
@@ -109,9 +103,9 @@ $ echo 'eval &quot;$(rbenv init -)&quot;' &gt;&gt; ~/.bash_profile #to enable sh
 
 <p>You saw the strips above, they offer <strong>a lot</strong> of the same functionality.  In many ways rbenv and RVM are really just two sides of the same coin.  A different way to solve the same problem. I will say this article  is from a purely functional stance, I understand that under the hood rbenv and RVM are quite different.</p>
 
-<p>There has been quite a bit of controversy surrounding the rbenv/rvm divide.  I think, after installing both back-to-back on my own system, that their similarities outweigh their differences.  One article I read about the subject compared RVM and rbenv to Rails and Sinatra <a href="http://www.rubyinside.com/rbenv-a-simple-new-ruby-version-management-tool-5302.html" alt="rbenv a simple ruby version management tool">[2]</a>.  I think that comparison really fits. Sinatra is a lightweight framework whereas Rails is much more robust. Sometimes sinatra just fits, and other times you'd be a fool to not go with Rails.  If you need the features in RVM then use it, if you want more control and a lighter feel then use rbenv.  It's all a matter of preference.</p>
+<p>There has been quite a bit of controversy surrounding the rbenv/rvm divide.  I think, after installing both back-to-back on my own system, that their similarities outweigh their differences.  One article I read about the subject compared RVM and rbenv to Rails and Sinatra <a href="http://www.rubyinside.com/rbenv-a-simple-new-ruby-version-management-tool-5302.html" alt="rbenv a simple ruby version management tool">[2]</a>.  I think that comparison really fits. Sinatra is a lightweight framework whereas Rails is much more robust. Sometimes sinatra just fits, and other times you&#39;d be a fool to not go with Rails.  If you need the features in RVM then use it, if you want more control and a lighter feel then use rbenv.  It&#39;s all a matter of preference.</p>
 
-<p>As a rubyist I'm just glad we have people like <a href="https://github.com/wayneeseguin" alt="wayne seguin's github">Wayne Seguin</a>, and <a href="https://github.com/sstephenson" alt="sam stephenson's github'">Sam Stephenson</a> contributing to the community the way they do.</p>
+<p>As a rubyist I&#39;m just glad we have people like <a href="https://github.com/wayneeseguin" alt="wayne seguin's github">Wayne Seguin</a>, and <a href="https://github.com/sstephenson" alt="sam stephenson's github'">Sam Stephenson</a> contributing to the community the way they do.</p>
 
 <h4>References</h4>
 

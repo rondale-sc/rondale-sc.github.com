@@ -59,74 +59,67 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>If you've found this blog it's likely that you are at least somewhat familiar with Unix and Unix-like operating systems.  If so you undoubtedly know about Man pages.  For those of you who don't; the man page is the unix system for documenting command-line applications.  They are succinct and clear guides to how you can interact with an application.  If you are on a *nix system you can pop open your terminal right now and type <code>man man</code> and see what I'm talking about.  As developers, we often baulk at documenting our code.  We enjoy creating new things, not tediously writing about our last project.  Here I'll give a brief overview of how you can incorporate man pages into your workflow, then show you how easy it can be to create this basic documentation. Trust me, you'll make a lot of friends if you do it, and probably find that its not as tedious as you think.</p>
+<p>If you&#39;ve found this blog it&#39;s likely that you are at least somewhat familiar with Unix and Unix-like operating systems.  If so you undoubtedly know about Man pages.  For those of you who don&#39;t; the man page is the unix system for documenting command-line applications.  They are succinct and clear guides to how you can interact with an application.  If you are on a *nix system you can pop open your terminal right now and type <code>man man</code> and see what I&#39;m talking about.  As developers, we often baulk at documenting our code.  We enjoy creating new things, not tediously writing about our last project.  Here I&#39;ll give a brief overview of how you can incorporate man pages into your workflow, then show you how easy it can be to create this basic documentation. Trust me, you&#39;ll make a lot of friends if you do it, and probably find that its not as tedious as you think.</p>
 
 <h2>WorkFlow</h2>
 
-<p>Using man is easy as typing '<code>man &lt; command_name &gt;</code>'.  If you want to view a specific secition of a man page you can type '<code>man &lt; section_number &gt; &lt; command_name &gt;</code>'. The beauty of man pages and Unix is that it really is that simple.</p>
+<p>Using man is easy as typing &#39;<code>man &lt; command_name &gt;</code>&#39;.  If you want to view a specific secition of a man page you can type &#39;<code>man &lt; section_number &gt; &lt; command_name &gt;</code>&#39;. The beauty of man pages and Unix is that it really is that simple.</p>
 
-<p><a href="http://carboni.ca/blog">Michael Edgar</a> submitted a patch <a href="http://rubyforge.org/tracker/index.php?func=detail&aid=27691&group_id=126&atid=577">[1]</a> to rubygems to allow for explicit inclusion of man pages in the gemspec or implicit inclusion in the /man directory.  Unfortunately this patch has not been included despite being projected for inclusion in 1.4.  All is not lost, @defunkt, of GitHub fame and huge proponent of man page usage, wrote a nice little plugin called gem-man <a href="https://github.com/defunkt/gem-man">[2]</a>.</p>
+<p><a href="http://carboni.ca/blog">Michael Edgar</a> submitted a patch <a href="http://rubyforge.org/tracker/index.php?func=detail&amp;aid=27691&amp;group_id=126&amp;atid=577">[1]</a> to rubygems to allow for explicit inclusion of man pages in the gemspec or implicit inclusion in the /man directory.  Unfortunately this patch has not been included despite being projected for inclusion in 1.4.  All is not lost, @defunkt, of GitHub fame and huge proponent of man page usage, wrote a nice little plugin called gem-man <a href="https://github.com/defunkt/gem-man">[2]</a>.</p>
 
 <p>Gem-man checks to see if any man pages exist and displays it accordingly.  If multiple man sections are found it will provide you with an option to select one. It can be installed like so.</p>
-
-<pre><code>gem install gem-man
+<div class="highlight"><pre><code class="text">gem install gem-man
 gem man gem-man
-</code></pre>
-
+</code></pre></div>
 <p>If you pass gem-man the <code>-s</code> argument it will fall back to searching system files for your man page.  With that in mind you can create an easy alias which will let you use <code>man</code> to search both your systems man pages and any man pages found in your gems:</p>
 
 <p><script src='https://gist.github.com/2156493.js?file=gist-1.sh'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># for zsh</span>
+  <span class="c"># echo &#39;alias man=&quot;gem man -s&quot;&#39; &gt;&gt; ~/.zshrc</span>
+  <span class="c"># source ~/.zshrc</span>
 
-<pre lang="sh"><code># for zsh
-  # echo 'alias man=&quot;gem man -s&quot;' &gt;&gt; ~/.zshrc
-  # source ~/.zshrc
-
-  echo 'alias man=&quot;gem man -s&quot;' &gt;&gt; ~/.bashrc
-  source ~/.bashrc
+  <span class="nb">echo</span> <span class="s1">&#39;alias man=&quot;gem man -s&quot;&#39;</span> &gt;&gt; ~/.bashrc
+  <span class="nb">source</span> ~/.bashrc
   man gem-man
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <h2>Authoring Your Own</h2>
 
-<p>Man pages must be written in an unfortunate format called roff <a href="http://en.wikipedia.org/wiki/Roff">[3]</a>. Roff is a format originally created in the 1970's with a limited set of formatting options.  Fortunately there is an alternative to writing in roff.  You can write in ronn!</p>
+<p>Man pages must be written in an unfortunate format called roff <a href="http://en.wikipedia.org/wiki/Roff">[3]</a>. Roff is a format originally created in the 1970&#39;s with a limited set of formatting options.  Fortunately there is an alternative to writing in roff.  You can write in ronn!</p>
 
 <p><img src="http://www.jonathan-jackson.net/images/Ron.jpg" width="200px"/></p>
 
 <h2>Ronn</h2>
 
-<p>Ronn is a little command-line application for constructing valid roff from <a href="http://daringfireball.net/projects/markdown/">markdown</a> by <a href="https://github.com/rtomayko">Ryan Tomayko</a>.  Ronn can also generate the familiar html renditions of your man page from markdown <a href="https://github.com/rtomayko/ronn">[4]</a>.  Markdown is easy to learn so I won't go into that for now, instead we'll talk about the content of a man page.</p>
+<p>Ronn is a little command-line application for constructing valid roff from <a href="http://daringfireball.net/projects/markdown/">markdown</a> by <a href="https://github.com/rtomayko">Ryan Tomayko</a>.  Ronn can also generate the familiar html renditions of your man page from markdown <a href="https://github.com/rtomayko/ronn">[4]</a>.  Markdown is easy to learn so I won&#39;t go into that for now, instead we&#39;ll talk about the content of a man page.</p>
 
-<p>Man pages are broken into sections.  Let's build a general man page <a href="http://rtomayko.github.com/ronn/ronn-format.7">[5]</a>, which incidentally would be the first section.</p>
+<p>Man pages are broken into sections.  Let&#39;s build a general man page <a href="http://rtomayko.github.com/ronn/ronn-format.7">[5]</a>, which incidentally would be the first section.</p>
 
 <ol>
 <li><p>The first thing we need to do is create a title, which should be the the name of your application then the number one in parenthesis to indicate that this is section one of your man page.</p></li>
 <li><p>Next is to create a synopsis of the application by putting code tags around comands, then doing the same for any flags.  Should look something like this once its compiled to roff:
 <img src="/images/man_synopsis.png" width="630px"/></p></li>
-<li><p>After that is a description.  Briefly describe what your application does.  This should be concise and strike at the heart of what you are trying to accomplish.  Don't be flowery, just get to the point.</p></li>
-<li><p>Then onto options where you'll list your flags and give a one line description of what each does.</p></li>
-<li><p>Once you've done the above steps you can write whatever you like.  Keep it on point, things like examples, basic usage, and any otherwise pertinent information that a user will need to use your app.</p></li>
+<li><p>After that is a description.  Briefly describe what your application does.  This should be concise and strike at the heart of what you are trying to accomplish.  Don&#39;t be flowery, just get to the point.</p></li>
+<li><p>Then onto options where you&#39;ll list your flags and give a one line description of what each does.</p></li>
+<li><p>Once you&#39;ve done the above steps you can write whatever you like.  Keep it on point, things like examples, basic usage, and any otherwise pertinent information that a user will need to use your app.</p></li>
 <li><p>Finally, write your bug &amp; author sections where you tell people where to file issues and who is responsible for the amazing application.</p></li>
 </ol>
 
-<p>That's it.  Now all is left is to compile to roff and add to your project.</p>
-
-<pre><code>$ ronn path/to/your/amazing/man.1.ronn
+<p>That&#39;s it.  Now all is left is to compile to roff and add to your project.</p>
+<div class="highlight"><pre><code class="text">$ ronn path/to/your/amazing/man.1.ronn
   -&gt; roff: path/to/your/amazing/man.1
   -&gt; html: path/to/your/amazing/man.1.html
-</code></pre>
-
+</code></pre></div>
 <h2>Conclusions</h2>
 
-<p>You've just created a man-page to the absolute delight of programmers world-wide.  Alright so maybe that's a little grandiose, but man-pages are an amazing asset to any program.  If you craft a well made application a man page should be the first step you take to increase its accessibility.  Also as we've learned it's easy!  Creating a man page is so easy that it's really a matter of why not.  I've found from writing a few for my own projects that it has helped me flesh out some behavior as well.  Though I believe that could be the act of documenting and not specific to man pages.  Either way man pages.  Do it.</p>
+<p>You&#39;ve just created a man-page to the absolute delight of programmers world-wide.  Alright so maybe that&#39;s a little grandiose, but man-pages are an amazing asset to any program.  If you craft a well made application a man page should be the first step you take to increase its accessibility.  Also as we&#39;ve learned it&#39;s easy!  Creating a man page is so easy that it&#39;s really a matter of why not.  I&#39;ve found from writing a few for my own projects that it has helped me flesh out some behavior as well.  Though I believe that could be the act of documenting and not specific to man pages.  Either way man pages.  Do it.</p>
 
 <p>Thanks for reading!</p>
 
 <h4>References</h4>
 
-<p><span  style="font-size:12px;">1.) <a href="http://rubyforge.org/tracker/index.php?func=detail&aid=27691&group_id=126&atid=577">Michael  Edgar's Rubygems Patch</a></span><br/>
+<p><span  style="font-size:12px;">1.) <a href="http://rubyforge.org/tracker/index.php?func=detail&amp;aid=27691&amp;group_id=126&amp;atid=577">Michael  Edgar&#39;s Rubygems Patch</a></span><br/>
 <span  style="font-size:12px;">2.) <a href="https://github.com/defunkt/gem-man">gem-man GitHub page</a></span><br/>
 <span  style="font-size:12px;">3.) <a href="http://en.wikipedia.org/wiki/Roff">Wikipedia: Roff</a></span><br/>
 <span  style="font-size:12px;">4.) <a href="https://github.com/rtomayko/ronn">Ronn Github page</a></span><br/>
@@ -135,7 +128,7 @@ gem man gem-man
 <h4>Additional References</h4>
 
 <p><span style="font-size:12px;"><a href="http://ozmm.org/posts/man_what.html">Chris Wanstrath on Man</a></span><br/>
-<span style="font-size:12px;"><a href="http://tldp.org/HOWTO/Man-Page/">Jens Schweikhardt's Man Page tutorial</a></span><br/></p>
+<span style="font-size:12px;"><a href="http://tldp.org/HOWTO/Man-Page/">Jens Schweikhardt&#39;s Man Page tutorial</a></span><br/></p>
 
 <span><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"

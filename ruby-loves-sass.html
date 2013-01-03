@@ -52,7 +52,7 @@
     <div class="container">
       <div id="content">
        <div id="post">
-<h1>Ruby &lt;3's Sass</h1>
+<h1>Ruby &lt;3&#39;s Sass</h1>
 
 <p><span><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
@@ -62,36 +62,35 @@
 <p><span class="small"><strong>TL;DR</strong> -- <a href="#sass_implementation">Grid in SCSS</a></span></p>
 
 <p>I recently tweeted:</p>
+
 <blockquote>
 <p>Rails 3.1 will now parse erb before scss. Good idea to write a small gem to allow creation of css grids in ruby? &lt;%= grid(rows, width) %&gt;</p>
 </blockquote>
+
 <h2>Ruby in Sass</h2>
 
 <p>So I decided to come up with something of my own with this quick gist. Most of this is directly from <a href="http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html">Sass Docs</a></p>
 
 <p><script src='https://gist.github.com/2155905.js?file=gist-1.rb'></script><noscript></p>
-
-<pre lang="sh"><code>module Sass::Script::Functions
-  def insert_grid(columns, width_string)
+<div class="highlight"><pre><code class="sh">module Sass::Script::Functions
+  def insert_grid<span class="o">(</span>columns, width_string<span class="o">)</span>
     assert_type columns, :Number
     assert_type width_string, :String
 
-    width = width_string.match(/\A(\d+)(\w+)\z/)[1]
-    type = width_string.match(/\A(\d+)(\w+)\z/)[2]
-    raise StandardError, &quot;You must set width_string with unit ie '960px'. &quot; unless [&quot;px&quot;,&quot;em&quot;, &quot;pt&quot;, &quot;%&quot;].include?(type)
+    <span class="nv">width</span> <span class="o">=</span> width_string.match<span class="o">(</span>/<span class="se">\A</span><span class="o">(</span><span class="se">\d</span>+<span class="o">)(</span><span class="se">\w</span>+<span class="o">)</span><span class="se">\z</span>/<span class="o">)[</span>1<span class="o">]</span>
+    <span class="nb">type</span> <span class="o">=</span> width_string.match<span class="o">(</span>/<span class="se">\A</span><span class="o">(</span><span class="se">\d</span>+<span class="o">)(</span><span class="se">\w</span>+<span class="o">)</span><span class="se">\z</span>/<span class="o">)[</span>2<span class="o">]</span>
+    raise StandardError, <span class="s2">&quot;You must set width_string with unit ie &#39;960px&#39;. &quot;</span> unless <span class="o">[</span><span class="s2">&quot;px&quot;</span>,<span class="s2">&quot;em&quot;</span>, <span class="s2">&quot;pt&quot;</span>, <span class="s2">&quot;%&quot;</span><span class="o">]</span>.include?<span class="o">(</span><span class="nb">type</span><span class="o">)</span>
 
-    grid, grid_segment_width = &quot;&quot;, 0
-    columns.times do |col|
-      grid += &quot;grid_#{col + 1}: {width:#{grid_segment_width += (width.to_i / columns)}#{type}}\n&quot;
+    grid, <span class="nv">grid_segment_width</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>, 0
+    columns.times <span class="k">do</span> |col|
+      grid +<span class="o">=</span> <span class="s2">&quot;grid_#{col + 1}: {width:#{grid_segment_width += (width.to_i / columns)}#{type}}\n&quot;</span>
     end
-    grid += &quot;.column {margin:0,10px;overflow:hidden;float:left;display:inline;}&quot;
+    grid +<span class="o">=</span> <span class="s2">&quot;.column {margin:0,10px;overflow:hidden;float:left;display:inline;}&quot;</span>
 
-    Sass::Script::String.new(grid)
+    Sass::Script::String.new<span class="o">(</span>grid<span class="o">)</span>
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>As you can see sass, being its awesome self, allows us to quickly add ruby to the functions module and call it directly in your SCSS files. The only caveat is that it expects arguments to be passed in as Sass::Script::Literal objects. Still, having to unwrap and rewrap objects coming in and out of the function is a small price to pay for ruby in your stylesheets.</p>
@@ -101,33 +100,30 @@ end
 <p>After thinking I just solved something important.  <a href="https://twitter.com/#!/chriseppstein">Chris Eppstein</a> responded to my gist with a much more sassy way to do the same thing in pure sass.  <a id="sass_implementation"></a></p>
 
 <p><script src='https://gist.github.com/2155905.js?file=gist-2.sass'></script><noscript></p>
-
-<pre lang="sh"><code>$grid-width: 960px !default;
-    $grid-columns: 12 !default;
-    @function grid-width($column, $columns: $grid-columns, $width: $grid-width) {
-        @return $width / $columns * $column;
-    }
-    @mixin insert-grid($columns: $grid-columns, $width: $grid-width, $base-class: &quot;column&quot;) {
-      .#{$base-class} {
+<div class="highlight"><pre><code class="sh"><span class="nv">$grid</span>-width: 960px !default;
+    <span class="nv">$grid</span>-columns: 12 !default;
+    @function grid-width<span class="o">(</span><span class="nv">$column</span>, <span class="nv">$columns</span>: <span class="nv">$grid</span>-columns, <span class="nv">$width</span>: <span class="nv">$grid</span>-width<span class="o">)</span> <span class="o">{</span>
+        @return <span class="nv">$width</span> / <span class="nv">$columns</span> * <span class="nv">$column</span>;
+    <span class="o">}</span>
+    @mixin insert-grid<span class="o">(</span><span class="nv">$columns</span>: <span class="nv">$grid</span>-columns, <span class="nv">$width</span>: <span class="nv">$grid</span>-width, <span class="nv">$base</span>-class: <span class="s2">&quot;column&quot;</span><span class="o">)</span> <span class="o">{</span>
+      .#<span class="o">{</span><span class="nv">$base</span>-class<span class="o">}</span> <span class="o">{</span>
         margin:   0 10px;
         overflow: hidden;
         float:    left;
         display:  inline;
-      }
-    @for $c from 1 through $columns {
-      .grid_#{$c} {
-        width: grid-width($c, $columns, $width);
-        @extend .#{$base-class};
-        }
-      }
-    }
+      <span class="o">}</span>
+    @for <span class="nv">$c</span> from 1 through <span class="nv">$columns</span> <span class="o">{</span>
+      .grid_#<span class="o">{</span><span class="nv">$c</span><span class="o">}</span> <span class="o">{</span>
+        width: grid-width<span class="o">(</span><span class="nv">$c</span>, <span class="nv">$columns</span>, <span class="nv">$width</span><span class="o">)</span>;
+        @extend .#<span class="o">{</span><span class="nv">$base</span>-class<span class="o">}</span>;
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
     @include insert-grid;
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>It's pretty obvious to see that adding a function in ruby to create a grid doesn't make much sense when you can write in pure scss that concisely.  However, I'm very excited to see what is possible with as easy as it was to implement custom functions.</p>
+<p>It&#39;s pretty obvious to see that adding a function in ruby to create a grid doesn&#39;t make much sense when you can write in pure scss that concisely.  However, I&#39;m very excited to see what is possible with as easy as it was to implement custom functions.</p>
 
 <span><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"

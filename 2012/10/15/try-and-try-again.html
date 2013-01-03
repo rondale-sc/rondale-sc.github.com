@@ -61,124 +61,112 @@
 
 <p>Attending MagicRuby this year provided me with many take-aways that I would like to discuss.  One of these is that of the NullObject Pattern (NOP).  There were a number of great presentations there, and I know this topic probably old hat for some of the longer-bearded fellows, but I really like the idea.</p>
 
-<p>I saw a brief glimpse into the NullObject pattern during Ben Orenstein's talk about refactoring [1].  Essentially, the Null Object pattern allows you to create a neutral object that takes the place of Nil.  In fancy terms, the NOP lets the client to ignore the difference between a null operation and a real operation via an abstraction layer.</p>
+<p>I saw a brief glimpse into the NullObject pattern during Ben Orenstein&#39;s talk about refactoring [1].  Essentially, the Null Object pattern allows you to create a neutral object that takes the place of Nil.  In fancy terms, the NOP lets the client to ignore the difference between a null operation and a real operation via an abstraction layer.</p>
 
 <p>I know your first question will invariablly be: Why?</p>
 
 <h2>The Why</h2>
 
-<p>Why would you use the Null Object pattern?  Let's go into a simple example.</p>
+<p>Why would you use the Null Object pattern?  Let&#39;s go into a simple example.</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-1.rb'></script><noscript></p>
-
-<pre lang="sh"><code>class Project
+<div class="highlight"><pre><code class="sh">class Project
   attr_reader :supervisor
 
-  # assume supervisor looks like:
-  # [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]
+  <span class="c"># assume supervisor looks like:</span>
+  <span class="c"># [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]</span>
 
-  def initialize(supervisor)
-    @supervisor = supervisor
+  def initialize<span class="o">(</span>supervisor<span class="o">)</span>
+    @supervisor <span class="o">=</span> supervisor
   end
 
   def display_name
-    if !supervisor
-      supervisor[0] + &quot;, &quot; + supervisor[1] # yuck
-    else
-      &quot;No supervisor assigned.&quot;
+    <span class="k">if</span> !supervisor
+      supervisor<span class="o">[</span>0<span class="o">]</span> + <span class="s2">&quot;, &quot;</span> + supervisor<span class="o">[</span>1<span class="o">]</span> <span class="c"># yuck</span>
+    <span class="k">else</span>
+      <span class="s2">&quot;No supervisor assigned.&quot;</span>
     end
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>So this is pretty straightforward.  We want to be able to display the assigned supervisors' name, and if the supervisor hasn't been set yet, we'd like to display the message &quot;No supervisor assigned.&quot;  And this code does that pretty well.  However, as we build this class out this gets pretty messy.  We'll continually have to check for the existence of <code>supervisor</code>.  The NullObject pattern helps us to remove this smell.</p>
+<p>So this is pretty straightforward.  We want to be able to display the assigned supervisors&#39; name, and if the supervisor hasn&#39;t been set yet, we&#39;d like to display the message &quot;No supervisor assigned.&quot;  And this code does that pretty well.  However, as we build this class out this gets pretty messy.  We&#39;ll continually have to check for the existence of <code>supervisor</code>.  The NullObject pattern helps us to remove this smell.</p>
 
 <h2>The How</h2>
 
-<p>Alright, so hopefully you are all on board with at least contemplating using the NullObject pattern, but what's next?  The first thing we need to do is refactor our class a bit.  Supervisor will likely have other methods defined and therefore merits its own class.  So let's do that now:</p>
+<p>Alright, so hopefully you are all on board with at least contemplating using the NullObject pattern, but what&#39;s next?  The first thing we need to do is refactor our class a bit.  Supervisor will likely have other methods defined and therefore merits its own class.  So let&#39;s do that now:</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-2.rb'></script><noscript></p>
-
-<pre lang="sh"><code>class Project
+<div class="highlight"><pre><code class="sh">class Project
   attr_reader :supervisor
 
-  # assume supervisor looks like:
-  # [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]
+  <span class="c"># assume supervisor looks like:</span>
+  <span class="c"># [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]</span>
 
-  def initialize(supervisor)
-    @supervisor = Supervisor.new(*supervisor)
+  def initialize<span class="o">(</span>supervisor<span class="o">)</span>
+    @supervisor <span class="o">=</span> Supervisor.new<span class="o">(</span>*supervisor<span class="o">)</span>
   end
 
-  Supervisor = Struct.new(:first_name, :last_name, :email) do
-    def display_name
-      if !first_name.nil? || !last_name.nil?
-        first_name + &quot;, &quot; + last_name
-      else
-        &quot;No supervisor assigned.&quot;
+  <span class="nv">Supervisor</span> <span class="o">=</span> Struct.new<span class="o">(</span>:first_name, :last_name, :email<span class="o">)</span> <span class="k">do</span>
+<span class="k">    </span>def display_name
+      <span class="k">if</span> !first_name.nil? <span class="o">||</span> !last_name.nil?
+        first_name + <span class="s2">&quot;, &quot;</span> + last_name
+      <span class="k">else</span>
+        <span class="s2">&quot;No supervisor assigned.&quot;</span>
       end
     end
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>That looks a little better; the supervisor class is now isolated and we have more of a clue as to what the supervisor object is responsible for.  However, we still have the same issue.  We are asking the object if it's nil in order to display the right #display_name.  This is where we'll actually create a NullObject and make it respond to the methods we expect supervisor to know.</p>
+<p>That looks a little better; the supervisor class is now isolated and we have more of a clue as to what the supervisor object is responsible for.  However, we still have the same issue.  We are asking the object if it&#39;s nil in order to display the right #display_name.  This is where we&#39;ll actually create a NullObject and make it respond to the methods we expect supervisor to know.</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-3.rb'></script><noscript></p>
-
-<pre lang="sh"><code>NullSupervisor = Struct.new() do
-  def display_name
-    &quot;No supervisor assigned.&quot;
+<div class="highlight"><pre><code class="sh"><span class="nv">NullSupervisor</span> <span class="o">=</span> Struct.new<span class="o">()</span> <span class="k">do</span>
+<span class="k">  </span>def display_name
+    <span class="s2">&quot;No supervisor assigned.&quot;</span>
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>So now our class, incorporated with the NullObject, looks like this:</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-4.rb'></script><noscript></p>
-
-<pre lang="sh"><code>class Project
+<div class="highlight"><pre><code class="sh">class Project
   attr_reader :supervisor
 
-  # assume supervisor looks like:
-  # [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]
+  <span class="c"># assume supervisor looks like:</span>
+  <span class="c"># [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]</span>
 
-  def initialize(supervisor=nil)
-    @supervisor = supervisor.nil? ? NullSupervisor.new : Supervisor.new(*supervisor)
+  def initialize<span class="o">(</span><span class="nv">supervisor</span><span class="o">=</span>nil<span class="o">)</span>
+    @supervisor <span class="o">=</span> supervisor.nil? ? NullSupervisor.new : Supervisor.new<span class="o">(</span>*supervisor<span class="o">)</span>
   end
 
-  Supervisor = Struct.new(:first_name, :last_name, :email) do
-    def display_name
-      first_name + &quot;, &quot; + last_name
+  <span class="nv">Supervisor</span> <span class="o">=</span> Struct.new<span class="o">(</span>:first_name, :last_name, :email<span class="o">)</span> <span class="k">do</span>
+<span class="k">    </span>def display_name
+      first_name + <span class="s2">&quot;, &quot;</span> + last_name
     end
   end
 
-  NullSupervisor = Struct.new() do
-    def display_name
-      &quot;No supervisor assigned.&quot;
+  <span class="nv">NullSupervisor</span> <span class="o">=</span> Struct.new<span class="o">()</span> <span class="k">do</span>
+<span class="k">    </span>def display_name
+      <span class="s2">&quot;No supervisor assigned.&quot;</span>
     end
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <h2>What did we just do?</h2>
 
-<p>We placed an abstraction layer between Project and 'Supervisor'.  Depending on how you initialize Project supervisor will be a class of either Supervisor or NullSupervisor.  This difference is transparent to the Client, in this case class Project, and allows you to be more declarative in your code.</p>
+<p>We placed an abstraction layer between Project and &#39;Supervisor&#39;.  Depending on how you initialize Project supervisor will be a class of either Supervisor or NullSupervisor.  This difference is transparent to the Client, in this case class Project, and allows you to be more declarative in your code.</p>
 
 <p>** Side note **</p>
 
-<p>The use of Struct.new to reveal the intent of the supervisor array is taken from both Ben, who mentioned something similar in his talk, and from Sandi Metz' book <strong><em>Practical Object Oriented Design</em></strong> [2]</p>
+<p>The use of Struct.new to reveal the intent of the supervisor array is taken from both Ben, who mentioned something similar in his talk, and from Sandi Metz&#39; book <strong><em>Practical Object Oriented Design</em></strong> [2]</p>
 
 <h2>The Downside</h2>
 
@@ -186,7 +174,7 @@ end
 
 <p>A quick definition of coupling is &quot;the degree to which each program module relies on each one of the other modules.&quot;[3]  In this case, any time you add a method to Supervisor you must create a mirror of it on NullSupervisor.</p>
 
-<p>Personally, I think if you want to have custom fuctions for a NullObject represenation of a particular data structure, you should actually put some thought into it, so this coupling doesn't bother me too much.  It's pretty easy to understand and allows you to write code with authority.  However, sometimes this just isn't the right fit, and if it's not, go with something else.</p>
+<p>Personally, I think if you want to have custom fuctions for a NullObject represenation of a particular data structure, you should actually put some thought into it, so this coupling doesn&#39;t bother me too much.  It&#39;s pretty easy to understand and allows you to write code with authority.  However, sometimes this just isn&#39;t the right fit, and if it&#39;s not, go with something else.</p>
 
 <h2>Conclusion</h2>
 
@@ -199,11 +187,11 @@ end
 
 <h4>References</h4>
 
-<p><span  style="font-size:12px;">1.) <a href="http://programme.scottishrubyconference.com/proposals/78/video">Ben Orenstein's talk from Scottish Ruby</a></span><br/>
+<p><span  style="font-size:12px;">1.) <a href="http://programme.scottishrubyconference.com/proposals/78/video">Ben Orenstein&#39;s talk from Scottish Ruby</a></span><br/>
 <span  style="font-size:12px;">2.) <a href="http://www.amazon.com/dp/0321721330">Practical Object-Oriented Design in Ruby - Sandi Metz</a></span><br/>
 <span  style="font-size:12px;">3.) <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">Wiki Entry on Null Object Pattern</a></span><br/></p>
 
-<p><small>I hadn't read all of the additional references section until after I'd finished work on this article.  Some really great stuff here.  Take special note of Avdi's article, as it covers this topic in more depth.</small></p>
+<p><small>I hadn&#39;t read all of the additional references section until after I&#39;d finished work on this article.  Some really great stuff here.  Take special note of Avdi&#39;s article, as it covers this topic in more depth.</small></p>
 
 <h4>Additional References</h4>
 

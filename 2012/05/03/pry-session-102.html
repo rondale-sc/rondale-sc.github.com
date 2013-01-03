@@ -59,7 +59,7 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>Many of you have read my previous posts about the ruby REPL Pry.  If not, you should check them out: <a href="http://jonathan-jackson.net/give-it-a-pry">Give it a Pry</a> and <a href="http://jonathan-jackson.net/make-it-your-own">Make It Your Own</a>.  During the months since writing those articles, Pry has made major strides in many areas.  I'd like to spend the next few minutes going through some of the newer features and re-invigorate your interested in Pry.  Remember, just like before, Pry has amazing documentation, helpful maintainers, and solid community backing.  So be sure to look around for additional information.</p>
+<p>Many of you have read my previous posts about the ruby REPL Pry.  If not, you should check them out: <a href="http://jonathan-jackson.net/give-it-a-pry">Give it a Pry</a> and <a href="http://jonathan-jackson.net/make-it-your-own">Make It Your Own</a>.  During the months since writing those articles, Pry has made major strides in many areas.  I&#39;d like to spend the next few minutes going through some of the newer features and re-invigorate your interested in Pry.  Remember, just like before, Pry has amazing documentation, helpful maintainers, and solid community backing.  So be sure to look around for additional information.</p>
 
 <p><img style="margin:auto;" src='http://www.jonathan-jackson.net/images/pry_image.png'/></p>
 
@@ -75,15 +75,15 @@
 <li><a href="https://github.com/pry/pry/wiki/Special-Locals#wiki-In_and_out">play-print</a></li>
 </ul>
 
-<p>Writing multi-line commands in a REPL can often be quite annoying.  Usually, if you make an error on any line, you'll need to rewrite from the beginning.  This is why I typically recommend integrating your REPL with a gem like interactive_editor, which gives you a tempfile to edit in your default editor and calls <code>eval()</code> when you close.  With Pry, you have these features built in along with several additional features.</p>
+<p>Writing multi-line commands in a REPL can often be quite annoying.  Usually, if you make an error on any line, you&#39;ll need to rewrite from the beginning.  This is why I typically recommend integrating your REPL with a gem like interactive_editor, which gives you a tempfile to edit in your default editor and calls <code>eval()</code> when you close.  With Pry, you have these features built in along with several additional features.</p>
 
-<p>Before we move on, let's cover Pry's prompt.  The Pry prompt has a lot of information available for you at a glance.</p>
+<p>Before we move on, let&#39;s cover Pry&#39;s prompt.  The Pry prompt has a lot of information available for you at a glance.</p>
 
 <p><code>[1] pry(main)&gt;</code></p>
 
-<p>The number is the current <s>input buffer line number</s> <em>expression number</em> and it will increment as you enter <s>more lines</s> another expression.  Many Pry commands will allow you to specify the line you'd like to work with by setting the <code>-i</code> flag and passing the <s>input buffer line number</s> <em>expression number</em>.  The word in parenthesis is the current <code>self</code> and can be changed using the <code>cd</code> and <code>cd ..</code> commands.</p>
+<p>The number is the current <s>input buffer line number</s> <em>expression number</em> and it will increment as you enter <s>more lines</s> another expression.  Many Pry commands will allow you to specify the line you&#39;d like to work with by setting the <code>-i</code> flag and passing the <s>input buffer line number</s> <em>expression number</em>.  The word in parenthesis is the current <code>self</code> and can be changed using the <code>cd</code> and <code>cd ..</code> commands.</p>
 
-<p><small><em>edit</em> - John Mair asked me to correct my usage of the term input buffer line number.  I've made corrections through the post but to summarize:  The number in the Pry prompt is not the input buffer line, but rather the expression number.  In a multi-line expression (for example a method definition) each line associated is assigned a shared expression number which increments per expression.  In short, it's not a line number.</small></p>
+<p><small><em>edit</em> - John Mair asked me to correct my usage of the term input buffer line number.  I&#39;ve made corrections through the post but to summarize:  The number in the Pry prompt is not the input buffer line, but rather the expression number.  In a multi-line expression (for example a method definition) each line associated is assigned a shared expression number which increments per expression.  In short, it&#39;s not a line number.</small></p>
 
 <p>Be sure to set your default editor in your ~/.pryrc file by adding the following line <code>Pry.config.editor = &quot;mate&quot;</code></p>
 
@@ -92,19 +92,16 @@
 <p><code>amend-line</code> command which allows you to modify specific lines in your input buffer.</p>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-1.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; def hello
-[1] pry(main)*   puts &quot;Howdy, #{name}&quot;
-[1] pry(main)*   amend-line 1 def hello(name)  # Pry goodness
-#  1: def hello(name)
-#  2:   puts &quot;Howdy, #{name}&quot;
-[1] pry(main)*   end
-#  =&gt; nil
-[2] pry(main)&gt; hello &quot;Jon&quot;
-#  =&gt; Howdy, Jon
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; def hello
+<span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>*   puts <span class="s2">&quot;Howdy, #{name}&quot;</span>
+<span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>*   amend-line 1 def hello<span class="o">(</span>name<span class="o">)</span>  <span class="c"># Pry goodness</span>
+<span class="c">#  1: def hello(name)</span>
+<span class="c">#  2:   puts &quot;Howdy, #{name}&quot;</span>
+<span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>*   end
+<span class="c">#  =&gt; nil</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; hello <span class="s2">&quot;Jon&quot;</span>
+<span class="c">#  =&gt; Howdy, Jon</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>If we wanted to edit the method in our default editor instead of using <code>amend-line</code>, we could use the <code>edit</code> command.   The <code>edit</code> command acts identically to interactive editor with a few notable exceptions.  Without any arguments, <code>edit</code> will open a tempfile and insert the contents of your input buffer.  Give it a try:</p>
@@ -112,14 +109,11 @@
 <h5>Ex. 1.1 (Edit)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-2.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; puts 'blah'
-# =&gt; blah
-[2] pry(main)&gt; edit
-# editor opens with `puts 'blah'`
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s1">&#39;blah&#39;</span>
+<span class="c"># =&gt; blah</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit
+<span class="c"># editor opens with `puts &#39;blah&#39;`</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>The <code>edit</code> command takes optional arguments to increase its usefulness.  Pass <code>-t</code> to open an empty tmpfile.</p>
@@ -127,14 +121,11 @@
 <h5>Ex 1.2 (Edit empty tempfile)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-3.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; puts 'blah'
-# =&gt; blah
-[2] pry(main)&gt; edit
-# editor opens empty tempfile
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s1">&#39;blah&#39;</span>
+<span class="c"># =&gt; blah</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit
+<span class="c"># editor opens empty tempfile</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>One of the neatest features of the <code>edit</code> commands is the <code>-ex</code> flag.  The <code>-ex</code> flag will open the relevant file at the line that generated the last exception.</p>
@@ -142,20 +133,17 @@
 <h5>Ex. 1.3 (Edit from last exception)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-4.rb'></script><noscript></p>
-
-<pre lang="sh"><code># cat /Users/jjackson/Desktop/hello-exception.rb
-# def hello
-#  raise StandardError
-# end
-#
-[2] pry(main)&gt; hello
-# =&gt; StandardError: StandardError
-#    from /Users/jjackson/Desktop/hello-exception.rb:2:in `hello'
-[3] pry(main)&gt; edit -ex
-# Will open file in editor on line that produced error.
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="c"># cat /Users/jjackson/Desktop/hello-exception.rb</span>
+<span class="c"># def hello</span>
+<span class="c">#  raise StandardError</span>
+<span class="c"># end</span>
+<span class="c">#</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; hello
+<span class="c"># =&gt; StandardError: StandardError</span>
+<span class="c">#    from /Users/jjackson/Desktop/hello-exception.rb:2:in `hello&#39;</span>
+<span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit -ex
+<span class="c"># Will open file in editor on line that produced error.</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Lastly, using <code>edit</code> with the <code>-i</code> flag you can open a specific line into your editor:</p>
@@ -163,15 +151,12 @@
 <h5>Ex. 1.4 (Edit specific line with edit -i)</h5>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-23.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; puts &quot;Won't be opened&quot;
-# Won't be opened
-[2] pry(main)&gt; puts &quot;Will be opened.&quot;
-# Will be opened.
-[3] pry(main)&gt; edit -i 2
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Won&#39;t be opened&quot;</span>
+<span class="c"># Won&#39;t be opened</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Will be opened.&quot;</span>
+<span class="c"># Will be opened.</span>
+<span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit -i 2
+</code></pre></div>
 <p></noscript></p>
 
 <p>Pretty sweet amarite?</p>
@@ -181,16 +166,13 @@
 <h5>Ex. 1.5 (Print/Play input_buffer)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-5.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; puts &quot;Blah&quot;
-#=&gt; Blah
-[2] pry(main)&gt; cat -i # pass line number or range to restrict output
-#=&gt; puts &quot;Blah&quot;
-[3] pry(main)&gt; play -i 1
-#=&gt; Blah
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Blah&quot;</span>
+<span class="c">#=&gt; Blah</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat -i <span class="c"># pass line number or range to restrict output</span>
+<span class="c">#=&gt; puts &quot;Blah&quot;</span>
+<span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; play -i 1
+<span class="c">#=&gt; Blah</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h2>2.) ExceptionzzzzZz</h2>
@@ -207,41 +189,35 @@
 <h5>Ex. 2 (Print exception with wtf?)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-6.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; called_this_method_without_defining_it_first
-# NameError: undefined local variable or method `called_this_method_without_defining_it_first' for main:Object
-# from (pry):1:in `&lt;main&gt;'
-[2] pry(main)&gt; wtf?
-# Exception: NameError: undefined local variable or method `called_this_without_defining_it_first' for main:Object
-# --
-# 0: (pry):1:in `&lt;main&gt;'
-# 1: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/# pry_instance.rb:249:in `eval'
-# 2: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb:249:in `re'
-# 3: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb:227:in `rep'
-# etc..
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; called_this_method_without_defining_it_first
+<span class="c"># NameError: undefined local variable or method `called_this_method_without_defining_it_first&#39; for main:Object</span>
+<span class="c"># from (pry):1:in `&lt;main&gt;&#39;</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; wtf?
+<span class="c"># Exception: NameError: undefined local variable or method `called_this_without_defining_it_first&#39; for main:Object</span>
+<span class="c"># --</span>
+<span class="c"># 0: (pry):1:in `&lt;main&gt;&#39;</span>
+<span class="c"># 1: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/# pry_instance.rb:249:in `eval&#39;</span>
+<span class="c"># 2: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb:249:in `re&#39;</span>
+<span class="c"># 3: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb:227:in `rep&#39;</span>
+<span class="c"># etc..</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>The next method is <code>cat -ex</code> which allows you to specify the backtrace level you'd like to see.  This is great when you'd like to get a little more context from your backtrace.  It is called <code>cat -ex &lt;n&gt;</code>, where <code>n</code> is the backtrace level you'd like to explore.  For example:</p>
+<p>The next method is <code>cat -ex</code> which allows you to specify the backtrace level you&#39;d like to see.  This is great when you&#39;d like to get a little more context from your backtrace.  It is called <code>cat -ex &lt;n&gt;</code>, where <code>n</code> is the backtrace level you&#39;d like to explore.  For example:</p>
 
 <h5>Ex. 2.1 (Print context of exception with cat -ex)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-7.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; called_this_without_defining_it_first
-# NameError: undefined local variable or method `called_this_without_defining_it_first' for main:Object
-# from (pry):1:in `&lt;main&gt;'
-[2] pry(main)&gt; cat -ex
-# Exception: NameError: undefined local # variable or method `called_this_without_defining_it_first' for main:Object
-# --
-# From: (pry) @ line 1 @ level: 0 of backtrace (of 19).
-#
-# =&gt; 1: called_this_without_defining_it_first
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; called_this_without_defining_it_first
+<span class="c"># NameError: undefined local variable or method `called_this_without_defining_it_first&#39; for main:Object</span>
+<span class="c"># from (pry):1:in `&lt;main&gt;&#39;</span>
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat -ex
+<span class="c"># Exception: NameError: undefined local # variable or method `called_this_without_defining_it_first&#39; for main:Object</span>
+<span class="c"># --</span>
+<span class="c"># From: (pry) @ line 1 @ level: 0 of backtrace (of 19).</span>
+<span class="c">#</span>
+<span class="c"># =&gt; 1: called_this_without_defining_it_first</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Let me clarify the above code.  I called the variable <code>called_this_without_defining_it_first</code> which triggered an exception.  Once I had the exception I called <code>cat -ex</code>, which printed the context surounding level 0 of the backtrace.  If I needed to see the next level, I would simply passed 1 like so:</p>
@@ -249,26 +225,23 @@
 <h5>Ex. 2.2 (Print context of exception explicitly setting stack level)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-8.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[3] pry(main)&gt; cat -ex 1
-# Exception: NameError: undefined local variable or method # `called_this_without_defining_it_first' for main:Object
-# --
-# From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb @ line 249 @ level: 1 of backtrace (of 19).
-#
-#    244:     # moved into the scope of a new Binding (e.g the user typed `cd`)
-#    245:     inject_sticky_locals(target)
-#    246:
-#    247:     code = r(target)
-#    248:
-# =&gt; 249:     result = target.eval(code, Pry.eval_path, Pry.current_line)
-#    250:     set_last_result(result, target, code)
-#    251:
-#    252:     result
-#    253:   rescue RescuableException =&gt; e
-#    254:     self.last_exception = e
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat -ex 1
+<span class="c"># Exception: NameError: undefined local variable or method # `called_this_without_defining_it_first&#39; for main:Object</span>
+<span class="c"># --</span>
+<span class="c"># From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb @ line 249 @ level: 1 of backtrace (of 19).</span>
+<span class="c">#</span>
+<span class="c">#    244:     # moved into the scope of a new Binding (e.g the user typed `cd`)</span>
+<span class="c">#    245:     inject_sticky_locals(target)</span>
+<span class="c">#    246:</span>
+<span class="c">#    247:     code = r(target)</span>
+<span class="c">#    248:</span>
+<span class="c"># =&gt; 249:     result = target.eval(code, Pry.eval_path, Pry.current_line)</span>
+<span class="c">#    250:     set_last_result(result, target, code)</span>
+<span class="c">#    251:</span>
+<span class="c">#    252:     result</span>
+<span class="c">#    253:   rescue RescuableException =&gt; e</span>
+<span class="c">#    254:     self.last_exception = e</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Which displays the context surounding the next level of the backtrace.  This allows you to really dig into your exceptions without all the tedium that normally surrounds the process.  +1</p>
@@ -283,32 +256,29 @@
 <li><a href="https://github.com/pry/pry/wiki/Pry-rc">The ~/.pryrc file</a></li>
 </ul>
 
-<p>In <a href="http://jonathan-jackson.net/give-it-a-pry">Give it a Pry</a>, I talk about how easy it is to become familiar with navigation in Pry.  One oft-overlooked feature of Pry navigation that has helped me recently is <code>Pry::NAV_PROMPT</code>, which let's you more easily visualize where you are within your Pry session.</p>
+<p>In <a href="http://jonathan-jackson.net/give-it-a-pry">Give it a Pry</a>, I talk about how easy it is to become familiar with navigation in Pry.  One oft-overlooked feature of Pry navigation that has helped me recently is <code>Pry::NAV_PROMPT</code>, which let&#39;s you more easily visualize where you are within your Pry session.</p>
 
 <p>Imagine you have a class that looks like this:</p>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-9.rb'></script><noscript></p>
-
-<pre lang="sh"><code>class MyClass
+<div class="highlight"><pre><code class="sh">class MyClass
   class MySubClass
     class MySubSubClass
       class Incepted
 
         def self.spinning_top
-          while true do
-            puts &quot;**Spinning**&quot;
+          <span class="k">while </span><span class="nb">true </span><span class="k">do</span>
+<span class="k">            </span>puts <span class="s2">&quot;**Spinning**&quot;</span>
             sleep 2
           end
-          puts &quot;trolololo&quot;
+          puts <span class="s2">&quot;trolololo&quot;</span>
         end
 
       end
     end
   end
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>Now set <code>Pry.config.prompt = Pry::NAV_PROMPT</code> in your <code>~/.pryrc</code> file.  Start up Pry and require <code>MyClass</code>.</p>
@@ -316,55 +286,46 @@ end
 <h5>Ex. 3 (Using Pry::NAV_PROMPT)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-10.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[2] (pry) main: 0&gt; cd MyClass::MySubClass::MySubSubClass::Incepted
-[2] (pry) main / MyClass::MySubClass::MySubSubClass::Incepted: 1&gt; spinning_top
-#=&gt; **Spinning**
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>2<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main: 0&gt; <span class="nb">cd </span>MyClass::MySubClass::MySubSubClass::Incepted
+<span class="o">[</span>2<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass::MySubClass::MySubSubClass::Incepted: 1&gt; spinning_top
+<span class="c">#=&gt; **Spinning**</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>We've changed the context of self and <code>Pry::NAV_PROMPT</code> is allowing us to see how deep we are.  In this case, since we changed directly to the innermost class, we see only one context.  If we were to <code>cd</code> through these classes individually, we'd see each individual context switch we've made.</p>
+<p>We&#39;ve changed the context of self and <code>Pry::NAV_PROMPT</code> is allowing us to see how deep we are.  In this case, since we changed directly to the innermost class, we see only one context.  If we were to <code>cd</code> through these classes individually, we&#39;d see each individual context switch we&#39;ve made.</p>
 
 <h5>Ex. 3.1 (Using Pry::NAV_PROMPT cont.)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-11.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[8] (pry) main: 0&gt; cd MyClass
-[9] (pry) main / MyClass: 1&gt; cd MySubClass
-[10] (pry) main / MyClass / MyClass::MySubClass: 2&gt; cd MySubSubClass
-[11] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&gt; cd Incepted
-[12] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass / MyClass::MySubClass::MySubSubClass::Incepted: 4&gt;spinning_top
-#=&gt;  **Spinning**
-#=&gt;  **Spinning**
-#
-# Now if we wanted to go back into MySubSubClass we could type `exit` or:
-#
-[12] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass / MyClass::MySubClass::MySubSubClass::Incepted: 4&gt; cd ..
-[13] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&gt;
-# or to exit completely
-[16] (pry) main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&gt; !!!
-$~
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>8<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main: 0&gt; <span class="nb">cd </span>MyClass
+<span class="o">[</span>9<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass: 1&gt; <span class="nb">cd </span>MySubClass
+<span class="o">[</span>10<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass: 2&gt; <span class="nb">cd </span>MySubSubClass
+<span class="o">[</span>11<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&gt; <span class="nb">cd </span>Incepted
+<span class="o">[</span>12<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass / MyClass::MySubClass::MySubSubClass::Incepted: 4&gt;spinning_top
+<span class="c">#=&gt;  **Spinning**</span>
+<span class="c">#=&gt;  **Spinning**</span>
+<span class="c">#</span>
+<span class="c"># Now if we wanted to go back into MySubSubClass we could type `exit` or:</span>
+<span class="c">#</span>
+<span class="o">[</span>12<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass / MyClass::MySubClass::MySubSubClass::Incepted: 4&gt; <span class="nb">cd</span> ..
+<span class="o">[</span>13<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&gt;
+<span class="c"># or to exit completely</span>
+<span class="o">[</span>16<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&gt; !!!
+<span class="nv">$~</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Pretty awesome stuff here.</p>
 
-<p>Let's assume for a minute that you'd like to explore some of the different methods available to you.  Pry enables you to find methods based off of patterns then view and edit them without ever leaving your prompt.  We'll continue to use <code>MyClass</code> for simpicity's sake.</p>
+<p>Let&#39;s assume for a minute that you&#39;d like to explore some of the different methods available to you.  Pry enables you to find methods based off of patterns then view and edit them without ever leaving your prompt.  We&#39;ll continue to use <code>MyClass</code> for simpicity&#39;s sake.</p>
 
 <h5>Ex. 3.2 (Using find-method)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-12.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[2] pry(main)&gt; find-method spinning_top
-#
-# MyClass::MySubClass::MySubSubClass::Incepted.spinning_top: def self.spinning_top
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; find-method spinning_top
+<span class="c">#</span>
+<span class="c"># MyClass::MySubClass::MySubSubClass::Incepted.spinning_top: def self.spinning_top</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>I just searched for spinning_top without giving Pry any more instructions.  It found the exact method I was looking for, dispite being several levels deep.  Once again, Awesome!</p>
@@ -374,31 +335,25 @@ $~
 <h5>Ex. 3.3 (edit-method in editor)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-13.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[5] pry(main)&gt; edit-method MyClass::MySubClass::MySubSubClass::Incepted.spinning_top
-# or
-[5] pry(main)&gt; cd MyClass::MySubClass::MySubSubClass::Incepted
-[6] pry(MyClass::MySubClass::MySubSubClass::Incepted):1&gt; edit-method spinning_top
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>5<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit-method MyClass::MySubClass::MySubSubClass::Incepted.spinning_top
+<span class="c"># or</span>
+<span class="o">[</span>5<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nb">cd </span>MyClass::MySubClass::MySubSubClass::Incepted
+<span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>MyClass::MySubClass::MySubSubClass::Incepted<span class="o">)</span>:1&gt; edit-method spinning_top
+</code></pre></div>
 <p></noscript></p>
 
-<p>Alternatively, with <code>find-method -c</code> you can grep your source code for specific strings.  Here we'll look in Pry itself.</p>
+<p>Alternatively, with <code>find-method -c</code> you can grep your source code for specific strings.  Here we&#39;ll look in Pry itself.</p>
 
 <h5>Ex. 3.4 (Find method with -c flag to grep for string)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-14.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[1] pry(main)&gt; cd  Pry
-[2] pry(Pry):1&gt; find-method -c save_history
-#
-# Pry.save_history: def self.save_history
-# Pry
-# Pry#repl_epilogue:   Pry.save_history if Pry.config.history.should_save &amp;&amp; # Pry.active_sessions == 0
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nb">cd  </span>Pry
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>Pry<span class="o">)</span>:1&gt; find-method -c save_history
+<span class="c">#</span>
+<span class="c"># Pry.save_history: def self.save_history</span>
+<span class="c"># Pry</span>
+<span class="c"># Pry#repl_epilogue:   Pry.save_history if Pry.config.history.should_save &amp;&amp; # Pry.active_sessions == 0</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Sexy.</p>
@@ -417,22 +372,19 @@ $~
 <h5>Ex. 4 (Using _file_ and _dir_)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-15.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[3] pry(main)&gt; show-method Pry#backtrace=
-#
-# From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/ pry_instance.rb @ line 27:
-# Number of lines: 1
-# Owner: Pry
-# Visibility: public
-#
-# attr_accessor :backtrace
-[4] pry(main)&gt; _file_
-# =&gt; &quot;/Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb&quot;
-[5] pry(main)&gt; _dir_
-# =&gt; &quot;/Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry&quot;
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; show-method Pry#backtrace<span class="o">=</span>
+<span class="c">#</span>
+<span class="c"># From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/ pry_instance.rb @ line 27:</span>
+<span class="c"># Number of lines: 1</span>
+<span class="c"># Owner: Pry</span>
+<span class="c"># Visibility: public</span>
+<span class="c">#</span>
+<span class="c"># attr_accessor :backtrace</span>
+<span class="o">[</span>4<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; _file_
+<span class="c"># =&gt; &quot;/Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb&quot;</span>
+<span class="o">[</span>5<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; _dir_
+<span class="c"># =&gt; &quot;/Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry&quot;</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>To view the contents of the above file you can do something like:</p>
@@ -440,26 +392,20 @@ $~
 <h5>Ex. 4.1 (Using _file_ to view source)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-16.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[6] pry(main)&gt; cat #{_file_}
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat <span class="c">#{_file_}</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Another amazing feature: passing <code>show-source</code> the <code>-a</code> flag.  This will show all active monkey-patches, which is great for when you stumble on code that does things like this:</p>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-17.rb'></script><noscript></p>
-
-<pre lang="sh"><code># cat devil.rb
+<div class="highlight"><pre><code class="sh"><span class="c"># cat devil.rb</span>
  class TrueClass
     def to_s
-      &quot;false&quot;
+      <span class="s2">&quot;false&quot;</span>
     end
   end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <p>To see this insidiousness:</p>
@@ -467,23 +413,20 @@ $~
 <h5>Ex. 4.2 (Using show-source -a to view active monkey-patches)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-18.rb'></script><noscript></p>
-
-<pre lang="sh"><code>[6] pry(main)&gt; show-source -a TrueClass
-# Found 2 candidates for `TrueClass` definition:
-#
-# Candidate 1/2:  @ line :
-#
-#
-# Candidate 2/2: (pry) @ line 1:
-#
-# class TrueClass
-#   def to_s
-#     &quot;false&quot;
-#   end
-# end
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; show-source -a TrueClass
+<span class="c"># Found 2 candidates for `TrueClass` definition:</span>
+<span class="c">#</span>
+<span class="c"># Candidate 1/2:  @ line :</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c"># Candidate 2/2: (pry) @ line 1:</span>
+<span class="c">#</span>
+<span class="c"># class TrueClass</span>
+<span class="c">#   def to_s</span>
+<span class="c">#     &quot;false&quot;</span>
+<span class="c">#   end</span>
+<span class="c"># end</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h2>5.) Remote Debugging with pry-remote &amp;&amp; pry-remote-em</h2>
@@ -495,44 +438,38 @@ $~
 <li><a href="https://github.com/Mon-Ouie/pry-remote">pry-remote Github</a></li>
 </ul>
 
-<p>I'm going to briefly run through some really neat features available in Pry from its plugin system.  Briefly, because they've been covered in more depth by <a href="https://github.com/banister">John Mair</a> on his <a href="http://banisterfiend.wordpress.com/2012/02/14/the-pry-ecosystem/">blog</a>.</p>
+<p>I&#39;m going to briefly run through some really neat features available in Pry from its plugin system.  Briefly, because they&#39;ve been covered in more depth by <a href="https://github.com/banister">John Mair</a> on his <a href="http://banisterfiend.wordpress.com/2012/02/14/the-pry-ecosystem/">blog</a>.</p>
 
 <p><code>pry-remote</code> uses the DRb library and allows you to use calls to <code>binding.pry</code> remotely.  All you need to do is use <code>binding.remote_pry</code> and run your program.</p>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-19.rb'></script><noscript></p>
-
-<pre lang="sh"><code>require 'pry-remote'
+<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;pry-remote&#39;</span>
 
 class Hello
-  def hello(name)
+  def hello<span class="o">(</span>name<span class="o">)</span>
     binding.remote_pry
-    &quot;Howdy, #{name}.&quot;
+    <span class="s2">&quot;Howdy, #{name}.&quot;</span>
   end
 end
 
-Hello.new.hello &quot;Jon&quot;
-
-</code></pre>
-
+Hello.new.hello <span class="s2">&quot;Jon&quot;</span>
+</code></pre></div>
 <p></noscript></p>
 
-<p>Once you've run your program you simply run <code>pry-remote</code>, which will toss you into a Pry session with the appropriate binding.</p>
+<p>Once you&#39;ve run your program you simply run <code>pry-remote</code>, which will toss you into a Pry session with the appropriate binding.</p>
 
 <h5>Ex. 5 (Using binding.remote-pry)</h5>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-20.rb'></script><noscript></p>
-
-<pre lang="sh"><code># From: test.rb @ line 4 Hello#hello:
-#
-#    4:   def hello(name)
-# =&gt; 5:     binding.remote_pry
-#    6:     &quot;Howdy, #{name}.&quot;
-#    7:   end
-#
-[1] pry(#&lt;Hello&gt;)&gt;
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="c"># From: test.rb @ line 4 Hello#hello:</span>
+<span class="c">#</span>
+<span class="c">#    4:   def hello(name)</span>
+<span class="c"># =&gt; 5:     binding.remote_pry</span>
+<span class="c">#    6:     &quot;Howdy, #{name}.&quot;</span>
+<span class="c">#    7:   end</span>
+<span class="c">#</span>
+<span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span><span class="c">#&lt;Hello&gt;)&gt;</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>Alternatively, you could use <code>pry-remote-em</code>, which works similarly to <code>remote-pry</code>, but uses event-machine and has support for authentication and SSL.</p>
@@ -545,50 +482,44 @@ Hello.new.hello &quot;Jon&quot;
 <li><a href="https://github.com/nixme/pry-nav">pry-nav Github</a></li>
 </ul>
 
-<p>A Pry call to <code>binding.pry</code> is a truly powerful thing, but if you are like most of the Ruby community, you'll find this limiting at some point.  Enter <code>pry-nav</code> after installing this plugin and you will have access to <code>next</code>, <code>continue</code>, and <code>step</code> commands from within the context of your bindings.</p>
+<p>A Pry call to <code>binding.pry</code> is a truly powerful thing, but if you are like most of the Ruby community, you&#39;ll find this limiting at some point.  Enter <code>pry-nav</code> after installing this plugin and you will have access to <code>next</code>, <code>continue</code>, and <code>step</code> commands from within the context of your bindings.</p>
 
 <h5>Ex. 6 (Using Pry-nav)</h5>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-21.rb'></script><noscript></p>
-
-<pre lang="sh"><code># Using test.rb from above
-$~ ruby test.rb
-#
-# From: test.rb @ line 4 Hello#hello:
-#
-#    4:   def hello(name)
-# =&gt; 5:     binding.pry
-#    6:     &quot;Howdy, #{name}.&quot;
-#    7:   end
-#
- [1] pry(#&lt;Hello&gt;)&gt; next
-#
-# From: test.rb @ line 4 Hello#hello:
-#
-#    4:   def hello(name)
-#    5:     binding.pry
-# =&gt; 6:     &quot;Howdy, #{name}.&quot;
-#    7:   end
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh"><span class="c"># Using test.rb from above</span>
+<span class="nv">$~</span> ruby test.rb
+<span class="c">#</span>
+<span class="c"># From: test.rb @ line 4 Hello#hello:</span>
+<span class="c">#</span>
+<span class="c">#    4:   def hello(name)</span>
+<span class="c"># =&gt; 5:     binding.pry</span>
+<span class="c">#    6:     &quot;Howdy, #{name}.&quot;</span>
+<span class="c">#    7:   end</span>
+<span class="c">#</span>
+ <span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span><span class="c">#&lt;Hello&gt;)&gt; next</span>
+<span class="c">#</span>
+<span class="c"># From: test.rb @ line 4 Hello#hello:</span>
+<span class="c">#</span>
+<span class="c">#    4:   def hello(name)</span>
+<span class="c">#    5:     binding.pry</span>
+<span class="c"># =&gt; 6:     &quot;Howdy, #{name}.&quot;</span>
+<span class="c">#    7:   end</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>This allows you to step through your code easily.  Alias your commands in your <code>~/.pryrc</code> file like so:</p>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-22.rb'></script><noscript></p>
-
-<pre lang="sh"><code>Pry.commands.alias_command 'c', 'continue'
-Pry.commands.alias_command 's', 'step'
-Pry.commands.alias_command 'n', 'next'
-
-</code></pre>
-
+<div class="highlight"><pre><code class="sh">Pry.commands.alias_command <span class="s1">&#39;c&#39;</span>, <span class="s1">&#39;continue&#39;</span>
+Pry.commands.alias_command <span class="s1">&#39;s&#39;</span>, <span class="s1">&#39;step&#39;</span>
+Pry.commands.alias_command <span class="s1">&#39;n&#39;</span>, <span class="s1">&#39;next&#39;</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h1>Conclusions</h1>
 
-<p>So, that's all for now folks.  Understand that this is still only barely scratching the surface of what Pry can do.  It's a REPL with truly wonderful capabilities. If you incorporate it into your daily coding, you'll definitely be glad you did.  I hope that this article has convinced some more of you to <em>Give it a Pry</em>.</p>
+<p>So, that&#39;s all for now folks.  Understand that this is still only barely scratching the surface of what Pry can do.  It&#39;s a REPL with truly wonderful capabilities. If you incorporate it into your daily coding, you&#39;ll definitely be glad you did.  I hope that this article has convinced some more of you to <em>Give it a Pry</em>.</p>
 
 <p>The Pry team is led by <a href="https://github.com/banister">John Mair</a>. See the <a href="https://github.com/pry/pry/blob/master/CONTRIBUTORS">CONTRIBUTORS</a> file to learn more about them.</p>
 

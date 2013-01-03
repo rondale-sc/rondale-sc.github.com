@@ -59,29 +59,25 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>So you've started using pry.  You've likely found this article from my previous article <a href="http://www.jonathan-jackson.net/give-it-a-pry">Give it a Pry</a>, and your digging Pry.  You've already found how quickly the Pry repl becomes second nature, how useful having easy shell access is, and how easily it slices to the heart of your code (I'm assuming).  If you're at that point you're probably looking around to see what else you can do.  I'll re-iterate a point made in &quot;Give it a Pry&quot;, go to the WIKI! There is a ton of documentation that will not only help you understand Pry better, but also help you to shed light on your own code.  In this article I'm going to quickly show you how to use commands, which are yet another cool feature provided by Pry.</p>
+<p>So you&#39;ve started using pry.  You&#39;ve likely found this article from my previous article <a href="http://www.jonathan-jackson.net/give-it-a-pry">Give it a Pry</a>, and your digging Pry.  You&#39;ve already found how quickly the Pry repl becomes second nature, how useful having easy shell access is, and how easily it slices to the heart of your code (I&#39;m assuming).  If you&#39;re at that point you&#39;re probably looking around to see what else you can do.  I&#39;ll re-iterate a point made in &quot;Give it a Pry&quot;, go to the WIKI! There is a ton of documentation that will not only help you understand Pry better, but also help you to shed light on your own code.  In this article I&#39;m going to quickly show you how to use commands, which are yet another cool feature provided by Pry.</p>
 
 <h2>Commands, a unique solution.</h2>
 
-<p>Pry lets you define commands which make the inclusion and execution of arbitrary bits of code trivial<a href="https://github.com/pry/pry/wiki/Command-system#wiki-Invoking_commands">[1]</a>.  The Pry command structure is unique in that the command methods are executed before normal Ruby code is executed. This is important for reasons you'll see below.</p>
+<p>Pry lets you define commands which make the inclusion and execution of arbitrary bits of code trivial<a href="https://github.com/pry/pry/wiki/Command-system#wiki-Invoking_commands">[1]</a>.  The Pry command structure is unique in that the command methods are executed before normal Ruby code is executed. This is important for reasons you&#39;ll see below.</p>
 
 <p>If you are anything like me then your ~/.irbrc file had many top level methods(like below), well with pry these can be transformed into commands.</p>
 
 <p><script src='https://gist.github.com/2156369.js?file=gist-1.rb'></script><noscript></p>
-
-<pre lang="sh"><code># ~/.irbrc
+<div class="highlight"><pre><code class="sh"><span class="c"># ~/.irbrc</span>
 
 def clear
-  system 'clear'
+  system <span class="s1">&#39;clear&#39;</span>
 end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
-<p>This method is limited because if, while in the IRB session, I define something like so I'll over-ride my top-level method.</p>
-
-<pre><code>$-&gt; irb
+<p>This method is limited because if, while in the IRB session, I define something like so I&#39;ll over-ride my top-level method.</p>
+<div class="highlight"><pre><code class="text">$-&gt; irb
 
 &gt;&gt; def clear
 &gt;&gt;   puts &quot;This is going to over-ride the irbrc #clear&quot;
@@ -90,30 +86,25 @@ end
 
 &gt;&gt; clear
 =&gt; &quot;This is going to over-ride the irbrc #clear&quot;
-</code></pre>
-
-<p>If instead we implemented the #clear method as a Pry command we would not over-ride the existing functionality.  Oh, and it's easy.</p>
+</code></pre></div>
+<p>If instead we implemented the #clear method as a Pry command we would not over-ride the existing functionality.  Oh, and it&#39;s easy.</p>
 
 <p><script src='https://gist.github.com/2156369.js?file=gist-2.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># ~/.pryrc</span>
 
-<pre lang="sh"><code># ~/.pryrc
-
-# Create a command_set which is the structure in which commands
-# are organized
-command_set = Pry::CommandSet.new do
-  command &quot;clear&quot;, &quot;Clear the screen.&quot; do
-    system 'clear'
+<span class="c"># Create a command_set which is the structure in which commands</span>
+<span class="c"># are organized</span>
+<span class="nv">command_set</span> <span class="o">=</span> Pry::CommandSet.new <span class="k">do</span>
+<span class="k">  </span><span class="nb">command</span> <span class="s2">&quot;clear&quot;</span>, <span class="s2">&quot;Clear the screen.&quot;</span> <span class="k">do</span>
+<span class="k">    </span>system <span class="s1">&#39;clear&#39;</span>
   end
 end
 
-# Import your command_set to the Pry session.
+<span class="c"># Import your command_set to the Pry session.</span>
 Pry.config.commands.import command_set
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
-
-<pre><code>$-&gt; pry
+<div class="highlight"><pre><code class="text">$-&gt; pry
 
 pry(main)&gt; def clear
 pry(main)*   puts &quot;If there is a space before the #clear call I will be fired!&quot;
@@ -123,15 +114,14 @@ pry(main)* end
 pry(main)&gt;clear # Will clear screen.
 pry(main)&gt; clear
 =&gt; &quot;If there is a space before the #clear call I will be fired!&quot;
-</code></pre>
-
+</code></pre></div>
 <p>The first argument passed to command is the name of the command, the second is an optional description, the block passed in is what will be executed.  Simple.  Be creative.</p>
 
 <h2>Conclusions</h2>
 
-<p>Commands let you very easily customize your pry session.  I have a few methods that I really enjoy having any time I'm in Pry that I'll share in the references.  Thanks for reading this quick run-down.</p>
+<p>Commands let you very easily customize your pry session.  I have a few methods that I really enjoy having any time I&#39;m in Pry that I&#39;ll share in the references.  Thanks for reading this quick run-down.</p>
 
-<p>***edit You can modify the way you call commands by changing the Pry.config.command_prefix, which defaults to '' (tick tick).</p>
+<p>***edit You can modify the way you call commands by changing the Pry.config.command_prefix, which defaults to &#39;&#39; (tick tick).</p>
 
 <h4>References</h4>
 

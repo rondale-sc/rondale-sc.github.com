@@ -61,31 +61,27 @@
 
 <p><span  style="font-size:12px;">For those who found this via Reddit here is a <a href="https://github.com/rondale-sc/EspnRb">link to the repository</a>.</span></p>
 
-<h3>EspnRb ('ESPN-ar-bee')</h3>
+<h3>EspnRb (&#39;ESPN-ar-bee&#39;)</h3>
 
-<p>Since its release I've been working on creating a Ruby wrapper for the ESPN api.  I began because it sounded fun to fiddle around with sports data for a change.  And.. It was, I've had a blast building EspnRb.  EspnRb allows you to use the Espn API with all that Ruby goodness we all know and love.  Here I'll very briefly walk you through installation and getting the espn credentials, then we'll dive straight into some EspnRb examples.</p>
+<p>Since its release I&#39;ve been working on creating a Ruby wrapper for the ESPN api.  I began because it sounded fun to fiddle around with sports data for a change.  And.. It was, I&#39;ve had a blast building EspnRb.  EspnRb allows you to use the Espn API with all that Ruby goodness we all know and love.  Here I&#39;ll very briefly walk you through installation and getting the espn credentials, then we&#39;ll dive straight into some EspnRb examples.</p>
 
-<p><img src="http://a.espncdn.com/i/apis/attribution/espn-api-black_200.png" alt="ESPN api logo" title="See more branding options at developer.espn.com/branding">
-</p>
+<p><img src="http://a.espncdn.com/i/apis/attribution/espn-api-black_200.png" alt="ESPN api logo" title="See more branding options at developer.espn.com/branding"></p>
 
 <h3>ESPN api</h3>
 
-<p>In order to use the espn api you must have an api key.  Your api key can be requested at the ESPN developer center website <a href="http://developer.espn.com/member/register">[1]</a>.  Just fill out the form and they'll assign you a key.  Important note: the use of ESPN's api requires an attribution link (like above) which can be found <a href="http://developer.espn.com/branding">here</a>.  The attribution links look pretty good and range from 50 by 14px to 200 by 75px, so finding one that fits your use shouldn't be too hard. Once you have the key you can begin working with EspnRb.</p>
+<p>In order to use the espn api you must have an api key.  Your api key can be requested at the ESPN developer center website <a href="http://developer.espn.com/member/register">[1]</a>.  Just fill out the form and they&#39;ll assign you a key.  Important note: the use of ESPN&#39;s api requires an attribution link (like above) which can be found <a href="http://developer.espn.com/branding">here</a>.  The attribution links look pretty good and range from 50 by 14px to 200 by 75px, so finding one that fits your use shouldn&#39;t be too hard. Once you have the key you can begin working with EspnRb.</p>
 
 <h3>Installation</h3>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-1.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># On the command line.</span>
+<span class="c"># ~$ gem install espn_rb</span>
 
-<pre lang="sh"><code># On the command line.
-# ~$ gem install espn_rb
-
-# Or in a Gemfile
-gem &quot;espn_rb&quot;, &quot;~&gt; 0.0.4&quot;
-# ~$ bundle
-# That's it.
-
-</code></pre>
-
+<span class="c"># Or in a Gemfile</span>
+gem <span class="s2">&quot;espn_rb&quot;</span>, <span class="s2">&quot;~&gt; 0.0.4&quot;</span>
+<span class="c"># ~$ bundle</span>
+<span class="c"># That&#39;s it.</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h3>Use it</h3>
@@ -93,67 +89,58 @@ gem &quot;espn_rb&quot;, &quot;~&gt; 0.0.4&quot;
 <p>The easiest way to set your api key for use with espn_rb is to export it as an environment variable. Do that like so:</p>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-2.sh'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># If you want to pass it in to your objects you may do so explicitly like so:</span>
+<span class="c"># espn = EspnRb.headlines(:api_key =&gt; YOUR_SUPER_SECRET_API_KEY)</span>
 
-<pre lang="sh"><code># If you want to pass it in to your objects you may do so explicitly like so:
-# espn = EspnRb.headlines(:api_key =&gt; YOUR_SUPER_SECRET_API_KEY)
-
-$ export espn_api_key=YOUR_SUPER_SECRET_API_KEY
-
-</code></pre>
-
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">espn_api_key</span><span class="o">=</span>YOUR_SUPER_SECRET_API_KEY
+</code></pre></div>
 <p></noscript></p>
 
 <h3>Get the headlines</h3>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-3.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;espn_rb&#39;</span>
+<span class="nv">espn</span> <span class="o">=</span> Espn.headlines
 
-<pre lang="sh"><code>require 'espn_rb'
-espn = Espn.headlines
+<span class="c">#   Each sport available via the API can be called on the Espn.headlines</span>
+<span class="c"># [ :all, :golf, :boxing, :mma, :racing, :soccer, :tennis, :mlb</span>
+<span class="c">#   :nba, :nfl, :nhl, :nascar, :wnba, :ncaa_basketball, :ncaa_football</span>
+<span class="c">#   :ncaa_womens_basketball]</span>
 
-#   Each sport available via the API can be called on the Espn.headlines
-# [ :all, :golf, :boxing, :mma, :racing, :soccer, :tennis, :mlb
-#   :nba, :nfl, :nhl, :nascar, :wnba, :ncaa_basketball, :ncaa_football
-#   :ncaa_womens_basketball]
+espn.all <span class="c">#=&gt; HeadlineResponse</span>
 
-espn.all #=&gt; HeadlineResponse
-
-espn.nba(:news) #=&gt; HeadlineResponse
-espn.nfl(:top)  #=&gt; HeadlineResponse
-espn.ncaa_football({:for_date =&gt; &quot;2012-03-09&quot;}) #=&gt; HeadlineResponse # Will include all stories for that date
-espn.nba({:for_athlete =&gt; &quot;1234&quot; #=&gt; HeadlineResponse # Will include all stories for that athleteId
+espn.nba<span class="o">(</span>:news<span class="o">)</span> <span class="c">#=&gt; HeadlineResponse</span>
+espn.nfl<span class="o">(</span>:top<span class="o">)</span>  <span class="c">#=&gt; HeadlineResponse</span>
+espn.ncaa_football<span class="o">({</span>:for_date <span class="o">=</span>&gt; <span class="s2">&quot;2012-03-09&quot;</span><span class="o">})</span> <span class="c">#=&gt; HeadlineResponse # Will include all stories for that date</span>
+espn.nba<span class="o">({</span>:for_athlete <span class="o">=</span>&gt; <span class="s2">&quot;1234&quot;</span> <span class="c">#=&gt; HeadlineResponse # Will include all stories for that athleteId</span>
 
 espn.all.response
-#=&gt; ESPN's response string as JSON
-
-</code></pre>
-
+<span class="c">#=&gt; ESPN&#39;s response string as JSON</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h3>HeadlineResponse</h3>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-4.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># HeadlineResponse includes Enum so you can do things like this:</span>
+espn.all.map<span class="o">(</span>&amp;:title<span class="o">)</span>
 
-<pre lang="sh"><code># HeadlineResponse includes Enum so you can do things like this:
-espn.all.map(&amp;:title)
+<span class="c">#=&gt; [&quot;Celtics-Clippers Preview&quot;,</span>
+<span class="c">#    &quot;Warriors 97, Clippers 93&quot;,</span>
+<span class="c">#    &quot;Hawks 106, Kings 99&quot;,</span>
+<span class="c">#    &quot;Warriors-Clippers, Box&quot;,</span>
+<span class="c">#    &quot;Warriors 97, Clippers 93&quot;,</span>
+<span class="c">#    &quot;Hawks 106, Kings 99&quot;,</span>
+<span class="c">#    &quot;Bucks-Nets Preview&quot;,</span>
+<span class="c">#    &quot;Hawks-Kings, Box&quot;,</span>
+<span class="c">#    &quot;Grizzlies 94, Nuggets 91&quot;,</span>
+<span class="c">#    &quot;Grizzlies-Nuggets, Box&quot;]</span>
 
-#=&gt; [&quot;Celtics-Clippers Preview&quot;,
-#    &quot;Warriors 97, Clippers 93&quot;,
-#    &quot;Hawks 106, Kings 99&quot;,
-#    &quot;Warriors-Clippers, Box&quot;,
-#    &quot;Warriors 97, Clippers 93&quot;,
-#    &quot;Hawks 106, Kings 99&quot;,
-#    &quot;Bucks-Nets Preview&quot;,
-#    &quot;Hawks-Kings, Box&quot;,
-#    &quot;Grizzlies 94, Nuggets 91&quot;,
-#    &quot;Grizzlies-Nuggets, Box&quot;]
-
-# Some methods like titles, descriptions etc are available directly.
+<span class="c"># Some methods like titles, descriptions etc are available directly.</span>
 
 espn.all.titles
-#=&gt; Same as above.
-
-</code></pre>
-
+<span class="c">#=&gt; Same as above.</span>
+</code></pre></div>
 <p></noscript></p>
 
 <h3>HeadlineItem</h3>
@@ -161,35 +148,32 @@ espn.all.titles
 <p>The HeadlineResponse Object holds in it the contens of the ESPN JSON response  split into HeadlineItems.  Here is where you can get Specific information about each story.  Some of the options are:</p>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-5.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="nv">espn</span> <span class="o">=</span> EspnRb.headlines
+<span class="nv">headline_response</span> <span class="o">=</span> espn.nba<span class="o">[</span>2<span class="o">]</span> <span class="c">#=&gt; HeadlineItem</span>
 
-<pre lang="sh"><code>espn = EspnRb.headlines
-headline_response = espn.nba[2] #=&gt; HeadlineItem
+headline_response.web_url <span class="c">#=&gt; &quot;http://sports.espn.go.com/espn/wire?section=nba&amp;id=7664408&amp;ex_cid=espnapi_public&quot;</span>
+headline_response.id <span class="c">#=&gt; 7664408</span>
+headline_response.title <span class="c">#=&gt; &quot;Mavericks-Kings Preview&quot;</span>
+headline_response.athletes <span class="c">#=&gt; [&quot;Johnny B&quot;, &quot;Freddie Flintstone&quot;, &quot;Etc&quot;]</span>
+headline_response.leagues <span class="c">#=&gt; [&quot;46&quot;]</span>
+headline_response.athlete_ids <span class="c">#=&gt; [&quot;123&quot;, &quot;132&quot;, &quot;123&quot;]</span>
 
-headline_response.web_url #=&gt; &quot;http://sports.espn.go.com/espn/wire?section=nba&amp;id=7664408&amp;ex_cid=espnapi_public&quot;
-headline_response.id #=&gt; 7664408
-headline_response.title #=&gt; &quot;Mavericks-Kings Preview&quot;
-headline_response.athletes #=&gt; [&quot;Johnny B&quot;, &quot;Freddie Flintstone&quot;, &quot;Etc&quot;]
-headline_response.leagues #=&gt; [&quot;46&quot;]
-headline_response.athlete_ids #=&gt; [&quot;123&quot;, &quot;132&quot;, &quot;123&quot;]
-
-# More to come in future versions.
-headline_response.headline #=&gt; JSON hash from original response.
-
-</code></pre>
-
+<span class="c"># More to come in future versions.</span>
+headline_response.headline <span class="c">#=&gt; JSON hash from original response.</span>
+</code></pre></div>
 <p></noscript></p>
 
 <p>There is a lot more inside the gem, be sure to check out the source.  ^_^</p>
 
 <h3>Documentation</h3>
 
-<p>So far I've built up a decent little readme <a href="https://github.com/rondale-sc/EspnRb">[2]</a> and there are YARD docs <a href="http://rubydoc.info/gems/espn_rb">[3]</a>. I'm also available if you need any help just ping me on <a href="https://github.com/rondale-sc">github</a>.</p>
+<p>So far I&#39;ve built up a decent little readme <a href="https://github.com/rondale-sc/EspnRb">[2]</a> and there are YARD docs <a href="http://rubydoc.info/gems/espn_rb">[3]</a>. I&#39;m also available if you need any help just ping me on <a href="https://github.com/rondale-sc">github</a>.</p>
 
 <h3>Conclusions</h3>
 
 <p>An example of espn_rb can be found <a href="http://espn-api-samples.heroku.com/headlines">here</a>.  It was created by Brian Jackson, a developer at ESPN.com (<a href="http://about.me/jaxzin">@jaxzin</a>), and he plans to expand the examples over the next little while, so be sure to check back.</p>
 
-<p>This is just a start. I hope to expand this gem to encompass more and more of the ESPN functionality.  The folks at ESPN have done a good job of making their data available. I've had a lot of fun working on this project so far, and I hope you guys find some use for it.  ^_^</p>
+<p>This is just a start. I hope to expand this gem to encompass more and more of the ESPN functionality.  The folks at ESPN have done a good job of making their data available. I&#39;ve had a lot of fun working on this project so far, and I hope you guys find some use for it.  ^_^</p>
 
 <h4>References</h4>
 
@@ -199,7 +183,7 @@ headline_response.headline #=&gt; JSON hash from original response.
 
 <h4>Additional References</h4>
 
-<p><span style="font-size:12px;"><a href="http://espn-api-samples.heroku.com/headlines">@jaxzin's example page</a></span></p>
+<p><span style="font-size:12px;"><a href="http://espn-api-samples.heroku.com/headlines">@jaxzin&#39;s example page</a></span></p>
 
 <span><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"

@@ -59,50 +59,47 @@
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
 
-<p>Hey everyone, It's Friday so I thought I might share with you a little snippet I found useful this past week.  I was debugging a particularly insidious bug, and wanted to see where the method I suspected of causing the bug was called.  Naturally, I thought of using the #caller method, which I did.  However, using the caller method seemed a bit unwieldy as its return value is a little difficult to read.  So I looked around to see if anyone had found a way to make the caller method a little more usable.  I found a post from Michael Grosser <a href="http://grosser.it/2009/07/01/getting-the-caller-method-in-ruby/">[1]</a> which presented a neat solution.</p>
+<p>Hey everyone, It&#39;s Friday so I thought I might share with you a little snippet I found useful this past week.  I was debugging a particularly insidious bug, and wanted to see where the method I suspected of causing the bug was called.  Naturally, I thought of using the #caller method, which I did.  However, using the caller method seemed a bit unwieldy as its return value is a little difficult to read.  So I looked around to see if anyone had found a way to make the caller method a little more usable.  I found a post from Michael Grosser <a href="http://grosser.it/2009/07/01/getting-the-caller-method-in-ruby/">[1]</a> which presented a neat solution.</p>
 
-<p>I started using Pry <a href="http://www.jonathan-jackson.net/give-it-a-pry">[2]</a> a while ago and decided I should convert Michael Grosser's script into a Pry command.  Which when used in combination with 'binding.pry' would help me better digest the caller method.</p>
+<p>I started using Pry <a href="http://www.jonathan-jackson.net/give-it-a-pry">[2]</a> a while ago and decided I should convert Michael Grosser&#39;s script into a Pry command.  Which when used in combination with &#39;binding.pry&#39; would help me better digest the caller method.</p>
 
 <p><script src='https://gist.github.com/2156399.js?file=gist-1.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="nb">command</span> <span class="s2">&quot;caller_method&quot;</span> <span class="k">do</span> |depth|
+   <span class="nv">depth</span> <span class="o">=</span> depth.to_i <span class="o">||</span> 1
+   <span class="k">if</span> /^<span class="o">(</span>.+?<span class="o">)</span>:<span class="o">(</span><span class="se">\d</span>+<span class="o">)(</span>?::in <span class="sb">`</span><span class="o">(</span>.*<span class="o">)</span><span class="s1">&#39;)?/ =~ caller(depth+1).first</span>
+<span class="s1">     file   = Regexp.last_match[1]</span>
+<span class="s1">     line   = Regexp.last_match[2].to_i</span>
+<span class="s1">     method = Regexp.last_match[3]</span>
+<span class="s1">     output.puts [file, line, method]</span>
+<span class="s1">   end</span>
+<span class="s1"> end</span>
 
-<pre lang="sh"><code>command &quot;caller_method&quot; do |depth|
-   depth = depth.to_i || 1
-   if /^(.+?):(\d+)(?::in `(.*)')?/ =~ caller(depth+1).first
-     file   = Regexp.last_match[1]
-     line   = Regexp.last_match[2].to_i
-     method = Regexp.last_match[3]
-     output.puts [file, line, method]
-   end
- end
+<span class="s1"> # If you don&#39;</span>t want to use pry
+ <span class="c"># you can try this method anyways like so</span>
 
- # If you don't want to use pry
- # you can try this method anyways like so
-
- def caller_method(depth)
-   depth = depth.to_i || 1
-   if /^(.+?):(\d+)(?::in `(.*)')?/ =~ caller(depth+1).first
-      file   = Regexp.last_match[1]
-      line   = Regexp.last_match[2].to_i
-      method = Regexp.last_match[3]
-      return [file, line, method]
+ def caller_method<span class="o">(</span>depth<span class="o">)</span>
+   <span class="nv">depth</span> <span class="o">=</span> depth.to_i <span class="o">||</span> 1
+   <span class="k">if</span> /^<span class="o">(</span>.+?<span class="o">)</span>:<span class="o">(</span><span class="se">\d</span>+<span class="o">)(</span>?::in <span class="sb">`</span><span class="o">(</span>.*<span class="o">)</span><span class="err">&#39;</span><span class="o">)</span>?/ <span class="o">=</span>~ <span class="nb">caller</span><span class="o">(</span>depth+1<span class="o">)</span>.first
+      <span class="nv">file</span>   <span class="o">=</span> Regexp.last_match<span class="o">[</span>1<span class="o">]</span>
+      <span class="nv">line</span>   <span class="o">=</span> Regexp.last_match<span class="o">[</span>2<span class="o">]</span>.to_i
+      <span class="nv">method</span> <span class="o">=</span> Regexp.last_match<span class="o">[</span>3<span class="o">]</span>
+      <span class="k">return</span> <span class="o">[</span>file, line, method<span class="o">]</span>
     end
  end
-
-</code></pre>
-
+</code></pre></div>
 <p></noscript></p>
 
 <h2>Using the Caller Method</h2>
 
 <p>The caller method is defined within Kernel and returns the current execution stack.  You can specify an optional start parameter which will suppress <em>n</em> number of stack entries to omit.  With the above command in your ~/.pryrc file you can call caller_method and pass in the stack depth and it will return you the file, line, and method of that stack level.  Pretty neat.</p>
 
-<p>As it turns out this didn't particularly help me to fix the bug, but nevertheless I found the method useful and hopefully you will too. I have a few ideas about making it accept a range so that I can specify the depth and see the level (like the above method) as well as its context.</p>
+<p>As it turns out this didn&#39;t particularly help me to fix the bug, but nevertheless I found the method useful and hopefully you will too. I have a few ideas about making it accept a range so that I can specify the depth and see the level (like the above method) as well as its context.</p>
 
 <p>Thanks for reading.  ^_^</p>
 
 <h4>References</h4>
 
-<p><span  style="font-size:12px;">1.) <a href="http://grosser.it/2009/07/01/getting-the-caller-method-in-ruby/">Michael Grosser's Class for using Caller Method, 2009</a></span><br/>
+<p><span  style="font-size:12px;">1.) <a href="http://grosser.it/2009/07/01/getting-the-caller-method-in-ruby/">Michael Grosser&#39;s Class for using Caller Method, 2009</a></span><br/>
 <span  style="font-size:12px;">2.) <a href="http://www.jonathan-jackson.net/give-it-a-pry">Give it a Pry, 2011</a></span><br/></p>
 
 <h4>Additional References</h4>
