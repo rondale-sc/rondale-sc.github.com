@@ -5,9 +5,94 @@
     <link>http://coyled.com/</link>
     <description>Ruby, Javascript, and all else under the sun./description>
     <language>en-us</language>
-    <pubDate>Sun, 07 Apr 2013 15:16:06 -0400</pubDate>
-    <lastBuildDate>Sun, 07 Apr 2013 15:16:06 -0400</lastBuildDate>
+    <pubDate>Thu, 02 May 2013 15:32:45 -0400</pubDate>
+    <lastBuildDate>Thu, 02 May 2013 15:32:45 -0400</lastBuildDate>
 
+    
+    <item>
+      <title>SSL Nightmares</title>
+      <link>http://jonathan-jackson.netssl-nightmares.html</link>
+      <pubDate>Thu, 02 May 2013 00:00:00 -0400</pubDate>
+      <author>Jonathan Jackson</author>
+      <guid>http://jonathan-jackson.net./ssl-nightmares</guid>
+      <description>&lt;h1&gt;SSL Nightmares&lt;/h1&gt;
+
+&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+                                         data-count=&quot;horizontal&quot;
+                                         data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;On a recent project our development team ran into a brick wall around mutual auth with SSL.  The problem is a solved one, but Ruby&amp;#39;s OpenSSL documentation leaves something to be desired (I&amp;#39;d love to pair on this, btw). I think had we had a better understanding of SSL under our belts we could have solved this without quite so much pain. Luckily, there is a tremendous amount of information out there concerning SSL.  Here I want to review what SSL is, and then quickly go through the process of setting up mutual auth with Ruby.&lt;/p&gt;
+
+&lt;h2&gt;What is SSL&lt;/h2&gt;
+
+&lt;p&gt;Unfortunately, this topic is pretty heavy when it comes to vocabulary.  For the bulk of this article I&amp;#39;ll refer to the ruby process as the &lt;strong&gt;client&lt;/strong&gt; and the service you are trying to interact with the &lt;strong&gt;server&lt;/strong&gt;.  Hopefully, it won&amp;#39;t be too confusing, but if you have questions feel free to ping me on twitter (@rondale_sc) or leave a comment.&lt;/p&gt;
+
+&lt;p&gt;SSL is an acronym for Secure Sockets Layer, and is a way to facilitate the exchange of information securely via the exchange of keys.  A typical handshake process looks something like the following:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ssl_negotiation.png&quot; alt=&quot;ssl-negotiation&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;This process is something that virtually every Ruby HTTP library supports, we&amp;#39;ll be using &lt;code&gt;net-http&lt;/code&gt; from the standard library for the code samples in this article. The above interaction can be done in just a few lines of Ruby like so:&lt;/p&gt;
+
+&lt;p&gt;&lt;small&gt;Many of the following examples are from a repo made by &lt;a href=&quot;https://github.com/augustl&quot;&gt;augustl&lt;/a&gt; named &lt;a href=&quot;https://github.com/augustl/net-http-cheat-sheet&quot;&gt;net&lt;em&gt;http&lt;/em&gt;cheatsheet&lt;/a&gt;.  This repo is an excellent resource that will be further sited at the bottom of this post.&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/5504735.js?file=standard_ssl.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Net::HTTP.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssltest7.bbtest.net&amp;quot;&lt;/span&gt;, 443&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+http.use_ssl &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+http.verify_mode &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; OpenSSL::SSL::VERIFY_PEER
+&lt;span class=&quot;nv&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http.request&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Net::HTTP::Get.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Fairly straightforward stuff here.  The entire SSL process is taken care of for you.  An important note here is the &lt;code&gt;verify_mode&lt;/code&gt; attr we set.  This setting is used to determine how the server&amp;#39;s ssl certificate is authenticated against the client&amp;#39;s certificate authority (I&amp;#39;ll explain more in a second).  &lt;/p&gt;
+
+&lt;p&gt;Many older blog posts and tutorials on the subject encourage you to set this to &lt;code&gt;VERIFY_NONE&lt;/code&gt;.  &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;NEVER EVER EVER&lt;/strong&gt; do this!  &lt;/p&gt;
+
+&lt;p&gt;If you don&amp;#39;t belive me read &lt;a href=&quot;http://jamesgolick.com/2011/2/15/verify-none..html&quot;&gt;this&lt;/a&gt; by James Gollick.&lt;/p&gt;
+
+&lt;p&gt;When you set your &lt;code&gt;verify_mode&lt;/code&gt; to &lt;code&gt;VERIFY_NONE&lt;/code&gt; you are bypassing the part where the client verifies the server&amp;#39;s SSL certificate against the client&amp;#39;s certificate authority.  A certificate authority is the third party entity that verifies that the SSL certificate&amp;#39;s public key is owned by the by the issuer in the SSL certificate&amp;#39;s subject.&lt;/p&gt;
+
+&lt;p&gt;The process outlined in the diagram above is just the one facet of SSL.  The other purpose of SSL is to encrypt the information while it travels.   There is a great video explanation of this process that I highly reccomend &lt;a href=&quot;http://www.youtube.com/watch?v=iQsKdtjwtYI&quot;&gt;here&lt;/a&gt;.  Now that we have a decent idea of what it takes to start an ssl connection, let&amp;#39;s look into how it handles its other side: encryption.&lt;/p&gt;
+
+&lt;p&gt;The server&amp;#39;s SSL certificate comes with a public key, an issuer, and a bunch of other information.  When you receive this information the client can look up this public key and ensure that it was issued by who it says it was issued from.  Once that verification has been accomplished the client encrypts the information with the public key and sends it to the server.  The server can now use its private key to decrypt the information.  &lt;/p&gt;
+
+&lt;p&gt;Mutual Authentication is doing the handshake process from both perspectives, the client and the server.  This process ensures both identities. Let&amp;#39;s send the client certificate to the server.  &lt;/p&gt;
+
+&lt;p&gt;&lt;script src='https://gist.github.com/5504735.js?file=mutual_auth.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# PKCS12: Defines a file format commonly used to store private &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# keys with accompanying public key certificates, protected &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# with a password based symmetric key.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;pkcs12&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; OpenSSL::PKCS12.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;File.read&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/path/to/pkcs12&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Net::HTTP.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssltest7.bbtest.net&amp;quot;&lt;/span&gt;, 443&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+http.use_ssl     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+http.verify_mode &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; OpenSSL::SSL::VERIFY_PEER
+http.cert        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; pkcs12.certificate
+http.key         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; pkcs12.key
+&lt;span class=&quot;nv&quot;&gt;resp&lt;/span&gt;             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http.request&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Net::HTTP::Get.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;Seems complicated, but it isn&amp;#39;t too hard.  The server will receive the client&amp;#39;s key and certificate, this allows the server to run the verification against the certificate authority.  This process is to ensure that only authorized people can access the service.  Mutual auth is most often encountered when dealing with financial or health information where it is extremely important to secure services.  This practice is quite often used with a self-signed certificate.  &lt;/p&gt;
+
+&lt;p&gt;A certificate is considered self signed when the subject of the certificate and the issuer of the certificate are the same.  When this is the case a certificate authority must be manually edited to include the certificate&amp;#39;s information.  Then in order to authenticate you have to present a certificate which can be verified against this edited certificate authority (by both server and client).&lt;/p&gt;
+
+&lt;p&gt;Alright, that about wraps up the whirl wind tour of SSL and how to setup mutual auth.  I hope if you ever find yourself banging your head against a wall this post will help.  Thanks for reading! &lt;/p&gt;
+
+&lt;h4&gt;Resources&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/augustl/net-http-cheat-sheet&quot;&gt;net-http-cheatsheet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html&quot;&gt;How to cure net http&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/SSL&quot;&gt;SSL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Mutual_authentication&quot;&gt;Mutual Authentication&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Certificate_authority&quot;&gt;Certificate Authority&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.youtube.com/watch?v=iQsKdtjwtYI&quot;&gt;Video Rundown of how SSL works&lt;/a&gt;&lt;/small&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Method Signatures You Can Sink Your Teeth Into</title>

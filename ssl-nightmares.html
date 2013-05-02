@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <title>SSL Nightmares</title>
+
+  <!-- Twitter Bootstrap -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
+
+  <!-- My Custom CSS -->
+  <link rel="stylesheet" href="/css/custom.css" type="text/css" />
+
+  <link href="/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+
+  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
+  
+    <meta name="description" content="Here we'll talk about what SSL is, some of the perils while using it, and how to set up mutual authentication with Ruby's net-http library." />
+  
+
+  
+    <meta http-equiv="date" content="Thursday, 02  2013 00:00:00 GMT" />
+  
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25565068-1']);
+  _gaq.push(['_setDomainName', 'jonathan-jackson.net']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div id="header">
+      <h1>run<span class="kern">_</span>with_it <span style="font-size:12px;">Learning, sharing, coding.</span></h1>
+      <div class="row">
+        <div class="nav-offset site-nav"><a href="/" alt="home">Home</a></div>
+        <div class="site-nav"><a href="/about-me.html" alt="about-me">About Me</a></div>
+        <div class="site-nav"><a href="/mail.html" alt="contact-me">Email Me</a></div>
+      </div>
+    </div>
+    <div id="header-border"></div>
+
+    <div class="container">
+      <div id="content">
+       <div id="post">
+<h1>SSL Nightmares</h1>
+
+<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+                                         data-count="horizontal"
+                                         data-via="rondale_sc">Tweet</a>
+</span></p>
+
+<p>On a recent project our development team ran into a brick wall around mutual auth with SSL.  The problem is a solved one, but Ruby&#39;s OpenSSL documentation leaves something to be desired (I&#39;d love to pair on this, btw). I think had we had a better understanding of SSL under our belts we could have solved this without quite so much pain. Luckily, there is a tremendous amount of information out there concerning SSL.  Here I want to review what SSL is, and then quickly go through the process of setting up mutual auth with Ruby.</p>
+
+<h2>What is SSL</h2>
+
+<p>Unfortunately, this topic is pretty heavy when it comes to vocabulary.  For the bulk of this article I&#39;ll refer to the ruby process as the <strong>client</strong> and the service you are trying to interact with the <strong>server</strong>.  Hopefully, it won&#39;t be too confusing, but if you have questions feel free to ping me on twitter (@rondale_sc) or leave a comment.</p>
+
+<p>SSL is an acronym for Secure Sockets Layer, and is a way to facilitate the exchange of information securely via the exchange of keys.  A typical handshake process looks something like the following:</p>
+
+<p><img src="/images/ssl_negotiation.png" alt="ssl-negotiation"></p>
+
+<p>This process is something that virtually every Ruby HTTP library supports, we&#39;ll be using <code>net-http</code> from the standard library for the code samples in this article. The above interaction can be done in just a few lines of Ruby like so:</p>
+
+<p><small>Many of the following examples are from a repo made by <a href="https://github.com/augustl">augustl</a> named <a href="https://github.com/augustl/net-http-cheat-sheet">net<em>http</em>cheatsheet</a>.  This repo is an excellent resource that will be further sited at the bottom of this post.</small></p>
+
+<p><script src='https://gist.github.com/5504735.js?file=standard_ssl.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="nv">http</span> <span class="o">=</span> Net::HTTP.new<span class="o">(</span><span class="s2">&quot;ssltest7.bbtest.net&quot;</span>, 443<span class="o">)</span>
+http.use_ssl <span class="o">=</span> <span class="nb">true</span>
+http.verify_mode <span class="o">=</span> OpenSSL::SSL::VERIFY_PEER
+<span class="nv">response</span> <span class="o">=</span> http.request<span class="o">(</span>Net::HTTP::Get.new<span class="o">(</span><span class="s2">&quot;/&quot;</span><span class="o">))</span>
+</code></pre></div>
+<p></noscript></p>
+
+<p>Fairly straightforward stuff here.  The entire SSL process is taken care of for you.  An important note here is the <code>verify_mode</code> attr we set.  This setting is used to determine how the server&#39;s ssl certificate is authenticated against the client&#39;s certificate authority (I&#39;ll explain more in a second).  </p>
+
+<p>Many older blog posts and tutorials on the subject encourage you to set this to <code>VERIFY_NONE</code>.  </p>
+
+<p><strong>NEVER EVER EVER</strong> do this!  </p>
+
+<p>If you don&#39;t belive me read <a href="http://jamesgolick.com/2011/2/15/verify-none..html">this</a> by James Gollick.</p>
+
+<p>When you set your <code>verify_mode</code> to <code>VERIFY_NONE</code> you are bypassing the part where the client verifies the server&#39;s SSL certificate against the client&#39;s certificate authority.  A certificate authority is the third party entity that verifies that the SSL certificate&#39;s public key is owned by the by the issuer in the SSL certificate&#39;s subject.</p>
+
+<p>The process outlined in the diagram above is just the one facet of SSL.  The other purpose of SSL is to encrypt the information while it travels.   There is a great video explanation of this process that I highly reccomend <a href="http://www.youtube.com/watch?v=iQsKdtjwtYI">here</a>.  Now that we have a decent idea of what it takes to start an ssl connection, let&#39;s look into how it handles its other side: encryption.</p>
+
+<p>The server&#39;s SSL certificate comes with a public key, an issuer, and a bunch of other information.  When you receive this information the client can look up this public key and ensure that it was issued by who it says it was issued from.  Once that verification has been accomplished the client encrypts the information with the public key and sends it to the server.  The server can now use its private key to decrypt the information.  </p>
+
+<p>Mutual Authentication is doing the handshake process from both perspectives, the client and the server.  This process ensures both identities. Let&#39;s send the client certificate to the server.  </p>
+
+<p><script src='https://gist.github.com/5504735.js?file=mutual_auth.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh"><span class="c"># PKCS12: Defines a file format commonly used to store private </span>
+<span class="c"># keys with accompanying public key certificates, protected </span>
+<span class="c"># with a password based symmetric key.</span>
+<span class="nv">pkcs12</span> <span class="o">=</span> OpenSSL::PKCS12.new<span class="o">(</span>File.read<span class="o">(</span><span class="s2">&quot;/path/to/pkcs12&quot;</span><span class="o">)</span>
+
+<span class="nv">http</span> <span class="o">=</span> Net::HTTP.new<span class="o">(</span><span class="s2">&quot;ssltest7.bbtest.net&quot;</span>, 443<span class="o">)</span>
+http.use_ssl     <span class="o">=</span> <span class="nb">true</span>
+http.verify_mode <span class="o">=</span> OpenSSL::SSL::VERIFY_PEER
+http.cert        <span class="o">=</span> pkcs12.certificate
+http.key         <span class="o">=</span> pkcs12.key
+<span class="nv">resp</span>             <span class="o">=</span> http.request<span class="o">(</span>Net::HTTP::Get.new<span class="o">(</span><span class="s2">&quot;/&quot;</span><span class="o">))</span>
+</code></pre></div>
+<p></noscript></p>
+
+<p>Seems complicated, but it isn&#39;t too hard.  The server will receive the client&#39;s key and certificate, this allows the server to run the verification against the certificate authority.  This process is to ensure that only authorized people can access the service.  Mutual auth is most often encountered when dealing with financial or health information where it is extremely important to secure services.  This practice is quite often used with a self-signed certificate.  </p>
+
+<p>A certificate is considered self signed when the subject of the certificate and the issuer of the certificate are the same.  When this is the case a certificate authority must be manually edited to include the certificate&#39;s information.  Then in order to authenticate you have to present a certificate which can be verified against this edited certificate authority (by both server and client).</p>
+
+<p>Alright, that about wraps up the whirl wind tour of SSL and how to setup mutual auth.  I hope if you ever find yourself banging your head against a wall this post will help.  Thanks for reading! </p>
+
+<h4>Resources</h4>
+
+<ul>
+<li><a href="https://github.com/augustl/net-http-cheat-sheet">net-http-cheatsheet</a></li>
+<li><a href="http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html">How to cure net http</a></li>
+<li><a href="http://en.wikipedia.org/wiki/SSL">SSL</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Mutual_authentication">Mutual Authentication</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Certificate_authority">Certificate Authority</a></li>
+<li><a href="http://www.youtube.com/watch?v=iQsKdtjwtYI">Video Rundown of how SSL works</a></small></li>
+</ul>
+
+<span><a href="http://twitter.com/share" class="twitter-share-button"
+                                         data-count="horizontal"
+                                         data-via="rondale_sc">Tweet</a>
+</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'run-with-it';
+    var disqus_identifier = 'ssl-nightmares';
+    var disqus_url = 'http://www.jonathan-jackson.netssl-nightmares';
+    var disqus_developer = 1;
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</div>
+      </div>
+
+      <div id="side-bar">
+       <div><a href="http://feeds.feedburner.com/jonathan-jackson/WZqA" title="Subscribe to my feed" rel="alternate" type="application/rss+xml"><img src="/images/feeds.png" alt="" style="border:0;width:100px;height:100px;"/></a></div>
+<div><img src="/images/gravatar.png" width="167px;" height="167px;"/></div>
+<div><a href="https://twitter.com/rondale_sc" class="twitter-follow-button" alt="follow me on twitter" data-width="150px" data-show-count="false">Follow @rondale_sc</a></div>
+<div style="margin-top:5px;">
+  <h3>Hi, I'm Jon.</h3>
+  <p>I love learning new things.  Here is where I'll share what I learn.  Typically code, sometimes my experience, sometimes just a neat trick.</p>
+</div>
+<a href="/mail.html">
+  <img src="http://pairprogramwith.me/badge.png">
+</a>
+<div>
+  <h3>Projects</h3>
+  <ul>
+    <li><a href="http://rondale-sc.github.com/EspnRb/" alt="espn_rb, a lightweight ruby wrapper around the ESPN api." title="EspnRb">EspnRb</a></li>
+    <li><a href="http://jonathan-jackson.net/image_viewer_rails/" alt="ImageViewer image browser w/controls" title="Image Viewer">ImageViewer</a></li>
+    <li><a href="https://github.com/rjackson/pivot.js" alt="Pivot.js - reporting lib" title="Pivot.js">Pivot.js</a></li>
+    <li><a href="https://github.com/rondale-sc/run_with_it_redux" alt="This blog's Github Repo" title="Run With It Repo">Run With It</a></li>
+  </ul>
+</div>
+
+      </div>
+    </div>
+    <div class="push"></div>
+  </div>
+  <div class="footer">
+    <p>Site designed by Jonathan Jackson.  With help from <a href="http://twitter.github.com/bootstrap/" alt="twitter bootstrap">@twbootstrap</a>, <a href="https://github.com/mojombo/jekyll" alt="jekyll">Jekyll</a>, and <a href="https://github.com/" alt="github">github</a></p>
+  </div>
+</body>
+</html>
