@@ -95,7 +95,7 @@ http.verify_mode <span class="o">=</span> OpenSSL::SSL::VERIFY_PEER
 
 <p>The server&#39;s SSL certificate comes with a public key, an issuer, and a bunch of other information.  When you receive this information the client can look up this public key and ensure that it was issued by who it says it was issued from.  Once that verification has been accomplished the client encrypts the information with the public key and sends it to the server.  The server can now use its private key to decrypt the information.  </p>
 
-<p>Mutual Authentication is doing the handshake process from both perspectives, the client and the server.  This process ensures both identities. Let&#39;s send the client certificate to the server.  </p>
+<p>Mutual Authentication is doing the handshake process (slightly different, but similar) from both perspectives, the client and the server.  This process ensures both identities. Let&#39;s send the client certificate to the server.  </p>
 
 <p><script src='https://gist.github.com/5504735.js?file=mutual_auth.rb'></script><noscript></p>
 <div class="highlight"><pre><code class="sh"><span class="c"># PKCS12: Defines a file format commonly used to store private </span>
@@ -114,7 +114,7 @@ http.key         <span class="o">=</span> pkcs12.key
 
 <p>Seems complicated, but it isn&#39;t too hard.  The server will receive the client&#39;s key and certificate, this allows the server to run the verification against the certificate authority.  This process is to ensure that only authorized people can access the service.  Mutual auth is most often encountered when dealing with financial or health information where it is extremely important to secure services.  This practice is quite often used with a self-signed certificate.  </p>
 
-<p>A certificate is considered self signed when the subject of the certificate and the issuer of the certificate are the same.  When this is the case a certificate authority must be manually edited to include the certificate&#39;s information.  Then in order to authenticate you have to present a certificate which can be verified against this edited certificate authority (by both server and client).</p>
+<p>A certificate is considered self signed when the subject of the certificate and the issuer of the certificate are the same.  When this is the case a certificate authority must be generated that knows about this &quot;self signed cert&quot;.  Then in order to authenticate you have to present a certificate which can be verified against this generated certificate authority (by both server and client).</p>
 
 <p>Alright, that about wraps up the whirl wind tour of SSL and how to setup mutual auth.  I hope if you ever find yourself banging your head against a wall this post will help.  Thanks for reading! </p>
 
