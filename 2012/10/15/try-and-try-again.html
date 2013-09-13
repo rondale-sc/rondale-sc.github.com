@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Try and Try Again</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -70,7 +70,7 @@
 <p>Why would you use the Null Object pattern?  Let&#39;s go into a simple example.</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">class Project
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">class Project
   attr_reader :supervisor
 
   <span class="c"># assume supervisor looks like:</span>
@@ -81,7 +81,7 @@
   end
 
   def display_name
-    <span class="k">if</span> !supervisor
+    <span class="k">if </span>supervisor
       supervisor<span class="o">[</span>0<span class="o">]</span> + <span class="s2">&quot;, &quot;</span> + supervisor<span class="o">[</span>1<span class="o">]</span> <span class="c"># yuck</span>
     <span class="k">else</span>
       <span class="s2">&quot;No supervisor assigned.&quot;</span>
@@ -98,17 +98,18 @@ end
 <p>Alright, so hopefully you are all on board with at least contemplating using the NullObject pattern, but what&#39;s next?  The first thing we need to do is refactor our class a bit.  Supervisor will likely have other methods defined and therefore merits its own class.  So let&#39;s do that now:</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-2.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">class Project
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">class Project
   attr_reader :supervisor
 
   <span class="c"># assume supervisor looks like:</span>
-  <span class="c"># [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]</span>
+  <span class="c"># Supervisor.new(&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;)</span>
 
   def initialize<span class="o">(</span>supervisor<span class="o">)</span>
-    @supervisor <span class="o">=</span> Supervisor.new<span class="o">(</span>*supervisor<span class="o">)</span>
+    @supervisor <span class="o">=</span> supervisor
   end
+end
 
-  <span class="nv">Supervisor</span> <span class="o">=</span> Struct.new<span class="o">(</span>:first_name, :last_name, :email<span class="o">)</span> <span class="k">do</span>
+<span class="nv">Supervisor</span> <span class="o">=</span> Struct.new<span class="o">(</span>:first_name, :last_name, :email<span class="o">)</span> <span class="k">do</span>
 <span class="k">    </span>def display_name
       <span class="k">if</span> !first_name.nil? <span class="o">||</span> !last_name.nil?
         first_name + <span class="s2">&quot;, &quot;</span> + last_name
@@ -117,14 +118,13 @@ end
       end
     end
   end
-end
 </code></pre></div>
 <p></noscript></p>
 
 <p>That looks a little better; the supervisor class is now isolated and we have more of a clue as to what the supervisor object is responsible for.  However, we still have the same issue.  We are asking the object if it&#39;s nil in order to display the right #display_name.  This is where we&#39;ll actually create a NullObject and make it respond to the methods we expect supervisor to know.</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-3.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="nv">NullSupervisor</span> <span class="o">=</span> Struct.new<span class="o">()</span> <span class="k">do</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">NullSupervisor</span> <span class="o">=</span> Struct.new<span class="o">()</span> <span class="k">do</span>
 <span class="k">  </span>def display_name
     <span class="s2">&quot;No supervisor assigned.&quot;</span>
   end
@@ -135,26 +135,26 @@ end
 <p>So now our class, incorporated with the NullObject, looks like this:</p>
 
 <p><script src='https://gist.github.com/3896565.js?file=gist-4.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">class Project
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">class Project
   attr_reader :supervisor
 
   <span class="c"># assume supervisor looks like:</span>
-  <span class="c"># [&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;]</span>
+  <span class="c"># Supervisor.new(&quot;Harry&quot;, &quot;Henderson&quot;, &quot;hhendersonfake@me.com&quot;)</span>
 
-  def initialize<span class="o">(</span><span class="nv">supervisor</span><span class="o">=</span>nil<span class="o">)</span>
-    @supervisor <span class="o">=</span> supervisor.nil? ? NullSupervisor.new : Supervisor.new<span class="o">(</span>*supervisor<span class="o">)</span>
+  def initialize<span class="o">(</span><span class="nv">supervisor</span><span class="o">=</span>NullSupervisor.new<span class="o">)</span>
+    @supervisor <span class="o">=</span> supervisor
   end
+end
 
-  <span class="nv">Supervisor</span> <span class="o">=</span> Struct.new<span class="o">(</span>:first_name, :last_name, :email<span class="o">)</span> <span class="k">do</span>
-<span class="k">    </span>def display_name
-      first_name + <span class="s2">&quot;, &quot;</span> + last_name
-    end
+<span class="nv">Supervisor</span> <span class="o">=</span> Struct.new<span class="o">(</span>:first_name, :last_name, :email<span class="o">)</span> <span class="k">do</span>
+<span class="k">  </span>def display_name
+    first_name + <span class="s2">&quot;, &quot;</span> + last_name
   end
+end
 
-  <span class="nv">NullSupervisor</span> <span class="o">=</span> Struct.new<span class="o">()</span> <span class="k">do</span>
-<span class="k">    </span>def display_name
-      <span class="s2">&quot;No supervisor assigned.&quot;</span>
-    end
+<span class="nv">NullSupervisor</span> <span class="o">=</span> Struct.new<span class="o">()</span> <span class="k">do</span>
+<span class="k">  </span>def display_name
+    <span class="s2">&quot;No supervisor assigned.&quot;</span>
   end
 end
 </code></pre></div>
@@ -199,10 +199,11 @@ end
 <span style="font-size:12px;"><a href="http://www.oodesign.com/null-object-pattern.html">Old school article with very useful graph describing NOP (Java - yuck)</a></span><br/>
 <span style="font-size:12px;"><a href="http://robots.thoughtbot.com/post/12179019201/design-patterns-in-the-wild-null-object">Design Patterns in the Wild: Null Object - Josh Clayton</a></span><br/></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

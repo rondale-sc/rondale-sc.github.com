@@ -6,13 +6,46 @@
     <description>Ruby, Javascript, and all else under the sun.</description>
     
     <item>
+      <title>Phantom Js CLI options</title>
+      <link>http://www.jonathan-jackson.net/cli-phantomjs-options-through-poltergeist.html</link>
+      <pubDate>Fri, 13 Sep 2013 00:00:00 -0400</pubDate>
+      <guid>http://www.jonathan-jackson.net/cli-phantomjs-options-through-poltergeist</guid>
+      <description>&lt;h1 class=&quot;title&quot;&gt;Phantom Js CLI options
+&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+                                         data-count=&quot;horizontal&quot;
+                                         data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
+&lt;/span&gt;
+
+&lt;/h1&gt;
+
+&lt;p&gt;Recently ran into an issue where my cucumber suite was throwing a timeout error.  The error was thrown because an image hosted externally wasn&amp;#39;t rendering.  Luckily Phantomjs has some amazing &lt;a href=&quot;https://github.com/ariya/phantomjs/wiki/API-Reference&quot;&gt;Command Line Options&lt;/a&gt; available to help us along.  On of which is &lt;code&gt;--load-images&lt;/code&gt; which allows us to prevent phantom from making the image request.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s setup poltergeist (Phantomjs&amp;#39; capybara driver) to accept these options...&lt;/p&gt;
+
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/6553515.js?file=cli_options.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Capybara.javascript_driver &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; :poltergeist
+Capybara.register_driver :poltergeist &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; |app|
+  &lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 
+    phantomjs_options: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;--load-images=no&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; 
+   &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  Capybara::Poltergeist::Driver.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;app,options&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                              end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see we can specify a list of the CLI options and they&amp;#39;ll be set when we run our suite.  And there you have it, prevent phantomjs from requesting images!&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>SSL Nightmares</title>
-      <link>http://www.jonathan-jackson.netssl-nightmares.html</link>
+      <link>http://www.jonathan-jackson.net/ssl-nightmares.html</link>
       <pubDate>Thu, 02 May 2013 00:00:00 -0400</pubDate>
-      <guid>http://www.jonathan-jackson.net./ssl-nightmares</guid>
+      <guid>http://www.jonathan-jackson.net/ssl-nightmares</guid>
       <description>&lt;h1&gt;SSL Nightmares&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -31,11 +64,11 @@
 
 &lt;p&gt;&lt;small&gt;Many of the following examples are from a repo made by &lt;a href=&quot;https://github.com/augustl&quot;&gt;augustl&lt;/a&gt; named &lt;a href=&quot;https://github.com/augustl/net-http-cheat-sheet&quot;&gt;net&lt;em&gt;http&lt;/em&gt;cheatsheet&lt;/a&gt;.  This repo is an excellent resource that will be further sited at the bottom of this post.&lt;/small&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/5504735.js?file=standard_ssl.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Net::HTTP.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssltest7.bbtest.net&amp;quot;&lt;/span&gt;, 443&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-http.use_ssl &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/5504735.js?file=standard_ssl.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;http&lt;/span&gt;             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Net::HTTP.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssltest7.bbtest.net&amp;quot;&lt;/span&gt;, 443&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+http.use_ssl     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
 http.verify_mode &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; OpenSSL::SSL::VERIFY_PEER
-&lt;span class=&quot;nv&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http.request&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Net::HTTP::Get.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;response&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http.request&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Net::HTTP::Get.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
@@ -55,8 +88,8 @@ http.verify_mode &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; OpenSSL::SSL::VE
 
 &lt;p&gt;Mutual Authentication is doing the handshake process (slightly different, but similar) from both perspectives, the client and the server.  This process ensures both identities. Let&amp;#39;s send the client certificate to the server.  &lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/5504735.js?file=mutual_auth.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# PKCS12: Defines a file format commonly used to store private &lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/5504735.js?file=mutual_auth.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# PKCS12: Defines a file format commonly used to store private &lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# keys with accompanying public key certificates, protected &lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# with a password based symmetric key.&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;pkcs12&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; OpenSSL::PKCS12.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;File.read&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/path/to/pkcs12&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -91,12 +124,12 @@ http.key         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; pkcs12.key
     
     <item>
       <title>Method Signatures You Can Sink Your Teeth Into</title>
-      <link>http://www.jonathan-jackson.netmethod-signatures-you-can-sink-your-teeth-into.html</link>
+      <link>http://www.jonathan-jackson.net/method-signatures-you-can-sink-your-teeth-into.html</link>
       <pubDate>Thu, 07 Mar 2013 00:00:00 -0500</pubDate>
-      <guid>http://www.jonathan-jackson.net./method-signatures-you-can-sink-your-teeth-into</guid>
+      <guid>http://www.jonathan-jackson.net/method-signatures-you-can-sink-your-teeth-into</guid>
       <description>&lt;h1&gt;Method Signatures You Can Sink Your Teeth Into&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -120,12 +153,12 @@ Jonathan Jackson&lt;/p&gt;
     
     <item>
       <title>Code Metrics and You</title>
-      <link>http://www.jonathan-jackson.netcode-metrics-and-you.html</link>
+      <link>http://www.jonathan-jackson.net/code-metrics-and-you.html</link>
       <pubDate>Thu, 03 Jan 2013 00:00:00 -0500</pubDate>
-      <guid>http://www.jonathan-jackson.net./code-metrics-and-you</guid>
+      <guid>http://www.jonathan-jackson.net/code-metrics-and-you</guid>
       <description>&lt;h1&gt;Code Metrics and You&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -154,7 +187,7 @@ Jonathan Jackson&lt;/p&gt;
       <guid>http://www.jonathan-jackson.net/2012/10/15/try-and-try-again</guid>
       <description>&lt;h1&gt;Try and Try Again&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -169,8 +202,8 @@ Jonathan Jackson&lt;/p&gt;
 
 &lt;p&gt;Why would you use the Null Object pattern?  Let&amp;#39;s go into a simple example.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;class Project
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/3896565.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;class Project
   attr_reader :supervisor
 
   &lt;span class=&quot;c&quot;&gt;# assume supervisor looks like:&lt;/span&gt;
@@ -181,7 +214,7 @@ Jonathan Jackson&lt;/p&gt;
   end
 
   def display_name
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; !supervisor
+    &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;supervisor
       supervisor&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&amp;quot;, &amp;quot;&lt;/span&gt; + supervisor&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# yuck&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
       &lt;span class=&quot;s2&quot;&gt;&amp;quot;No supervisor assigned.&amp;quot;&lt;/span&gt;
@@ -197,18 +230,19 @@ end
 
 &lt;p&gt;Alright, so hopefully you are all on board with at least contemplating using the NullObject pattern, but what&amp;#39;s next?  The first thing we need to do is refactor our class a bit.  Supervisor will likely have other methods defined and therefore merits its own class.  So let&amp;#39;s do that now:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;class Project
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/3896565.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;class Project
   attr_reader :supervisor
 
   &lt;span class=&quot;c&quot;&gt;# assume supervisor looks like:&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;# [&amp;quot;Harry&amp;quot;, &amp;quot;Henderson&amp;quot;, &amp;quot;hhendersonfake@me.com&amp;quot;]&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Supervisor.new(&amp;quot;Harry&amp;quot;, &amp;quot;Henderson&amp;quot;, &amp;quot;hhendersonfake@me.com&amp;quot;)&lt;/span&gt;
 
   def initialize&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;supervisor&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    @supervisor &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Supervisor.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;*supervisor&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    @supervisor &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; supervisor
   end
+end
 
-  &lt;span class=&quot;nv&quot;&gt;Supervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;:first_name, :last_name, :email&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Supervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;:first_name, :last_name, :email&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;    &lt;/span&gt;def display_name
       &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; !first_name.nil? &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; !last_name.nil?
         first_name + &lt;span class=&quot;s2&quot;&gt;&amp;quot;, &amp;quot;&lt;/span&gt; + last_name
@@ -217,14 +251,13 @@ end
       end
     end
   end
-end
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
 &lt;p&gt;That looks a little better; the supervisor class is now isolated and we have more of a clue as to what the supervisor object is responsible for.  However, we still have the same issue.  We are asking the object if it&amp;#39;s nil in order to display the right #display_name.  This is where we&amp;#39;ll actually create a NullObject and make it respond to the methods we expect supervisor to know.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-3.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;NullSupervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/3896565.js?file=gist-3.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;NullSupervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;  &lt;/span&gt;def display_name
     &lt;span class=&quot;s2&quot;&gt;&amp;quot;No supervisor assigned.&amp;quot;&lt;/span&gt;
   end
@@ -234,27 +267,27 @@ end
 
 &lt;p&gt;So now our class, incorporated with the NullObject, looks like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/3896565.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;class Project
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/3896565.js?file=gist-4.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;class Project
   attr_reader :supervisor
 
   &lt;span class=&quot;c&quot;&gt;# assume supervisor looks like:&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;# [&amp;quot;Harry&amp;quot;, &amp;quot;Henderson&amp;quot;, &amp;quot;hhendersonfake@me.com&amp;quot;]&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Supervisor.new(&amp;quot;Harry&amp;quot;, &amp;quot;Henderson&amp;quot;, &amp;quot;hhendersonfake@me.com&amp;quot;)&lt;/span&gt;
 
-  def initialize&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;supervisor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nil&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    @supervisor &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; supervisor.nil? ? NullSupervisor.new : Supervisor.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;*supervisor&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  def initialize&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;supervisor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NullSupervisor.new&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    @supervisor &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; supervisor
   end
+end
 
-  &lt;span class=&quot;nv&quot;&gt;Supervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;:first_name, :last_name, :email&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;    &lt;/span&gt;def display_name
-      first_name + &lt;span class=&quot;s2&quot;&gt;&amp;quot;, &amp;quot;&lt;/span&gt; + last_name
-    end
+&lt;span class=&quot;nv&quot;&gt;Supervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;:first_name, :last_name, :email&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;  &lt;/span&gt;def display_name
+    first_name + &lt;span class=&quot;s2&quot;&gt;&amp;quot;, &amp;quot;&lt;/span&gt; + last_name
   end
+end
 
-  &lt;span class=&quot;nv&quot;&gt;NullSupervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;    &lt;/span&gt;def display_name
-      &lt;span class=&quot;s2&quot;&gt;&amp;quot;No supervisor assigned.&amp;quot;&lt;/span&gt;
-    end
+&lt;span class=&quot;nv&quot;&gt;NullSupervisor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Struct.new&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;  &lt;/span&gt;def display_name
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;No supervisor assigned.&amp;quot;&lt;/span&gt;
   end
 end
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -308,14 +341,14 @@ end
       <guid>http://www.jonathan-jackson.net/2012/05/03/pry-session-102</guid>
       <description>&lt;h1&gt;Pry 102: Advanced Features&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
 
 &lt;p&gt;Many of you have read my previous posts about the ruby REPL Pry.  If not, you should check them out: &lt;a href=&quot;http://jonathan-jackson.net/give-it-a-pry&quot;&gt;Give it a Pry&lt;/a&gt; and &lt;a href=&quot;http://jonathan-jackson.net/make-it-your-own&quot;&gt;Make It Your Own&lt;/a&gt;.  During the months since writing those articles, Pry has made major strides in many areas.  I&amp;#39;d like to spend the next few minutes going through some of the newer features and re-invigorate your interested in Pry.  Remember, just like before, Pry has amazing documentation, helpful maintainers, and solid community backing.  So be sure to look around for additional information.&lt;/p&gt;
 
-&lt;p&gt;&lt;img style=&quot;margin:auto;&quot; src='http://www.jonathan-jackson.net/images/pry_image.png'/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img style=&quot;margin:auto;&quot; src=&#39;http://www.jonathan-jackson.net/images/pry_image.png&#39;/&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;small&gt;This post is a little code heavy. Beware... :)&lt;/small&gt;&lt;/p&gt;
 
@@ -345,8 +378,8 @@ end
 
 &lt;p&gt;&lt;code&gt;amend-line&lt;/code&gt; command which allows you to modify specific lines in your input buffer.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; def hello
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; def hello
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;*   puts &lt;span class=&quot;s2&quot;&gt;&amp;quot;Howdy, #{name}&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;*   amend-line 1 def hello&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# Pry goodness&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#  1: def hello(name)&lt;/span&gt;
@@ -362,8 +395,8 @@ end
 
 &lt;h5&gt;Ex. 1.1 (Edit)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s1&quot;&gt;&amp;#39;blah&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s1&quot;&gt;&amp;#39;blah&amp;#39;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# =&amp;gt; blah&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; edit
 &lt;span class=&quot;c&quot;&gt;# editor opens with `puts &amp;#39;blah&amp;#39;`&lt;/span&gt;
@@ -374,10 +407,10 @@ end
 
 &lt;h5&gt;Ex 1.2 (Edit empty tempfile)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-3.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s1&quot;&gt;&amp;#39;blah&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-3.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s1&quot;&gt;&amp;#39;blah&amp;#39;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# =&amp;gt; blah&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; edit
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; edit -t
 &lt;span class=&quot;c&quot;&gt;# editor opens empty tempfile&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
@@ -386,8 +419,8 @@ end
 
 &lt;h5&gt;Ex. 1.3 (Edit from last exception)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# cat /Users/jjackson/Desktop/hello-exception.rb&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-4.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# cat /Users/jjackson/Desktop/hello-exception.rb&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# def hello&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#  raise StandardError&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# end&lt;/span&gt;
@@ -404,8 +437,8 @@ end
 
 &lt;h5&gt;Ex. 1.4 (Edit specific line with edit -i)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-23.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s2&quot;&gt;&amp;quot;Won&amp;#39;t be opened&amp;quot;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588917.js?file=gist-23.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s2&quot;&gt;&amp;quot;Won&amp;#39;t be opened&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Won&amp;#39;t be opened&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s2&quot;&gt;&amp;quot;Will be opened.&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Will be opened.&lt;/span&gt;
@@ -419,8 +452,8 @@ end
 
 &lt;h5&gt;Ex. 1.5 (Print/Play input_buffer)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-5.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s2&quot;&gt;&amp;quot;Blah&amp;quot;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-5.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; puts &lt;span class=&quot;s2&quot;&gt;&amp;quot;Blah&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#=&amp;gt; Blah&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; cat -i &lt;span class=&quot;c&quot;&gt;# pass line number or range to restrict output&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#=&amp;gt; puts &amp;quot;Blah&amp;quot;&lt;/span&gt;
@@ -442,8 +475,8 @@ end
 
 &lt;h5&gt;Ex. 2 (Print exception with wtf?)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-6.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; called_this_method_without_defining_it_first
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-6.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; called_this_method_without_defining_it_first
 &lt;span class=&quot;c&quot;&gt;# NameError: undefined local variable or method `called_this_method_without_defining_it_first&amp;#39; for main:Object&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# from (pry):1:in `&amp;lt;main&amp;gt;&amp;#39;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; wtf?
@@ -461,8 +494,8 @@ end
 
 &lt;h5&gt;Ex. 2.1 (Print context of exception with cat -ex)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-7.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; called_this_without_defining_it_first
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-7.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; called_this_without_defining_it_first
 &lt;span class=&quot;c&quot;&gt;# NameError: undefined local variable or method `called_this_without_defining_it_first&amp;#39; for main:Object&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# from (pry):1:in `&amp;lt;main&amp;gt;&amp;#39;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; cat -ex
@@ -478,8 +511,8 @@ end
 
 &lt;h5&gt;Ex. 2.2 (Print context of exception explicitly setting stack level)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-8.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; cat -ex 1
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-8.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; cat -ex 1
 &lt;span class=&quot;c&quot;&gt;# Exception: NameError: undefined local variable or method # `called_this_without_defining_it_first&amp;#39; for main:Object&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# --&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb @ line 249 @ level: 1 of backtrace (of 19).&lt;/span&gt;
@@ -514,8 +547,8 @@ end
 
 &lt;p&gt;Imagine you have a class that looks like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588885.js?file=gist-9.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;class MyClass
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588885.js?file=gist-9.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;class MyClass
   class MySubClass
     class MySubSubClass
       class Incepted
@@ -539,8 +572,11 @@ end
 
 &lt;h5&gt;Ex. 3 (Using Pry::NAV_PROMPT)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-10.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main: 0&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MyClass::MySubClass::MySubSubClass::Incepted
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-10.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main: 0&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MyClass::MySubClass::MySubSubClass::Incepted
+&lt;span class=&quot;c&quot;&gt;# or &lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main: 0&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MyClass/MySubClass/MySubSubClass/Incepted &lt;span class=&quot;c&quot;&gt;# notice the slashes&lt;/span&gt;
+
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main / MyClass::MySubClass::MySubSubClass::Incepted: 1&amp;gt; spinning_top
 &lt;span class=&quot;c&quot;&gt;#=&amp;gt; **Spinning**&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -550,8 +586,8 @@ end
 
 &lt;h5&gt;Ex. 3.1 (Using Pry::NAV_PROMPT cont.)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-11.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;8&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main: 0&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MyClass
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-11.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;8&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main: 0&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MyClass
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;9&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main / MyClass: 1&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MySubClass
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main / MyClass / MyClass::MySubClass: 2&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MySubSubClass
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;11&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Incepted
@@ -575,8 +611,8 @@ end
 
 &lt;h5&gt;Ex. 3.2 (Using find-method)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-12.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; find-method spinning_top
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-12.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; find-method spinning_top
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# MyClass::MySubClass::MySubSubClass::Incepted.spinning_top: def self.spinning_top&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -588,8 +624,8 @@ end
 
 &lt;h5&gt;Ex. 3.3 (edit-method in editor)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-13.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; edit-method MyClass::MySubClass::MySubSubClass::Incepted.spinning_top
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-13.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; edit-method MyClass::MySubClass::MySubSubClass::Incepted.spinning_top
 &lt;span class=&quot;c&quot;&gt;# or&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;MyClass::MySubClass::MySubSubClass::Incepted
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MyClass::MySubClass::MySubSubClass::Incepted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:1&amp;gt; edit-method spinning_top
@@ -600,8 +636,8 @@ end
 
 &lt;h5&gt;Ex. 3.4 (Find method with -c flag to grep for string)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-14.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd  &lt;/span&gt;Pry
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-14.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd  &lt;/span&gt;Pry
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:1&amp;gt; find-method -c save_history
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Pry.save_history: def self.save_history&lt;/span&gt;
@@ -625,8 +661,8 @@ end
 
 &lt;h5&gt;Ex. 4 (Using _file_ and _dir_)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-15.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; show-method Pry#backtrace&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-15.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; show-method Pry#backtrace&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/ pry_instance.rb @ line 27:&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Number of lines: 1&lt;/span&gt;
@@ -645,15 +681,15 @@ end
 
 &lt;h5&gt;Ex. 4.1 (Using _file_ to view source)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-16.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; cat &lt;span class=&quot;c&quot;&gt;#{_file_}&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-16.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; cat &lt;span class=&quot;c&quot;&gt;#{_file_}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
 &lt;p&gt;Another amazing feature: passing &lt;code&gt;show-source&lt;/code&gt; the &lt;code&gt;-a&lt;/code&gt; flag.  This will show all active monkey-patches, which is great for when you stumble on code that does things like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-17.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# cat devil.rb&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-17.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# cat devil.rb&lt;/span&gt;
  class TrueClass
     def to_s
       &lt;span class=&quot;s2&quot;&gt;&amp;quot;false&amp;quot;&lt;/span&gt;
@@ -666,8 +702,8 @@ end
 
 &lt;h5&gt;Ex. 4.2 (Using show-source -a to view active monkey-patches)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-18.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; show-source -a TrueClass
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-18.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; show-source -a TrueClass
 &lt;span class=&quot;c&quot;&gt;# Found 2 candidates for `TrueClass` definition:&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Candidate 1/2:  @ line :&lt;/span&gt;
@@ -696,8 +732,8 @@ end
 
 &lt;p&gt;&lt;code&gt;pry-remote&lt;/code&gt; uses the DRb library and allows you to use calls to &lt;code&gt;binding.pry&lt;/code&gt; remotely.  All you need to do is use &lt;code&gt;binding.remote_pry&lt;/code&gt; and run your program.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588905.js?file=gist-19.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;pry-remote&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588905.js?file=gist-19.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;pry-remote&amp;#39;&lt;/span&gt;
 
 class Hello
   def hello&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -714,8 +750,8 @@ Hello.new.hello &lt;span class=&quot;s2&quot;&gt;&amp;quot;Jon&amp;quot;&lt;/spa
 
 &lt;h5&gt;Ex. 5 (Using binding.remote-pry)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-20.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# From: test.rb @ line 4 Hello#hello:&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588917.js?file=gist-20.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# From: test.rb @ line 4 Hello#hello:&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#    4:   def hello(name)&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# =&amp;gt; 5:     binding.remote_pry&lt;/span&gt;
@@ -740,8 +776,8 @@ Hello.new.hello &lt;span class=&quot;s2&quot;&gt;&amp;quot;Jon&amp;quot;&lt;/spa
 
 &lt;h5&gt;Ex. 6 (Using Pry-nav)&lt;/h5&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-21.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Using test.rb from above&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588917.js?file=gist-21.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Using test.rb from above&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$~&lt;/span&gt; ruby test.rb
 &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# From: test.rb @ line 4 Hello#hello:&lt;/span&gt;
@@ -764,8 +800,8 @@ Hello.new.hello &lt;span class=&quot;s2&quot;&gt;&amp;quot;Jon&amp;quot;&lt;/spa
 
 &lt;p&gt;This allows you to step through your code easily.  Alias your commands in your &lt;code&gt;~/.pryrc&lt;/code&gt; file like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2588917.js?file=gist-22.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;Pry.commands.alias_command &lt;span class=&quot;s1&quot;&gt;&amp;#39;c&amp;#39;&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;&amp;#39;continue&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2588917.js?file=gist-22.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Pry.commands.alias_command &lt;span class=&quot;s1&quot;&gt;&amp;#39;c&amp;#39;&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;&amp;#39;continue&amp;#39;&lt;/span&gt;
 Pry.commands.alias_command &lt;span class=&quot;s1&quot;&gt;&amp;#39;s&amp;#39;&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;&amp;#39;step&amp;#39;&lt;/span&gt;
 Pry.commands.alias_command &lt;span class=&quot;s1&quot;&gt;&amp;#39;n&amp;#39;&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;&amp;#39;next&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -784,13 +820,13 @@ Pry.commands.alias_command &lt;span class=&quot;s1&quot;&gt;&amp;#39;n&amp;#39;&
     </item>
     
     <item>
-      <title>Hitchhiker's Guide to Metaprogramming: Class/Module Hooks</title>
+      <title>Hitchhiker&#39;s Guide to Metaprogramming: Class/Module Hooks</title>
       <link>http://www.jonathan-jackson.net/2012/04/23/hitchhikers-guide-to-metaprogramming-classmodule-hooks.html</link>
       <pubDate>Mon, 23 Apr 2012 00:00:00 -0400</pubDate>
       <guid>http://www.jonathan-jackson.net/2012/04/23/hitchhikers-guide-to-metaprogramming-classmodule-hooks</guid>
       <description>&lt;h1&gt;Hitchhiker&amp;#39;s Guide to Metaprogramming: Class/Module Hooks&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -825,7 +861,7 @@ Pry.commands.alias_command &lt;span class=&quot;s1&quot;&gt;&amp;#39;n&amp;#39;&
       <guid>http://www.jonathan-jackson.net/2012/04/10/introducing-pivotjs</guid>
       <description>&lt;h1&gt;Introducing Pivot.js&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -842,8 +878,8 @@ Pry.commands.alias_command &lt;span class=&quot;s1&quot;&gt;&amp;#39;n&amp;#39;&
 
 &lt;p&gt;After reading up a little bit and requiring pivot.js in his &lt;code&gt;&amp;lt;head&amp;gt;&amp;lt;/head&amp;gt;&lt;/code&gt;, he creates a new pivot based off his CSV.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-1.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;csv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;last_name,first_name,email,date_ordered,date_delivered,sale_price,unit_identifier\n&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-1.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;csv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;last_name,first_name,email,date_ordered,date_delivered,sale_price,unit_identifier\n&lt;/span&gt;
 &lt;span class=&quot;s2&quot;&gt;       doo, scooby, scoobydoo12512@gmail.com,2012-02-12,2012-02-17,9.99,big-bang-rpsls\n&lt;/span&gt;
 &lt;span class=&quot;s2&quot;&gt;       flinstone,fred,freddyf12516@gmail.com,2012-02-12,2012-02-17,9.99,dr-who-bad-wolf\n&lt;/span&gt;
 &lt;span class=&quot;s2&quot;&gt;       spiegel,spike,bebop1256@gmail.com,2012-02-12,2012-02-17,9.99,tng-engage\n&amp;quot;&lt;/span&gt; //etc
@@ -862,8 +898,8 @@ pivot.init&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;csv: csv, fields: field
 
 &lt;p&gt;He starts to play around with the pivot object in the console to see what it can do for him.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-2.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pivot.data&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-2.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pivot.data&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all
 //&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Object, Object, Object, etc&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
 
 pivot.filters&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
@@ -874,16 +910,16 @@ pivot.filters&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all&lt;span class=&
 
 &lt;p&gt;Realizing that he&amp;#39;ll need to filter the data so that he doesn&amp;#39;t get thousands of rows returned on all his reports, he delves a bit further into the documentation and finds some filter methods.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-3.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pivot.filters&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.apply&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;last_name: &lt;span class=&quot;s1&quot;&gt;&amp;#39;flinstone&amp;#39;&lt;/span&gt;, first_name: &lt;span class=&quot;s1&quot;&gt;&amp;#39;fred&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-3.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pivot.filters&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.apply&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;last_name: &lt;span class=&quot;s1&quot;&gt;&amp;#39;flinstone&amp;#39;&lt;/span&gt;, first_name: &lt;span class=&quot;s1&quot;&gt;&amp;#39;fred&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;;
 //&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Object&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
 &lt;p&gt;&amp;quot;Sweet!,&amp;quot; exclaims Phil, realizing how easy that was.  He continues reading and sees that he can create custom fields to do all sorts of stuff, like determine the lag between order date and delivery date.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-4.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pivot.fields&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.add&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;name: &lt;span class=&quot;s1&quot;&gt;&amp;#39;delivery_lag&amp;#39;&lt;/span&gt;, 
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-4.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pivot.fields&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.add&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;name: &lt;span class=&quot;s1&quot;&gt;&amp;#39;delivery_lag&amp;#39;&lt;/span&gt;, 
                 &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;&amp;#39;integer&amp;#39;&lt;/span&gt;, 
             psuedo: &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;,
             labelable: &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;,
@@ -896,8 +932,8 @@ pivot.filters&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all&lt;span class=&
 
 &lt;p&gt;Now, he can render a report that would let him see average delivery_lag by t-shirt identifier.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-5.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pivot.display&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.rowLabels&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.set&lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;unit_identifier&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-5.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pivot.display&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.rowLabels&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.set&lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;unit_identifier&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
 pivot.display&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.summaries&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.set&lt;span class=&quot;o&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;deliver_lag&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
 pivot.data&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
 //&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; Object // will contain the report
@@ -912,8 +948,8 @@ pivot.data&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all&lt;span class=&quo
 
 &lt;p&gt;First, he adds a div for results that looks like &lt;code&gt;&amp;lt;div id=&amp;quot;results&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&lt;/code&gt; and a div for his menus &lt;code&gt;&amp;lt;div id=&amp;quot;pivot-menu-container&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&lt;/code&gt;.  Then, he calls jquery_pivot on his container by adding the following snippet to his index page:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-6.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;document&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;.ready&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-6.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;document&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;.ready&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nv&quot;&gt;csv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt; // same as above
   &lt;span class=&quot;nv&quot;&gt;fields&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; //same as above
 
@@ -924,8 +960,8 @@ pivot.data&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.all&lt;span class=&quo
 
 &lt;p&gt;When he loads the page, Phil is greeted with three drop-downs listing his filters, labels, and summaries.  After playing with the new drop-downs, he&amp;#39;s ready to move on.  Phil wants a report to show delivery lag by T-shirt, but he doesn&amp;#39;t want to have to click the filters, labels, and summaries every time he refreshes the page.  A little further digging into the jQuery pivot section, he sees that he can create prefabricated reports by selecting the fields/filters he wants displayed and using the pivot.config() method to easily retrieve a valid init object.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-7.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;// after the page has loaded and Phil has selected delivery-lag as his summary field and row label of unit_identifer
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-7.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;// after the page has loaded and Phil has selected delivery-lag as his summary field and row label of unit_identifer
 
 // in the console
 
@@ -944,8 +980,8 @@ JSON.stringify&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pivot.config&lt;span
 
 &lt;p&gt;Also, CSV may be passed in from a URL like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2347874.js?file=gist-8.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#pivot-menu-container&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;.pivot_display&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;setup&amp;#39;&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;csv_url:&lt;span class=&quot;s1&quot;&gt;&amp;#39;/url/to/csv&amp;#39;&lt;/span&gt;,fields:fields&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2347874.js?file=gist-8.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#pivot-menu-container&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;.pivot_display&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;setup&amp;#39;&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;csv_url:&lt;span class=&quot;s1&quot;&gt;&amp;#39;/url/to/csv&amp;#39;&lt;/span&gt;,fields:fields&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
@@ -962,7 +998,7 @@ JSON.stringify&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pivot.config&lt;span
       <guid>http://www.jonathan-jackson.net/2012/04/04/zero-to-jekyll-in-twenty-minutes</guid>
       <description>&lt;h1&gt;Zero to Jekyll in Twenty Minutes&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -986,7 +1022,7 @@ JSON.stringify&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pivot.config&lt;span
       <guid>http://www.jonathan-jackson.net/2012/03/22/new-site-new-style</guid>
       <description>&lt;h1&gt;New Site, New Style&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1041,7 +1077,7 @@ JSON.stringify&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pivot.config&lt;span
       <guid>http://www.jonathan-jackson.net/setting-up-a-remote-environment</guid>
       <description>&lt;h1&gt;Setting Up a Remote Environment&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1052,8 +1088,8 @@ JSON.stringify&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pivot.config&lt;span
 
 &lt;p&gt;I&amp;#39;ll assume that you are running a MySQL server on 192.168.0.1:3306 and you have a box with an external IP that has local access to it.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156604.js?file=gist-1.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vi ~/.ssh/config
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156604.js?file=gist-1.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vi ~/.ssh/config
 
 &lt;span class=&quot;c&quot;&gt;# Add the following information&lt;/span&gt;
 
@@ -1068,15 +1104,15 @@ LocalForward 3307 192.168.100.1:3306
 &lt;p&gt;Forward 3307 192.168.100.1:3306&lt;/p&gt;
 
 &lt;p&gt;You&amp;#39;ll want to copy your public key into the ~/.ssh/authorized&lt;em&gt;keys file to prevent those pesky password prompts.  With that done you simply ssh into the rails&lt;/em&gt;blog_db box like so:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;$ ssh rails_blog_db
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$ ssh rails_blog_db
 # Leave this running...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Alright that part was easy let&amp;#39;s move on to the Rails stuff.&lt;/p&gt;
 
 &lt;h2&gt;Create your environment file&lt;/h2&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156604.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ~$ touch rails_blog/config/environments/development_remote.rb&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156604.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ~$ touch rails_blog/config/environments/development_remote.rb&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# ~$ vi config/environments/development_remote.rb&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# Add this and save!&lt;/span&gt;
@@ -1090,8 +1126,8 @@ require File.join&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;File.expand_path&
 
 &lt;p&gt;Once you&amp;#39;ve done that you need to add another entry to your database.yml file.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156604.js?file=gist-3.yml'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# rails_blog/config/database.yml&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156604.js?file=gist-3.yml&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# rails_blog/config/database.yml&lt;/span&gt;
 
 default: &amp;amp;default
   adapter: mysql
@@ -1124,8 +1160,8 @@ development_remote:
 
 &lt;p&gt;In order to render the pages the environment needs to know how to serve assets.  To do that you&amp;#39;ll need to edit your application.rb file.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156604.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# rails_blog/config/application.rb&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156604.js?file=gist-4.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# rails_blog/config/application.rb&lt;/span&gt;
 
 require File.expand_path&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;../boot&amp;#39;&lt;/span&gt;, __FILE__&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
@@ -1141,7 +1177,7 @@ end
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
 &lt;p&gt;Find the line for the bundler require and add development_remote to the assets array.  Once that&amp;#39;s done you can simply run your server and everything will work as you expect:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;$ rails s -e development_remote
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$ rails s -e development_remote
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;Conclusions&lt;/h2&gt;
 
@@ -1156,7 +1192,7 @@ end
       <guid>http://www.jonathan-jackson.net/introducing-espn-rb</guid>
       <description>&lt;h1&gt;Introducing EspnRb&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1175,8 +1211,8 @@ end
 
 &lt;h3&gt;Installation&lt;/h3&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156594.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# On the command line.&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156594.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# On the command line.&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# ~$ gem install espn_rb&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# Or in a Gemfile&lt;/span&gt;
@@ -1190,8 +1226,8 @@ gem &lt;span class=&quot;s2&quot;&gt;&amp;quot;espn_rb&amp;quot;&lt;/span&gt;, &
 
 &lt;p&gt;The easiest way to set your api key for use with espn_rb is to export it as an environment variable. Do that like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156594.js?file=gist-2.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# If you want to pass it in to your objects you may do so explicitly like so:&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156594.js?file=gist-2.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# If you want to pass it in to your objects you may do so explicitly like so:&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# espn = EspnRb.headlines(:api_key =&amp;gt; YOUR_SUPER_SECRET_API_KEY)&lt;/span&gt;
 
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;espn_api_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YOUR_SUPER_SECRET_API_KEY
@@ -1200,8 +1236,8 @@ gem &lt;span class=&quot;s2&quot;&gt;&amp;quot;espn_rb&amp;quot;&lt;/span&gt;, &
 
 &lt;h3&gt;Get the headlines&lt;/h3&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156594.js?file=gist-3.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;espn_rb&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156594.js?file=gist-3.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;espn_rb&amp;#39;&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;espn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Espn.headlines
 
 &lt;span class=&quot;c&quot;&gt;#   Each sport available via the API can be called on the Espn.headlines&lt;/span&gt;
@@ -1223,8 +1259,8 @@ espn.all.response
 
 &lt;h3&gt;HeadlineResponse&lt;/h3&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156594.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# HeadlineResponse includes Enum so you can do things like this:&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156594.js?file=gist-4.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# HeadlineResponse includes Enum so you can do things like this:&lt;/span&gt;
 espn.all.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&amp;amp;:title&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;#=&amp;gt; [&amp;quot;Celtics-Clippers Preview&amp;quot;,&lt;/span&gt;
@@ -1249,8 +1285,8 @@ espn.all.titles
 
 &lt;p&gt;The HeadlineResponse Object holds in it the contens of the ESPN JSON response  split into HeadlineItems.  Here is where you can get Specific information about each story.  Some of the options are:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156594.js?file=gist-5.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;espn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; EspnRb.headlines
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156594.js?file=gist-5.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;espn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; EspnRb.headlines
 &lt;span class=&quot;nv&quot;&gt;headline_response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; espn.nba&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#=&amp;gt; HeadlineItem&lt;/span&gt;
 
 headline_response.web_url &lt;span class=&quot;c&quot;&gt;#=&amp;gt; &amp;quot;http://sports.espn.go.com/espn/wire?section=nba&amp;amp;id=7664408&amp;amp;ex_cid=espnapi_public&amp;quot;&lt;/span&gt;
@@ -1296,7 +1332,7 @@ headline_response.headline &lt;span class=&quot;c&quot;&gt;#=&amp;gt; JSON hash 
       <guid>http://www.jonathan-jackson.net/life-in-a-shade-of-ruby</guid>
       <description>&lt;h1&gt;Life in a shade of ruby&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1311,8 +1347,8 @@ headline_response.headline &lt;span class=&quot;c&quot;&gt;#=&amp;gt; JSON hash 
 
 &lt;p&gt;That&amp;#39;s it.  For real.  The entire list of rules can be summarized in Ruby like so.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156522.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# If cell is alive then it continues to stay alive if it has&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156522.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# If cell is alive then it continues to stay alive if it has&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 2 or 3 alive neighbors.  If the cell is dead then it comes&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# back to life only if it has exactly 3 alive neighbors.&lt;/span&gt;
 
@@ -1330,8 +1366,8 @@ headline_response.headline &lt;span class=&quot;c&quot;&gt;#=&amp;gt; JSON hash 
 
 &lt;h1&gt;The Cell&lt;/h1&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156522.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;class Cell
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156522.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;class Cell
   attr_accessor :y, :x, :alive, :future_alive
 
   def initialize&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x,y,alive&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -1364,8 +1400,8 @@ end
 
 &lt;p&gt;After that, creating the grid of cells is as easy as:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156522.js?file=gist-3.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Array#new accepts a block....radical!&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156522.js?file=gist-3.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Array#new accepts a block....radical!&lt;/span&gt;
 @cells &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@height&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; |y| Array.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@width&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; |x| Cell.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x,y&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
@@ -1374,8 +1410,8 @@ end
 
 &lt;p&gt;To tie all the cells together, I created the Game class.  It creates the playing board and processes each generation.  We initialize it with the dimensions of the board and how many generations we&amp;#39;d like to process, and tell it to #play.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156522.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;class Game
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156522.js?file=gist-4.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;class Game
   def initialize&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;w,h,steps&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
     @width,@height,@steps &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; w,h,steps
     @cells   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@height&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; |y| Array.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@width&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; |x| Cell.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x,y&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt;
@@ -1421,8 +1457,8 @@ end
 
 &lt;p&gt;Alright, that&amp;#39;s all well and good, but we don&amp;#39;t actually have any cells alive in the initial state so our entire program (though perfectly functional) does exactly nothing.  So I created a pattern Class:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156522.js?file=gist-5.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;class Pattern
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156522.js?file=gist-5.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;class Pattern
   def initialize&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x, y, &lt;span class=&quot;nv&quot;&gt;pattern&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nil&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
     @origin_x, @origin_y &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; origin_x, origin_y
     @default_patterns &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;:acorn &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;-3,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-2,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-2,2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3,0&lt;span class=&quot;o&quot;&gt;]]}&lt;/span&gt;
@@ -1442,8 +1478,8 @@ end
 
 &lt;p&gt;You&amp;#39;ll notice that the Pattern#set&lt;em&gt;cells method looks a lot like the alive&lt;/em&gt;neighbors method and it is.  This allows you to trigger certain cells alive by calculating their points relative to an origin point.  It sounds complicated, but it&amp;#39;s actually quite simple, assuming you have a pattern you just call:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156522.js?file=gist-6.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;Pattern.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;somepoint_x, somepoint_y, :acorn&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.set_cells&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@cells&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156522.js?file=gist-6.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Pattern.new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;somepoint_x, somepoint_y, :acorn&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.set_cells&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@cells&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
@@ -1453,8 +1489,8 @@ end
 
 &lt;p&gt;Defined like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156522.js?file=gist-7.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;:glider_gun &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;0,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-1,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-1,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-1,-1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-2,2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-2,-2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-3,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156522.js?file=gist-7.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;:glider_gun &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;0,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-1,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-1,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-1,-1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-2,2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-2,-2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-3,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
                       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-4,3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-5,3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-4,-3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-5,-3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-6, 2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-6,-2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
                       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-7,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-7,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-7,-1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-16,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-17,0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-16,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
                       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-17,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3,3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3,2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;3,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4,3&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4,2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4,1&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;5,4&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
@@ -1487,7 +1523,7 @@ end
       <guid>http://www.jonathan-jackson.net/omniauth-and-other-drugs</guid>
       <description>&lt;h1&gt;Omniauth and Other Drugs&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1498,8 +1534,8 @@ end
 
 &lt;p&gt;Surprise Code!&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156513.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;#config/initializers/omniauth.rb&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156513.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;#config/initializers/omniauth.rb&lt;/span&gt;
 provider :LDAP,
          :host &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;0.0.0.0&amp;#39;&lt;/span&gt;,
          :port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; 389,
@@ -1516,8 +1552,8 @@ provider :identity
 
 &lt;p&gt;Weird combiniation of authorization mechanisms I know, but it will be illustrative. This is what a typical omniauth initializer looks like.  You specify which providers you want to be available and the necessary information required by the strategy.  Most of the strategies available have good documentation, with the possible exception of LDAP ( though it has enough to start ). Once we realized we wanted to have a single custom form (the default forms are kinda bland) that didn&amp;#39;t require the specifying of a provider we started tinkering.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156513.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# First we abstract the parameters of the LDAP&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156513.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# First we abstract the parameters of the LDAP&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# strategy for use in our callback.&lt;/span&gt;
 
 provider :LDAP,
@@ -1578,7 +1614,7 @@ end
       <guid>http://www.jonathan-jackson.net/be-back-soon</guid>
       <description>&lt;h1&gt;Back Soon&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1601,7 +1637,7 @@ Jonathan Jackson&lt;/p&gt;
       <guid>http://www.jonathan-jackson.net/man-and-ruby</guid>
       <description>&lt;h1&gt;Man and Ruby&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1615,13 +1651,13 @@ Jonathan Jackson&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://carboni.ca/blog&quot;&gt;Michael Edgar&lt;/a&gt; submitted a patch &lt;a href=&quot;http://rubyforge.org/tracker/index.php?func=detail&amp;amp;aid=27691&amp;amp;group_id=126&amp;amp;atid=577&quot;&gt;[1]&lt;/a&gt; to rubygems to allow for explicit inclusion of man pages in the gemspec or implicit inclusion in the /man directory.  Unfortunately this patch has not been included despite being projected for inclusion in 1.4.  All is not lost, @defunkt, of GitHub fame and huge proponent of man page usage, wrote a nice little plugin called gem-man &lt;a href=&quot;https://github.com/defunkt/gem-man&quot;&gt;[2]&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Gem-man checks to see if any man pages exist and displays it accordingly.  If multiple man sections are found it will provide you with an option to select one. It can be installed like so.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;gem install gem-man
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;gem install gem-man
 gem man gem-man
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you pass gem-man the &lt;code&gt;-s&lt;/code&gt; argument it will fall back to searching system files for your man page.  With that in mind you can create an easy alias which will let you use &lt;code&gt;man&lt;/code&gt; to search both your systems man pages and any man pages found in your gems:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156493.js?file=gist-1.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# for zsh&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156493.js?file=gist-1.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# for zsh&lt;/span&gt;
   &lt;span class=&quot;c&quot;&gt;# echo &amp;#39;alias man=&amp;quot;gem man -s&amp;quot;&amp;#39; &amp;gt;&amp;gt; ~/.zshrc&lt;/span&gt;
   &lt;span class=&quot;c&quot;&gt;# source ~/.zshrc&lt;/span&gt;
 
@@ -1654,7 +1690,7 @@ gem man gem-man
 &lt;/ol&gt;
 
 &lt;p&gt;That&amp;#39;s it.  Now all is left is to compile to roff and add to your project.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;$ ronn path/to/your/amazing/man.1.ronn
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$ ronn path/to/your/amazing/man.1.ronn
   -&amp;gt; roff: path/to/your/amazing/man.1
   -&amp;gt; html: path/to/your/amazing/man.1.html
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -1686,7 +1722,7 @@ gem man gem-man
       <guid>http://www.jonathan-jackson.net/string-theory</guid>
       <description>&lt;h1&gt;String Theory&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1713,8 +1749,8 @@ gem man gem-man
 
 &lt;h2&gt;Methodology&lt;/h2&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156488.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ./test_single_or_double.rb&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156488.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ./test_single_or_double.rb&lt;/span&gt;
 
 require &lt;span class=&quot;s1&quot;&gt;&amp;#39;./stats.rb&amp;#39;&lt;/span&gt;
 
@@ -1763,7 +1799,7 @@ double_quotes.to_csv&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class
       <guid>http://www.jonathan-jackson.net/an-introduction-logging</guid>
       <description>&lt;h1&gt;An Introduction to Logging&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1772,8 +1808,8 @@ double_quotes.to_csv&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class
 
 &lt;h3&gt;Installation&lt;/h3&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156472.js?file=gist-1.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gem install logging
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156472.js?file=gist-1.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gem install logging
 &lt;span class=&quot;c&quot;&gt;#  Successfully installed logging-1.6.1&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#  1 gem installed&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#  Building YARD (yri) index for logging-1.6.1...&lt;/span&gt;
@@ -1784,8 +1820,8 @@ double_quotes.to_csv&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class
 
 &lt;p&gt;Here we create individual logging objects rather than one monstrous global logger &lt;a href=&quot;https://github.com/TwP/logging/blob/master/examples/loggers.rb&quot;&gt;[1]&lt;/a&gt;.  Once they have been individually created you can customize the behavior of each.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156472.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156472.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging&amp;#39;&lt;/span&gt;
 
  Logging.logger.root.level &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; :warn
 
@@ -1803,8 +1839,8 @@ double_quotes.to_csv&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class
 
 &lt;p&gt;Here we use multiple appenders &lt;a href=&quot;https://github.com/TwP/logging/blob/master/examples/appenders.rb&quot;&gt;[2]&lt;/a&gt;. Appenders allow you to shunt your logging messages to different output media.  Here we set our messages to log to standard out and to a file.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156472.js?file=gist-3.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156472.js?file=gist-3.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging&amp;#39;&lt;/span&gt;
 
 &lt;span class=&quot;nv&quot;&gt;log1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Logging.logger&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;log1&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
 
@@ -1821,8 +1857,8 @@ log1.info &lt;span class=&quot;s2&quot;&gt;&amp;quot;just some friendly advice&a
 
 &lt;p&gt;Here we create log objects at initialization of class Foo and Foo::Bar &lt;a href=&quot;https://github.com/TwP/logging/blob/master/examples/classes.rb&quot;&gt;[3]&lt;/a&gt;.  Once we&amp;#39;ve done that we can refine our logging parameters to reveal behavior specific to each class.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156472.js?file=gist-4.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156472.js?file=gist-4.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging&amp;#39;&lt;/span&gt;
 
 Logging.logger.root.appenders &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Logging.appenders.stdout
 Logging.logger.root.level &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; :info
@@ -1851,8 +1887,8 @@ bar.warn &lt;span class=&quot;s1&quot;&gt;&amp;#39;this is a warning from Foo::B
 
 &lt;p&gt;Incorporate rails easily with the logging-rails gem &lt;a href=&quot;https://github.com/TwP/logging-rails&quot;&gt;[4]&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156472.js?file=gist-5.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;gem &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging-rails&amp;#39;&lt;/span&gt;, :require &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging/rails&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156472.js?file=gist-5.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;gem &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging-rails&amp;#39;&lt;/span&gt;, :require &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;logging/rails&amp;#39;&lt;/span&gt;
 rails generate logging:install
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
@@ -1885,7 +1921,7 @@ rails generate logging:install
       <guid>http://www.jonathan-jackson.net/caller-method</guid>
       <description>&lt;h1&gt;Caller Method&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1894,8 +1930,8 @@ rails generate logging:install
 
 &lt;p&gt;I started using Pry &lt;a href=&quot;http://www.jonathan-jackson.net/give-it-a-pry&quot;&gt;[2]&lt;/a&gt; a while ago and decided I should convert Michael Grosser&amp;#39;s script into a Pry command.  Which when used in combination with &amp;#39;binding.pry&amp;#39; would help me better digest the caller method.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156399.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;caller_method&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; |depth|
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156399.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;caller_method&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; |depth|
    &lt;span class=&quot;nv&quot;&gt;depth&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; depth.to_i &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; 1
    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; /^&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.+?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\d&lt;/span&gt;+&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;?::in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.*&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;)?/ =~ caller(depth+1).first&lt;/span&gt;
 &lt;span class=&quot;s1&quot;&gt;     file   = Regexp.last_match[1]&lt;/span&gt;
@@ -1947,7 +1983,7 @@ rails generate logging:install
       <guid>http://www.jonathan-jackson.net/make-the-most-of-your-tweet</guid>
       <description>&lt;h1&gt;Make the most of your tweet&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -1960,7 +1996,7 @@ rails generate logging:install
 
 &lt;p&gt;Twitter allows you to include the button with an iframe or via a snippet of javascript.  I&amp;#39;m going to walk through the javascript setup because it&amp;#39;s the most convenient and it&amp;#39;s also what Twitter recommends.  If you go to the &lt;a href=&quot;https://twitter.com/about/resources/tweetbutton&quot;&gt;Twitter Button&lt;/a&gt; resource page you&amp;#39;ll be given a set of options to configure your Tweet Button.  Once you&amp;#39;ve figure out how you want it laid out you should have something that looks like this.&lt;/p&gt;
 
-&lt;script src='https://gist.github.com/2156432.js?file=gist-1.html'&gt;&lt;/script&gt;&lt;noscript&gt;
+&lt;script src=&#39;https://gist.github.com/2156432.js?file=gist-1.html&#39;&gt;&lt;/script&gt;&lt;noscript&gt;
 
 ```sh
 &lt;a href=&quot;https://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
@@ -1968,7 +2004,7 @@ rails generate logging:install
                                     data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 
 &lt;script type=&quot;text/javascript&quot; src=&quot;//platform.twitter.com/widgets.js&quot;&gt;&lt;/script&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;&amp;lt;/noscript&amp;gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;/noscript&amp;gt;
 
 This is the basic outline for a tweet button.  The _data_ attributes allow you to customize the behavior of your button.  We&amp;#39;ll focus on these [[1]](https://dev.twitter.com/docs/tweet-button):
 
@@ -2034,8 +2070,8 @@ end
 
 &lt;p&gt;Alright so now you have the short url for your site we&amp;#39;ll come back to our Tweet Button.  Only now we&amp;#39;ll set the &lt;em&gt;data-url&lt;/em&gt; to our short url.  Not so fast!  We also have to set the &lt;em&gt;data-counturl&lt;/em&gt; to the original url so that your count bubble will be accurate.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156432.js?file=gist-3.erb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# app/views/_tweet_button.html.erb&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156432.js?file=gist-3.erb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# app/views/_tweet_button.html.erb&lt;/span&gt;
 
 &amp;lt;a &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;https://twitter.com/share&amp;quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;twitter-share-button&amp;quot;&lt;/span&gt;
                                     data-url&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;lt;%= @article.short_url %&amp;gt;&amp;quot;&lt;/span&gt;
@@ -2047,8 +2083,8 @@ end
 
 &lt;p&gt;Now we have a decent looking tweet.  It&amp;#39;s going to use your &amp;lt;title&amp;gt; for your text by default.  I think this is a great default as it encourages you to use the &amp;lt;title&amp;gt; properly.  I think the easiest way of setting your title tag is to set &amp;#39;&amp;lt;%= yield :head %&amp;gt;&amp;#39; in your layout&amp;#39;s &amp;lt;head&amp;gt; tag then:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156432.js?file=gist-4.erb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# in app/view/articles/show&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156432.js?file=gist-4.erb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# in app/view/articles/show&lt;/span&gt;
 &amp;lt;% content_for :head &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; %&amp;gt;
   &amp;lt;%&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; content_tag&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;, @article.title&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; %&amp;gt;
 &amp;lt;% end %&amp;gt;
@@ -2083,7 +2119,7 @@ end
       <guid>http://www.jonathan-jackson.net/make-it-your-own</guid>
       <description>&lt;h1&gt;Make it your own&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -2096,8 +2132,8 @@ end
 
 &lt;p&gt;If you are anything like me then your ~/.irbrc file had many top level methods(like below), well with pry these can be transformed into commands.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156369.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ~/.irbrc&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156369.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ~/.irbrc&lt;/span&gt;
 
 def clear
   system &lt;span class=&quot;s1&quot;&gt;&amp;#39;clear&amp;#39;&lt;/span&gt;
@@ -2106,7 +2142,7 @@ end
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
 
 &lt;p&gt;This method is limited because if, while in the IRB session, I define something like so I&amp;#39;ll over-ride my top-level method.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;$-&amp;gt; irb
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$-&amp;gt; irb
 
 &amp;gt;&amp;gt; def clear
 &amp;gt;&amp;gt;   puts &amp;quot;This is going to over-ride the irbrc #clear&amp;quot;
@@ -2118,8 +2154,8 @@ end
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If instead we implemented the #clear method as a Pry command we would not over-ride the existing functionality.  Oh, and it&amp;#39;s easy.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156369.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ~/.pryrc&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156369.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ~/.pryrc&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# Create a command_set which is the structure in which commands&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# are organized&lt;/span&gt;
@@ -2133,7 +2169,7 @@ end
 Pry.config.commands.import command_set
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;$-&amp;gt; pry
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$-&amp;gt; pry
 
 pry(main)&amp;gt; def clear
 pry(main)*   puts &amp;quot;If there is a space before the #clear call I will be fired!&amp;quot;
@@ -2170,14 +2206,14 @@ pry(main)&amp;gt; clear
       <guid>http://www.jonathan-jackson.net/give-it-a-pry</guid>
       <description>&lt;h1&gt;Give it a Pry&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
 
 &lt;p&gt;If you are familiar with the Ruby programming language you&amp;#39;ve almost assuredly had some experience with IRB. Pry expands upon the functionality of IRB.  It offers some interesting features that allow you to really dive in and explore your code.  I&amp;#39;ve been using it for a little while now and already it has proven to be one of my favorite tools. Here are a few of my favorite things about Pry.  Sprinkled throughout will be links to the wiki, where the Pry folks have put together some really solid documentation behind all this.&lt;/p&gt;
 
-&lt;p&gt;&lt;img style=&quot;margin:auto;&quot; src='http://www.jonathan-jackson.net/images/pry_image.png'/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img style=&quot;margin:auto;&quot; src=&#39;http://www.jonathan-jackson.net/images/pry_image.png&#39;/&gt;&lt;/p&gt;
 
 &lt;p&gt;Here are the top five reasons why I switched to pry.&lt;/p&gt;
 
@@ -2185,8 +2221,8 @@ pry(main)&amp;gt; clear
 
 &lt;p&gt;Using the shell from inside an pry session is simple, convenient, and practical.  You simply prepend the command you would like to run in your shell with a period &lt;a href=&quot;https://github.com/pry/pry/wiki/Shell-Integration&quot;&gt;[1]&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156313.js?file=gist-1.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# In a rails app&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156313.js?file=gist-1.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# In a rails app&lt;/span&gt;
 
  pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;.ls
   Capfile Gemfile.lock  Rakefile  config     db     lib    public    &lt;span class=&quot;nb&quot;&gt;test    &lt;/span&gt;vendor
@@ -2196,8 +2232,8 @@ pry(main)&amp;gt; clear
 
 &lt;p&gt;This becomes a really convenient way to launch Vi or Textmate, run Git commands, interact with ImageMagick, et al.  What&amp;#39;s more is you can also shunt ruby output directly into your command with  &amp;#39;#{}&amp;#39; like this.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156313.js?file=gist-2.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; &lt;span class=&quot;nv&quot;&gt;file_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;~/.pryrc&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156313.js?file=gist-2.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; &lt;span class=&quot;nv&quot;&gt;file_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;~/.pryrc&amp;#39;&lt;/span&gt;
     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;~/.pryrc&amp;quot;&lt;/span&gt;
 
   pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; .ls &lt;span class=&quot;c&quot;&gt;#{file_path}&lt;/span&gt;
@@ -2211,8 +2247,8 @@ pry(main)&amp;gt; clear
 
 &lt;p&gt;Don&amp;#39;t forget you can further filter what you are searching for with &amp;#39;ls&amp;#39; by passing a regex to the --grep flag.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156313.js?file=gist-3.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Article
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156313.js?file=gist-3.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Article
   pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Article&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;ls -mj --grep validate &lt;span class=&quot;c&quot;&gt;#many options here (--help to learn more), this one will list all singleton methods and search for validate methods&lt;/span&gt;
   &lt;span class=&quot;c&quot;&gt;#=&amp;gt;   _validate_callbacks&lt;/span&gt;
 
@@ -2232,8 +2268,8 @@ pry(main)&amp;gt; clear
 
 &lt;p&gt;Once you&amp;#39;ve got your mind wrapped around contexts and found out how easy it is to navigate your code you&amp;#39;re ready to really pop the hood on your code.  Pry offers a way to look at your source code directly via #show-method &lt;a href=&quot;https://github.com/pry/pry/wiki/Source-browsing&quot;&gt;[3]&lt;/a&gt;. If you install pry-doc with Pry you&amp;#39;ll find that the show-method allows you to view Ruby&amp;#39;s C source code also.  (Great tool for comparing Rubinius/MRI for example)&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156313.js?file=gist-4.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;cd Pry
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156313.js?file=gist-4.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;cd Pry
   pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;show-method run_command
 
   &lt;span class=&quot;c&quot;&gt;# =&amp;gt;&lt;/span&gt;
@@ -2250,8 +2286,8 @@ pry(main)&amp;gt; clear
 
 &lt;p&gt;Now here is my favorite feature.  I&amp;#39;ve been using interactive_editor for a long time, which is a gem by &lt;a href=&quot;https://github.com/jberkel&quot;&gt;jberkel&lt;/a&gt; inspired by Giles Bowkett.  It offered a nice little convenience for opening a tempfile in your favorite editor, allowed you to edit it, and executed it when you closed the editor pane.  Pry offers similar functionality &lt;a href=&quot;https://github.com/pry/pry/wiki/Editor-integration&quot;&gt;[4]&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156313.js?file=gist-5.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# in ~/.pryrc&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156313.js?file=gist-5.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# in ~/.pryrc&lt;/span&gt;
   Pry.config.editor &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;mate&amp;quot;&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;# then you can simply type&lt;/span&gt;
@@ -2265,8 +2301,8 @@ pry(main)&amp;gt; clear
 
 &lt;p&gt;edit-method will open the file that contains the method passed to it as its args, and place your cursor exactly where it is defined.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156313.js?file=gist-6.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;cd Pry
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156313.js?file=gist-6.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;cd Pry
   pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pry&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;gt;edit-method -m run_command
 
   &lt;span class=&quot;c&quot;&gt;# File will open in your editor to line 156 of pry_class.rb ^_^&lt;/span&gt;
@@ -2277,8 +2313,8 @@ pry(main)&amp;gt; clear
 
 &lt;p&gt;Push your current buffer directly to a gist.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156313.js?file=gist-7.sh'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# gist-method options&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156313.js?file=gist-7.sh&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# gist-method options&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# -m, --method       Gist a method&amp;#39;s source.&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# -d, --doc          Gist a method&amp;#39;s documentation.&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# -p, --private      Create a private gist (default: true)&lt;/span&gt;
@@ -2326,7 +2362,7 @@ pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pry&lt;span class=&quot;o&quot;
       <guid>http://www.jonathan-jackson.net/rvm-and-rbenv</guid>
       <description>&lt;h1&gt;RVM and rbenv&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -2338,11 +2374,11 @@ pry&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Pry&lt;span class=&quot;o&quot;
 &lt;p&gt;&lt;img src=&quot;http://www.jonathan-jackson.net/images/rvm-rbenv-install.png&quot; alt=&quot;rvm and rbenv side by side install&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;In RVM you need to add this to your profile to load the RVM function.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;# or ~/.zshrc
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;# or ~/.zshrc
 $ echo &amp;#39;[[ -s &amp;quot;$HOME/.rvm/scripts/rvm&amp;quot; ]] &amp;amp;&amp;amp; . &amp;quot;$HOME/.rvm/scripts/rvm&amp;quot; # Load RVM function&amp;#39; &amp;gt;&amp;gt; ~/.bash_profile
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;In rbenv you need to add this to your profile to load the rbenv command-line function.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;# or ~/.zshrc
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;# or ~/.zshrc
 $ echo &amp;#39;export PATH=&amp;quot;$HOME/.rbenv/bin:$PATH&amp;quot;&amp;#39; &amp;gt;&amp;gt; ~/.bash_profile
 $ echo &amp;#39;eval &amp;quot;$(rbenv init -)&amp;quot;&amp;#39; &amp;gt;&amp;gt; ~/.bash_profile #to enable shims and auto-complete
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -2355,7 +2391,7 @@ $ echo &amp;#39;eval &amp;quot;$(rbenv init -)&amp;quot;&amp;#39; &amp;gt;&amp;g
 &lt;p&gt;In RVM you install your rubies to &lt;strong&gt;/Users/$USER/.rvm/rubies/ruby-1.9.2-x&lt;/strong&gt; in rbenv your rubies are installed to &lt;strong&gt;~/.rbenv/versions&lt;/strong&gt;.  Sam Stephenson created a sister gem for rbenv called ruby-build which offers several convencience methods for installing/compiling your own rubies.&lt;/p&gt;
 
 &lt;p&gt;For instance, once you have ruby-build installed you can type this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;$ rbenv install ruby-1.9.2-x
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$ rbenv install ruby-1.9.2-x
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;So now you have your rubies.  Best blog post EVAR! Wait, there&amp;#39;s more...&lt;/p&gt;
 
@@ -2377,7 +2413,7 @@ $ echo &amp;#39;eval &amp;quot;$(rbenv init -)&amp;quot;&amp;#39; &amp;gt;&amp;g
 
 &lt;p&gt;There has been quite a bit of controversy surrounding the rbenv/rvm divide.  I think, after installing both back-to-back on my own system, that their similarities outweigh their differences.  One article I read about the subject compared RVM and rbenv to Rails and Sinatra &lt;a href=&quot;http://www.rubyinside.com/rbenv-a-simple-new-ruby-version-management-tool-5302.html&quot; alt=&quot;rbenv a simple ruby version management tool&quot;&gt;[2]&lt;/a&gt;.  I think that comparison really fits. Sinatra is a lightweight framework whereas Rails is much more robust. Sometimes sinatra just fits, and other times you&amp;#39;d be a fool to not go with Rails.  If you need the features in RVM then use it, if you want more control and a lighter feel then use rbenv.  It&amp;#39;s all a matter of preference.&lt;/p&gt;
 
-&lt;p&gt;As a rubyist I&amp;#39;m just glad we have people like &lt;a href=&quot;https://github.com/wayneeseguin&quot; alt=&quot;wayne seguin's github&quot;&gt;Wayne Seguin&lt;/a&gt;, and &lt;a href=&quot;https://github.com/sstephenson&quot; alt=&quot;sam stephenson's github'&quot;&gt;Sam Stephenson&lt;/a&gt; contributing to the community the way they do.&lt;/p&gt;
+&lt;p&gt;As a rubyist I&amp;#39;m just glad we have people like &lt;a href=&quot;https://github.com/wayneeseguin&quot; alt=&quot;wayne seguin&#39;s github&quot;&gt;Wayne Seguin&lt;/a&gt;, and &lt;a href=&quot;https://github.com/sstephenson&quot; alt=&quot;sam stephenson&#39;s github&#39;&quot;&gt;Sam Stephenson&lt;/a&gt; contributing to the community the way they do.&lt;/p&gt;
 
 &lt;h4&gt;References&lt;/h4&gt;
 
@@ -2393,13 +2429,13 @@ $ echo &amp;#39;eval &amp;quot;$(rbenv init -)&amp;quot;&amp;#39; &amp;gt;&amp;g
     </item>
     
     <item>
-      <title>Playin' with the Ruby GC</title>
+      <title>Playin&#39; with the Ruby GC</title>
       <link>http://www.jonathan-jackson.net/playin-with-the-ruby-gc.html</link>
       <pubDate>Tue, 27 Sep 2011 00:00:00 -0400</pubDate>
       <guid>http://www.jonathan-jackson.net/playin-with-the-ruby-gc</guid>
       <description>&lt;h1&gt;Playin&amp;#39; with the Ruby GC&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -2420,8 +2456,8 @@ $ echo &amp;#39;eval &amp;quot;$(rbenv init -)&amp;quot;&amp;#39; &amp;gt;&amp;g
 
 &lt;p&gt;While doing the research I came across a nifty little script by the Narihiro Nakamura &lt;a href=&quot;http://redmine.ruby-lang.org/attachments/959/bm_gc_fragmentation.rb&quot;&gt;here&lt;/a&gt;.  I modified it slightly, but kept the same idea of creating a number of objects to fill up the heap.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156260.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# &amp;#39;./gc_test.rb&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156260.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# &amp;#39;./gc_test.rb&amp;#39;&lt;/span&gt;
 
 @m &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1000000
 @b &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2 * 5 * &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4**3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; + 1
@@ -2449,8 +2485,8 @@ puts run_test
 
 &lt;p&gt;This returns a result set from the GC profiler.  Which I call about a hundred times like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156260.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;bigdecimal&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156260.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;bigdecimal&amp;#39;&lt;/span&gt;
 require &lt;span class=&quot;s1&quot;&gt;&amp;#39;pp&amp;#39;&lt;/span&gt;
 
 &lt;span class=&quot;nv&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Hash.new&lt;span class=&quot;o&quot;&gt;([])&lt;/span&gt;
@@ -2524,15 +2560,15 @@ puts @totals.map&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;|k,v| v + &lt;span
       <guid>http://www.jonathan-jackson.net/ruby-hough-hack</guid>
       <description>&lt;h1&gt;Ruby Hough Hack&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
 
 &lt;p&gt;The hough transform&lt;a href=&quot;#footnote_1&quot;&gt;[1]&lt;/a&gt; is an algorithm used to detect lines &lt;s&gt;detect edges/objects&lt;/s&gt; in an image. I recently needed to use it to straighten an image so that I could process it. Here is the solution me and my brother hacked out today using Chunky PNG&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156226.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Authors: Robert Jackson, Jonathan Jackson&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156226.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Authors: Robert Jackson, Jonathan Jackson&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# the formatting of this file has been altered in&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# order to fit on this website. Check out&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# https://gist.github.com/1233581 if you care&lt;/span&gt;
@@ -2635,7 +2671,7 @@ end
       <guid>http://www.jonathan-jackson.net/hippo-your-friend</guid>
       <description>&lt;h1&gt;Hippo: your friend in 5010&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -2657,10 +2693,10 @@ end
 &lt;h2&gt;Installation&lt;/h2&gt;
 
 &lt;p&gt;Hippo is available as a gem so simply type the following command once you have ruby:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;# gem install hippo
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;# gem install hippo
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Once you have it installed all you have to do is require it like so to begin.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;require &amp;#39;rubygems&amp;#39;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;require &amp;#39;rubygems&amp;#39;
 require &amp;#39;hippo&amp;#39;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;Your first Transaction Set with Hippo&lt;/h2&gt;
@@ -2671,8 +2707,8 @@ require &amp;#39;hippo&amp;#39;
 
 &lt;p&gt;The following code illustrates how you would create an instance of an 835 transaction set and populate its ST(Transaction Set Header) segment in Hippo.&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156191.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;hippo&amp;#39;&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156191.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;require &lt;span class=&quot;s1&quot;&gt;&amp;#39;hippo&amp;#39;&lt;/span&gt;
 
   &lt;span class=&quot;nv&quot;&gt;ts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Hippo::TransactionSets::HIPAA_835::Base.new
   ts.ST &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; |st|
@@ -2690,8 +2726,8 @@ require &amp;#39;hippo&amp;#39;
 
 &lt;p&gt;One of the fundamental constructs found in the X12 transaction set standard is the loop. Loops repeat within a section of the final output, sometimes an arbitrary number of times. Creating this structure with Hippo is easy. Simply call the loop by name like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2156191.js?file=gist-2.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# These two forms are functionally equivalent.&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2156191.js?file=gist-2.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# These two forms are functionally equivalent.&lt;/span&gt;
 
   ts.L1000A &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; |l1000a|
     l1000a.NM1.EntityTypeQualifier        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
@@ -2721,7 +2757,7 @@ require &amp;#39;hippo&amp;#39;
 
 &lt;p&gt;Here the loop is created by simply calling the L1000A loop directly on the transaction set. In the code above are two forms that are functionally equivalent and can be used according to preference. Each form will create a loop at that position within the transaction set.&lt;/p&gt;
 
-&lt;p&gt;These examples are definitely not valid transaction sets, they are designed to give you a feel for how the DSL operates.  If you would like to see how to generate a legitimate transaction set &lt;a href=&quot;https://github.com/rjackson&quot; alt=&quot;robert jackson's github page&quot;&gt;Robert Jackson&lt;/a&gt;, the author of Hippo, has provided an example &lt;a href=&quot;https://github.com/promedical/hippo/blob/master/test/test_hipaa_835.rb&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;These examples are definitely not valid transaction sets, they are designed to give you a feel for how the DSL operates.  If you would like to see how to generate a legitimate transaction set &lt;a href=&quot;https://github.com/rjackson&quot; alt=&quot;robert jackson&#39;s github page&quot;&gt;Robert Jackson&lt;/a&gt;, the author of Hippo, has provided an example &lt;a href=&quot;https://github.com/promedical/hippo/blob/master/test/test_hipaa_835.rb&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2&gt;Summary&lt;/h2&gt;
 
@@ -2749,13 +2785,13 @@ require &amp;#39;hippo&amp;#39;
     </item>
     
     <item>
-      <title>We're here to encapsulate</title>
+      <title>We&#39;re here to encapsulate</title>
       <link>http://www.jonathan-jackson.net/encapsulation-in-javascript.html</link>
       <pubDate>Mon, 12 Sep 2011 00:00:00 -0400</pubDate>
       <guid>http://www.jonathan-jackson.net/encapsulation-in-javascript</guid>
       <description>&lt;h1&gt;We&amp;#39;re here to encapsulate&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -2764,8 +2800,8 @@ require &amp;#39;hippo&amp;#39;
 
 &lt;h2&gt;Be a Builder&lt;/h2&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2155999.js?file=gist-1.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;Mammal&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;species, defining_characteristic&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2155999.js?file=gist-1.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;Mammal&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;species, defining_characteristic&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   this.species &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; species;
   this.defining_characteristic &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; defining_characteristic;
  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
@@ -2792,8 +2828,8 @@ console.log&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dog.print&lt;span class
 
 &lt;h2&gt;Modules are where it&amp;#39;s at.&lt;/h2&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2155999.js?file=gist-2.js'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;var &lt;span class=&quot;nv&quot;&gt;Mammal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2155999.js?file=gist-2.js&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;var &lt;span class=&quot;nv&quot;&gt;Mammal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
   // These are private
   var species;
   var defining_char;
@@ -2858,13 +2894,13 @@ console.log&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dog.print&lt;span class
     </item>
     
     <item>
-      <title>Ruby &lt;3's Sass</title>
+      <title>Ruby &lt;3&#39;s Sass</title>
       <link>http://www.jonathan-jackson.net/ruby-loves-sass.html</link>
       <pubDate>Tue, 06 Sep 2011 00:00:00 -0400</pubDate>
       <guid>http://www.jonathan-jackson.net/ruby-loves-sass</guid>
       <description>&lt;h1&gt;Ruby &amp;lt;3&amp;#39;s Sass&lt;/h1&gt;
 
-&lt;p&gt;&lt;span&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
+&lt;p&gt;&lt;span style=&quot;float:right;&quot;&gt;&lt;a href=&quot;http://twitter.com/share&quot; class=&quot;twitter-share-button&quot;
                                          data-count=&quot;horizontal&quot;
                                          data-via=&quot;rondale_sc&quot;&gt;Tweet&lt;/a&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -2881,8 +2917,8 @@ console.log&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dog.print&lt;span class
 
 &lt;p&gt;So I decided to come up with something of my own with this quick gist. Most of this is directly from &lt;a href=&quot;http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html&quot;&gt;Sass Docs&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2155905.js?file=gist-1.rb'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;module Sass::Script::Functions
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2155905.js?file=gist-1.rb&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;module Sass::Script::Functions
   def insert_grid&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;columns, width_string&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
     assert_type columns, :Number
     assert_type width_string, :String
@@ -2909,8 +2945,8 @@ end
 
 &lt;p&gt;After thinking I just solved something important.  &lt;a href=&quot;https://twitter.com/#!/chriseppstein&quot;&gt;Chris Eppstein&lt;/a&gt; responded to my gist with a much more sassy way to do the same thing in pure sass.  &lt;a id=&quot;sass_implementation&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;script src='https://gist.github.com/2155905.js?file=gist-2.sass'&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$grid&lt;/span&gt;-width: 960px !default;
+&lt;p&gt;&lt;script src=&#39;https://gist.github.com/2155905.js?file=gist-2.sass&#39;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$grid&lt;/span&gt;-width: 960px !default;
     &lt;span class=&quot;nv&quot;&gt;$grid&lt;/span&gt;-columns: 12 !default;
     @function grid-width&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$column&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$columns&lt;/span&gt;: &lt;span class=&quot;nv&quot;&gt;$grid&lt;/span&gt;-columns, &lt;span class=&quot;nv&quot;&gt;$width&lt;/span&gt;: &lt;span class=&quot;nv&quot;&gt;$grid&lt;/span&gt;-width&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
         @return &lt;span class=&quot;nv&quot;&gt;$width&lt;/span&gt; / &lt;span class=&quot;nv&quot;&gt;$columns&lt;/span&gt; * &lt;span class=&quot;nv&quot;&gt;$column&lt;/span&gt;;

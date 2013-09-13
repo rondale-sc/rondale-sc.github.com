@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Caller Method</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -64,7 +64,7 @@
 <p>I started using Pry <a href="http://www.jonathan-jackson.net/give-it-a-pry">[2]</a> a while ago and decided I should convert Michael Grosser&#39;s script into a Pry command.  Which when used in combination with &#39;binding.pry&#39; would help me better digest the caller method.</p>
 
 <p><script src='https://gist.github.com/2156399.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="nb">command</span> <span class="s2">&quot;caller_method&quot;</span> <span class="k">do</span> |depth|
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nb">command</span> <span class="s2">&quot;caller_method&quot;</span> <span class="k">do</span> |depth|
    <span class="nv">depth</span> <span class="o">=</span> depth.to_i <span class="o">||</span> 1
    <span class="k">if</span> /^<span class="o">(</span>.+?<span class="o">)</span>:<span class="o">(</span><span class="se">\d</span>+<span class="o">)(</span>?::in <span class="sb">`</span><span class="o">(</span>.*<span class="o">)</span><span class="s1">&#39;)?/ =~ caller(depth+1).first</span>
 <span class="s1">     file   = Regexp.last_match[1]</span>
@@ -107,10 +107,11 @@
 <p><span style="font-size:12px;"><a href="http://www.ruby-doc.org/core-1.9.2/Kernel.html#method-i-caller">Ruby Core Docs Kernel#caller</a></span><br/>
 <span style="font-size:12px;"><a href="http://redmine.ruby-lang.org/issues/1906">Ruby issue about possibly creating a new backtrace for caller</a></span><br/></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

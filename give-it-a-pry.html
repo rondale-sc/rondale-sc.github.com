@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Give it a Pry</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -70,7 +70,7 @@
 <p>Using the shell from inside an pry session is simple, convenient, and practical.  You simply prepend the command you would like to run in your shell with a period <a href="https://github.com/pry/pry/wiki/Shell-Integration">[1]</a>.</p>
 
 <p><script src='https://gist.github.com/2156313.js?file=gist-1.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># In a rails app</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># In a rails app</span>
 
  pry<span class="o">(</span>main<span class="o">)</span>&gt;.ls
   Capfile Gemfile.lock  Rakefile  config     db     lib    public    <span class="nb">test    </span>vendor
@@ -81,7 +81,7 @@
 <p>This becomes a really convenient way to launch Vi or Textmate, run Git commands, interact with ImageMagick, et al.  What&#39;s more is you can also shunt ruby output directly into your command with  &#39;#{}&#39; like this.</p>
 
 <p><script src='https://gist.github.com/2156313.js?file=gist-2.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nv">file_path</span> <span class="o">=</span> <span class="s1">&#39;~/.pryrc&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nv">file_path</span> <span class="o">=</span> <span class="s1">&#39;~/.pryrc&#39;</span>
     <span class="o">=</span>&gt; <span class="s2">&quot;~/.pryrc&quot;</span>
 
   pry<span class="o">(</span>main<span class="o">)</span>&gt; .ls <span class="c">#{file_path}</span>
@@ -96,7 +96,7 @@
 <p>Don&#39;t forget you can further filter what you are searching for with &#39;ls&#39; by passing a regex to the --grep flag.</p>
 
 <p><script src='https://gist.github.com/2156313.js?file=gist-3.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nb">cd </span>Article
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nb">cd </span>Article
   pry<span class="o">(</span>Article<span class="o">)</span>&gt;ls -mj --grep validate <span class="c">#many options here (--help to learn more), this one will list all singleton methods and search for validate methods</span>
   <span class="c">#=&gt;   _validate_callbacks</span>
 
@@ -117,7 +117,7 @@
 <p>Once you&#39;ve got your mind wrapped around contexts and found out how easy it is to navigate your code you&#39;re ready to really pop the hood on your code.  Pry offers a way to look at your source code directly via #show-method <a href="https://github.com/pry/pry/wiki/Source-browsing">[3]</a>. If you install pry-doc with Pry you&#39;ll find that the show-method allows you to view Ruby&#39;s C source code also.  (Great tool for comparing Rubinius/MRI for example)</p>
 
 <p><script src='https://gist.github.com/2156313.js?file=gist-4.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt;cd Pry
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt;cd Pry
   pry<span class="o">(</span>Pry<span class="o">)</span>&gt;show-method run_command
 
   <span class="c"># =&gt;</span>
@@ -135,7 +135,7 @@
 <p>Now here is my favorite feature.  I&#39;ve been using interactive_editor for a long time, which is a gem by <a href="https://github.com/jberkel">jberkel</a> inspired by Giles Bowkett.  It offered a nice little convenience for opening a tempfile in your favorite editor, allowed you to edit it, and executed it when you closed the editor pane.  Pry offers similar functionality <a href="https://github.com/pry/pry/wiki/Editor-integration">[4]</a>.</p>
 
 <p><script src='https://gist.github.com/2156313.js?file=gist-5.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># in ~/.pryrc</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># in ~/.pryrc</span>
   Pry.config.editor <span class="o">=</span> <span class="s2">&quot;mate&quot;</span>
 
   <span class="c"># then you can simply type</span>
@@ -150,7 +150,7 @@
 <p>edit-method will open the file that contains the method passed to it as its args, and place your cursor exactly where it is defined.</p>
 
 <p><script src='https://gist.github.com/2156313.js?file=gist-6.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt;cd Pry
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pry<span class="o">(</span>main<span class="o">)</span>&gt;cd Pry
   pry<span class="o">(</span>Pry<span class="o">)</span>&gt;edit-method -m run_command
 
   <span class="c"># File will open in your editor to line 156 of pry_class.rb ^_^</span>
@@ -162,7 +162,7 @@
 <p>Push your current buffer directly to a gist.</p>
 
 <p><script src='https://gist.github.com/2156313.js?file=gist-7.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># gist-method options</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># gist-method options</span>
 <span class="c"># -m, --method       Gist a method&#39;s source.</span>
 <span class="c"># -d, --doc          Gist a method&#39;s documentation.</span>
 <span class="c"># -p, --private      Create a private gist (default: true)</span>
@@ -201,10 +201,11 @@ pry<span class="o">(</span>Pry<span class="o">)</span>:1&gt; gist-method run_com
 <span style="font-size:12px;"><a href="http://news.ycombinator.com/item?id=2478724">Hacker News Pry comments, 2011</a></span><br/>
 <span style="font-size:12px;"><a href="https://github.com/jberkel/interactive_editor">Interactive Editor</a></span><br/></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

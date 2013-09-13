@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Make it your own</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -68,7 +68,7 @@
 <p>If you are anything like me then your ~/.irbrc file had many top level methods(like below), well with pry these can be transformed into commands.</p>
 
 <p><script src='https://gist.github.com/2156369.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># ~/.irbrc</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># ~/.irbrc</span>
 
 def clear
   system <span class="s1">&#39;clear&#39;</span>
@@ -77,7 +77,7 @@ end
 <p></noscript></p>
 
 <p>This method is limited because if, while in the IRB session, I define something like so I&#39;ll over-ride my top-level method.</p>
-<div class="highlight"><pre><code class="text">$-&gt; irb
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$-&gt; irb
 
 &gt;&gt; def clear
 &gt;&gt;   puts &quot;This is going to over-ride the irbrc #clear&quot;
@@ -90,7 +90,7 @@ end
 <p>If instead we implemented the #clear method as a Pry command we would not over-ride the existing functionality.  Oh, and it&#39;s easy.</p>
 
 <p><script src='https://gist.github.com/2156369.js?file=gist-2.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># ~/.pryrc</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># ~/.pryrc</span>
 
 <span class="c"># Create a command_set which is the structure in which commands</span>
 <span class="c"># are organized</span>
@@ -104,7 +104,7 @@ end
 Pry.config.commands.import command_set
 </code></pre></div>
 <p></noscript></p>
-<div class="highlight"><pre><code class="text">$-&gt; pry
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$-&gt; pry
 
 pry(main)&gt; def clear
 pry(main)*   puts &quot;If there is a space before the #clear call I will be fired!&quot;
@@ -132,10 +132,11 @@ pry(main)&gt; clear
 <p><span style="font-size:12px;"><a href="https://github.com/pry/pry/wiki/Customization-and-configuration#wiki-Config_commands">Configure Wiki</a></span>
 <span style="font-size:12px;"><a href="https://gist.github.com/1297510">Example ~/.pryrc</a></span></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

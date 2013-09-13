@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Ruby &lt;3&#39;s Sass</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -72,7 +72,7 @@
 <p>So I decided to come up with something of my own with this quick gist. Most of this is directly from <a href="http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html">Sass Docs</a></p>
 
 <p><script src='https://gist.github.com/2155905.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">module Sass::Script::Functions
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">module Sass::Script::Functions
   def insert_grid<span class="o">(</span>columns, width_string<span class="o">)</span>
     assert_type columns, :Number
     assert_type width_string, :String
@@ -100,7 +100,7 @@ end
 <p>After thinking I just solved something important.  <a href="https://twitter.com/#!/chriseppstein">Chris Eppstein</a> responded to my gist with a much more sassy way to do the same thing in pure sass.  <a id="sass_implementation"></a></p>
 
 <p><script src='https://gist.github.com/2155905.js?file=gist-2.sass'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="nv">$grid</span>-width: 960px !default;
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">$grid</span>-width: 960px !default;
     <span class="nv">$grid</span>-columns: 12 !default;
     @function grid-width<span class="o">(</span><span class="nv">$column</span>, <span class="nv">$columns</span>: <span class="nv">$grid</span>-columns, <span class="nv">$width</span>: <span class="nv">$grid</span>-width<span class="o">)</span> <span class="o">{</span>
         @return <span class="nv">$width</span> / <span class="nv">$columns</span> * <span class="nv">$column</span>;
@@ -125,10 +125,11 @@ end
 
 <p>It&#39;s pretty obvious to see that adding a function in ruby to create a grid doesn&#39;t make much sense when you can write in pure scss that concisely.  However, I&#39;m very excited to see what is possible with as easy as it was to implement custom functions.</p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

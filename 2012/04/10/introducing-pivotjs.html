@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Introducing Pivot.js</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -72,7 +72,7 @@
 <p>After reading up a little bit and requiring pivot.js in his <code>&lt;head&gt;&lt;/head&gt;</code>, he creates a new pivot based off his CSV.</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-1.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="nv">csv</span> <span class="o">=</span> <span class="s2">&quot;last_name,first_name,email,date_ordered,date_delivered,sale_price,unit_identifier\n</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">csv</span> <span class="o">=</span> <span class="s2">&quot;last_name,first_name,email,date_ordered,date_delivered,sale_price,unit_identifier\n</span>
 <span class="s2">       doo, scooby, scoobydoo12512@gmail.com,2012-02-12,2012-02-17,9.99,big-bang-rpsls\n</span>
 <span class="s2">       flinstone,fred,freddyf12516@gmail.com,2012-02-12,2012-02-17,9.99,dr-who-bad-wolf\n</span>
 <span class="s2">       spiegel,spike,bebop1256@gmail.com,2012-02-12,2012-02-17,9.99,tng-engage\n&quot;</span> //etc
@@ -92,7 +92,7 @@ pivot.init<span class="o">({</span>csv: csv, fields: fields<span class="o">})</s
 <p>He starts to play around with the pivot object in the console to see what it can do for him.</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-2.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pivot.data<span class="o">()</span>.all
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pivot.data<span class="o">()</span>.all
 //<span class="o">=</span>&gt; <span class="o">[</span>Object, Object, Object, etc<span class="o">]</span>
 
 pivot.filters<span class="o">()</span>.all<span class="o">()</span>
@@ -104,7 +104,7 @@ pivot.filters<span class="o">()</span>.all<span class="o">()</span>
 <p>Realizing that he&#39;ll need to filter the data so that he doesn&#39;t get thousands of rows returned on all his reports, he delves a bit further into the documentation and finds some filter methods.</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-3.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pivot.filters<span class="o">()</span>.apply<span class="o">({</span>last_name: <span class="s1">&#39;flinstone&#39;</span>, first_name: <span class="s1">&#39;fred&#39;</span><span class="o">})</span>;
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pivot.filters<span class="o">()</span>.apply<span class="o">({</span>last_name: <span class="s1">&#39;flinstone&#39;</span>, first_name: <span class="s1">&#39;fred&#39;</span><span class="o">})</span>;
 //<span class="o">=</span>&gt; <span class="o">[</span>Object<span class="o">]</span>
 </code></pre></div>
 <p></noscript></p>
@@ -112,7 +112,7 @@ pivot.filters<span class="o">()</span>.all<span class="o">()</span>
 <p>&quot;Sweet!,&quot; exclaims Phil, realizing how easy that was.  He continues reading and sees that he can create custom fields to do all sorts of stuff, like determine the lag between order date and delivery date.</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-4.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pivot.fields<span class="o">()</span>.add<span class="o">({</span>name: <span class="s1">&#39;delivery_lag&#39;</span>, 
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pivot.fields<span class="o">()</span>.add<span class="o">({</span>name: <span class="s1">&#39;delivery_lag&#39;</span>, 
                 <span class="nb">type</span>: <span class="s1">&#39;integer&#39;</span>, 
             psuedo: <span class="nb">true</span>,
             labelable: <span class="nb">false</span>,
@@ -126,7 +126,7 @@ pivot.filters<span class="o">()</span>.all<span class="o">()</span>
 <p>Now, he can render a report that would let him see average delivery_lag by t-shirt identifier.</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-5.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">pivot.display<span class="o">()</span>.rowLabels<span class="o">()</span>.set<span class="o">([</span><span class="s1">&#39;unit_identifier&#39;</span><span class="o">])</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">pivot.display<span class="o">()</span>.rowLabels<span class="o">()</span>.set<span class="o">([</span><span class="s1">&#39;unit_identifier&#39;</span><span class="o">])</span>
 pivot.display<span class="o">()</span>.summaries<span class="o">()</span>.set<span class="o">([</span><span class="s1">&#39;deliver_lag&#39;</span><span class="o">])</span>
 pivot.data<span class="o">()</span>.all<span class="o">()</span>
 //<span class="o">=</span>&gt; Object // will contain the report
@@ -142,7 +142,7 @@ pivot.data<span class="o">()</span>.all<span class="o">()</span>
 <p>First, he adds a div for results that looks like <code>&lt;div id=&quot;results&quot;&gt;&lt;/div&gt;</code> and a div for his menus <code>&lt;div id=&quot;pivot-menu-container&quot;&gt;&lt;/div&gt;</code>.  Then, he calls jquery_pivot on his container by adding the following snippet to his index page:</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-6.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="k">$(</span>document<span class="k">)</span>.ready<span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="k">$(</span>document<span class="k">)</span>.ready<span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span>
   <span class="nv">csv</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> // same as above
   <span class="nv">fields</span> <span class="o">=</span> <span class="o">[]</span> //same as above
 
@@ -154,7 +154,7 @@ pivot.data<span class="o">()</span>.all<span class="o">()</span>
 <p>When he loads the page, Phil is greeted with three drop-downs listing his filters, labels, and summaries.  After playing with the new drop-downs, he&#39;s ready to move on.  Phil wants a report to show delivery lag by T-shirt, but he doesn&#39;t want to have to click the filters, labels, and summaries every time he refreshes the page.  A little further digging into the jQuery pivot section, he sees that he can create prefabricated reports by selecting the fields/filters he wants displayed and using the pivot.config() method to easily retrieve a valid init object.</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-7.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">// after the page has loaded and Phil has selected delivery-lag as his summary field and row label of unit_identifer
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">// after the page has loaded and Phil has selected delivery-lag as his summary field and row label of unit_identifer
 
 // in the console
 
@@ -174,7 +174,7 @@ JSON.stringify<span class="o">(</span>pivot.config<span class="o">())</span>
 <p>Also, CSV may be passed in from a URL like so:</p>
 
 <p><script src='https://gist.github.com/2347874.js?file=gist-8.js'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="k">$(</span><span class="s1">&#39;#pivot-menu-container&#39;</span><span class="k">)</span>.pivot_display<span class="o">(</span><span class="s1">&#39;setup&#39;</span>, <span class="o">{</span>csv_url:<span class="s1">&#39;/url/to/csv&#39;</span>,fields:fields<span class="o">})</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="k">$(</span><span class="s1">&#39;#pivot-menu-container&#39;</span><span class="k">)</span>.pivot_display<span class="o">(</span><span class="s1">&#39;setup&#39;</span>, <span class="o">{</span>csv_url:<span class="s1">&#39;/url/to/csv&#39;</span>,fields:fields<span class="o">})</span>
 </code></pre></div>
 <p></noscript></p>
 
@@ -182,10 +182,11 @@ JSON.stringify<span class="o">(</span>pivot.config<span class="o">())</span>
 
 <p>There you have it: Pivot and jQuery_pivot should help you more easily create reports.  It has a long way to go, but I&#39;m very excited about its direction.  We have plans to create a Rails engine for <em>Pivot.js</em>, which will greatly help with creating pivot reports in Rails applications.  Pivot.js has a decent <a href="https://github.com/rjackson/pivot.js/blob/master/README.md">README</a>, and more extensive <a href="http://rjackson.github.com/pivot.js/docs/index.html#!/api/Pivot">documentation</a> is already underway with JsDuck.  Be sure to check out the <a href="http://rjackson.github.com/pivot.js/">example</a> page and maybe give Pivot.js some love.  Thanks for reading ^_^.</p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Pry 102: Advanced Features</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -92,7 +92,7 @@
 <p><code>amend-line</code> command which allows you to modify specific lines in your input buffer.</p>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; def hello
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; def hello
 <span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>*   puts <span class="s2">&quot;Howdy, #{name}&quot;</span>
 <span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>*   amend-line 1 def hello<span class="o">(</span>name<span class="o">)</span>  <span class="c"># Pry goodness</span>
 <span class="c">#  1: def hello(name)</span>
@@ -109,7 +109,7 @@
 <h5>Ex. 1.1 (Edit)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-2.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s1">&#39;blah&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s1">&#39;blah&#39;</span>
 <span class="c"># =&gt; blah</span>
 <span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit
 <span class="c"># editor opens with `puts &#39;blah&#39;`</span>
@@ -121,9 +121,9 @@
 <h5>Ex 1.2 (Edit empty tempfile)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-3.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s1">&#39;blah&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s1">&#39;blah&#39;</span>
 <span class="c"># =&gt; blah</span>
-<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit
+<span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit -t
 <span class="c"># editor opens empty tempfile</span>
 </code></pre></div>
 <p></noscript></p>
@@ -133,7 +133,7 @@
 <h5>Ex. 1.3 (Edit from last exception)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-4.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># cat /Users/jjackson/Desktop/hello-exception.rb</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># cat /Users/jjackson/Desktop/hello-exception.rb</span>
 <span class="c"># def hello</span>
 <span class="c">#  raise StandardError</span>
 <span class="c"># end</span>
@@ -151,7 +151,7 @@
 <h5>Ex. 1.4 (Edit specific line with edit -i)</h5>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-23.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Won&#39;t be opened&quot;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Won&#39;t be opened&quot;</span>
 <span class="c"># Won&#39;t be opened</span>
 <span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Will be opened.&quot;</span>
 <span class="c"># Will be opened.</span>
@@ -166,7 +166,7 @@
 <h5>Ex. 1.5 (Print/Play input_buffer)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-5.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Blah&quot;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; puts <span class="s2">&quot;Blah&quot;</span>
 <span class="c">#=&gt; Blah</span>
 <span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat -i <span class="c"># pass line number or range to restrict output</span>
 <span class="c">#=&gt; puts &quot;Blah&quot;</span>
@@ -189,7 +189,7 @@
 <h5>Ex. 2 (Print exception with wtf?)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-6.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; called_this_method_without_defining_it_first
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; called_this_method_without_defining_it_first
 <span class="c"># NameError: undefined local variable or method `called_this_method_without_defining_it_first&#39; for main:Object</span>
 <span class="c"># from (pry):1:in `&lt;main&gt;&#39;</span>
 <span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; wtf?
@@ -208,7 +208,7 @@
 <h5>Ex. 2.1 (Print context of exception with cat -ex)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-7.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; called_this_without_defining_it_first
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; called_this_without_defining_it_first
 <span class="c"># NameError: undefined local variable or method `called_this_without_defining_it_first&#39; for main:Object</span>
 <span class="c"># from (pry):1:in `&lt;main&gt;&#39;</span>
 <span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat -ex
@@ -225,7 +225,7 @@
 <h5>Ex. 2.2 (Print context of exception explicitly setting stack level)</h5>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-8.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat -ex 1
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat -ex 1
 <span class="c"># Exception: NameError: undefined local variable or method # `called_this_without_defining_it_first&#39; for main:Object</span>
 <span class="c"># --</span>
 <span class="c"># From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/pry_instance.rb @ line 249 @ level: 1 of backtrace (of 19).</span>
@@ -261,7 +261,7 @@
 <p>Imagine you have a class that looks like this:</p>
 
 <p><script src='https://gist.github.com/2588885.js?file=gist-9.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">class MyClass
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">class MyClass
   class MySubClass
     class MySubSubClass
       class Incepted
@@ -286,7 +286,10 @@ end
 <h5>Ex. 3 (Using Pry::NAV_PROMPT)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-10.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>2<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main: 0&gt; <span class="nb">cd </span>MyClass::MySubClass::MySubSubClass::Incepted
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>2<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main: 0&gt; <span class="nb">cd </span>MyClass::MySubClass::MySubSubClass::Incepted
+<span class="c"># or </span>
+<span class="o">[</span>2<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main: 0&gt; <span class="nb">cd </span>MyClass/MySubClass/MySubSubClass/Incepted <span class="c"># notice the slashes</span>
+
 <span class="o">[</span>2<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass::MySubClass::MySubSubClass::Incepted: 1&gt; spinning_top
 <span class="c">#=&gt; **Spinning**</span>
 </code></pre></div>
@@ -297,7 +300,7 @@ end
 <h5>Ex. 3.1 (Using Pry::NAV_PROMPT cont.)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-11.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>8<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main: 0&gt; <span class="nb">cd </span>MyClass
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>8<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main: 0&gt; <span class="nb">cd </span>MyClass
 <span class="o">[</span>9<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass: 1&gt; <span class="nb">cd </span>MySubClass
 <span class="o">[</span>10<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass: 2&gt; <span class="nb">cd </span>MySubSubClass
 <span class="o">[</span>11<span class="o">]</span> <span class="o">(</span>pry<span class="o">)</span> main / MyClass / MyClass::MySubClass / MyClass::MySubClass::MySubSubClass: 3&gt; <span class="nb">cd </span>Incepted
@@ -322,7 +325,7 @@ end
 <h5>Ex. 3.2 (Using find-method)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-12.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; find-method spinning_top
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; find-method spinning_top
 <span class="c">#</span>
 <span class="c"># MyClass::MySubClass::MySubSubClass::Incepted.spinning_top: def self.spinning_top</span>
 </code></pre></div>
@@ -335,7 +338,7 @@ end
 <h5>Ex. 3.3 (edit-method in editor)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-13.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>5<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit-method MyClass::MySubClass::MySubSubClass::Incepted.spinning_top
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>5<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; edit-method MyClass::MySubClass::MySubSubClass::Incepted.spinning_top
 <span class="c"># or</span>
 <span class="o">[</span>5<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nb">cd </span>MyClass::MySubClass::MySubSubClass::Incepted
 <span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>MyClass::MySubClass::MySubSubClass::Incepted<span class="o">)</span>:1&gt; edit-method spinning_top
@@ -347,7 +350,7 @@ end
 <h5>Ex. 3.4 (Find method with -c flag to grep for string)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-14.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nb">cd  </span>Pry
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nb">cd  </span>Pry
 <span class="o">[</span>2<span class="o">]</span> pry<span class="o">(</span>Pry<span class="o">)</span>:1&gt; find-method -c save_history
 <span class="c">#</span>
 <span class="c"># Pry.save_history: def self.save_history</span>
@@ -372,7 +375,7 @@ end
 <h5>Ex. 4 (Using _file_ and _dir_)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-15.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; show-method Pry#backtrace<span class="o">=</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>3<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; show-method Pry#backtrace<span class="o">=</span>
 <span class="c">#</span>
 <span class="c"># From: /Users/jjackson/.rvm/gems/ruby-1.9.3-p125/gems/pry-0.9.9.3/lib/pry/ pry_instance.rb @ line 27:</span>
 <span class="c"># Number of lines: 1</span>
@@ -392,14 +395,14 @@ end
 <h5>Ex. 4.1 (Using _file_ to view source)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-16.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat <span class="c">#{_file_}</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; cat <span class="c">#{_file_}</span>
 </code></pre></div>
 <p></noscript></p>
 
 <p>Another amazing feature: passing <code>show-source</code> the <code>-a</code> flag.  This will show all active monkey-patches, which is great for when you stumble on code that does things like this:</p>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-17.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># cat devil.rb</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># cat devil.rb</span>
  class TrueClass
     def to_s
       <span class="s2">&quot;false&quot;</span>
@@ -413,7 +416,7 @@ end
 <h5>Ex. 4.2 (Using show-source -a to view active monkey-patches)</h5>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-18.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; show-source -a TrueClass
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>6<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; show-source -a TrueClass
 <span class="c"># Found 2 candidates for `TrueClass` definition:</span>
 <span class="c">#</span>
 <span class="c"># Candidate 1/2:  @ line :</span>
@@ -443,7 +446,7 @@ end
 <p><code>pry-remote</code> uses the DRb library and allows you to use calls to <code>binding.pry</code> remotely.  All you need to do is use <code>binding.remote_pry</code> and run your program.</p>
 
 <p><script src='https://gist.github.com/2588905.js?file=gist-19.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;pry-remote&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">require <span class="s1">&#39;pry-remote&#39;</span>
 
 class Hello
   def hello<span class="o">(</span>name<span class="o">)</span>
@@ -461,7 +464,7 @@ Hello.new.hello <span class="s2">&quot;Jon&quot;</span>
 <h5>Ex. 5 (Using binding.remote-pry)</h5>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-20.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># From: test.rb @ line 4 Hello#hello:</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># From: test.rb @ line 4 Hello#hello:</span>
 <span class="c">#</span>
 <span class="c">#    4:   def hello(name)</span>
 <span class="c"># =&gt; 5:     binding.remote_pry</span>
@@ -487,7 +490,7 @@ Hello.new.hello <span class="s2">&quot;Jon&quot;</span>
 <h5>Ex. 6 (Using Pry-nav)</h5>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-21.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># Using test.rb from above</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># Using test.rb from above</span>
 <span class="nv">$~</span> ruby test.rb
 <span class="c">#</span>
 <span class="c"># From: test.rb @ line 4 Hello#hello:</span>
@@ -511,7 +514,7 @@ Hello.new.hello <span class="s2">&quot;Jon&quot;</span>
 <p>This allows you to step through your code easily.  Alias your commands in your <code>~/.pryrc</code> file like so:</p>
 
 <p><script src='https://gist.github.com/2588917.js?file=gist-22.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">Pry.commands.alias_command <span class="s1">&#39;c&#39;</span>, <span class="s1">&#39;continue&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">Pry.commands.alias_command <span class="s1">&#39;c&#39;</span>, <span class="s1">&#39;continue&#39;</span>
 Pry.commands.alias_command <span class="s1">&#39;s&#39;</span>, <span class="s1">&#39;step&#39;</span>
 Pry.commands.alias_command <span class="s1">&#39;n&#39;</span>, <span class="s1">&#39;next&#39;</span>
 </code></pre></div>
@@ -527,10 +530,11 @@ Pry.commands.alias_command <span class="s1">&#39;n&#39;</span>, <span class="s1"
 
 <p>Thanks for reading, be sure to subscribe via RSS (and now email also) to <em>Run With It</em> for more articles.  ^_^</p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

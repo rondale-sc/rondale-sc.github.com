@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Introducing EspnRb</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -74,7 +74,7 @@
 <h3>Installation</h3>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># On the command line.</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># On the command line.</span>
 <span class="c"># ~$ gem install espn_rb</span>
 
 <span class="c"># Or in a Gemfile</span>
@@ -89,7 +89,7 @@ gem <span class="s2">&quot;espn_rb&quot;</span>, <span class="s2">&quot;~&gt; 0.
 <p>The easiest way to set your api key for use with espn_rb is to export it as an environment variable. Do that like so:</p>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-2.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># If you want to pass it in to your objects you may do so explicitly like so:</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># If you want to pass it in to your objects you may do so explicitly like so:</span>
 <span class="c"># espn = EspnRb.headlines(:api_key =&gt; YOUR_SUPER_SECRET_API_KEY)</span>
 
 <span class="nv">$ </span><span class="nb">export </span><span class="nv">espn_api_key</span><span class="o">=</span>YOUR_SUPER_SECRET_API_KEY
@@ -99,7 +99,7 @@ gem <span class="s2">&quot;espn_rb&quot;</span>, <span class="s2">&quot;~&gt; 0.
 <h3>Get the headlines</h3>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-3.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;espn_rb&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">require <span class="s1">&#39;espn_rb&#39;</span>
 <span class="nv">espn</span> <span class="o">=</span> Espn.headlines
 
 <span class="c">#   Each sport available via the API can be called on the Espn.headlines</span>
@@ -122,7 +122,7 @@ espn.all.response
 <h3>HeadlineResponse</h3>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-4.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># HeadlineResponse includes Enum so you can do things like this:</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># HeadlineResponse includes Enum so you can do things like this:</span>
 espn.all.map<span class="o">(</span>&amp;:title<span class="o">)</span>
 
 <span class="c">#=&gt; [&quot;Celtics-Clippers Preview&quot;,</span>
@@ -148,7 +148,7 @@ espn.all.titles
 <p>The HeadlineResponse Object holds in it the contens of the ESPN JSON response  split into HeadlineItems.  Here is where you can get Specific information about each story.  Some of the options are:</p>
 
 <p><script src='https://gist.github.com/2156594.js?file=gist-5.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="nv">espn</span> <span class="o">=</span> EspnRb.headlines
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">espn</span> <span class="o">=</span> EspnRb.headlines
 <span class="nv">headline_response</span> <span class="o">=</span> espn.nba<span class="o">[</span>2<span class="o">]</span> <span class="c">#=&gt; HeadlineItem</span>
 
 headline_response.web_url <span class="c">#=&gt; &quot;http://sports.espn.go.com/espn/wire?section=nba&amp;id=7664408&amp;ex_cid=espnapi_public&quot;</span>
@@ -185,10 +185,11 @@ headline_response.headline <span class="c">#=&gt; JSON hash from original respon
 
 <p><span style="font-size:12px;"><a href="http://espn-api-samples.heroku.com/headlines">@jaxzin&#39;s example page</a></span></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

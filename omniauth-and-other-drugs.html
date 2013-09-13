@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Omniauth and Other Drugs</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -66,7 +66,7 @@
 <p>Surprise Code!</p>
 
 <p><script src='https://gist.github.com/2156513.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c">#config/initializers/omniauth.rb</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c">#config/initializers/omniauth.rb</span>
 provider :LDAP,
          :host <span class="o">=</span>&gt; <span class="s1">&#39;0.0.0.0&#39;</span>,
          :port <span class="o">=</span>&gt; 389,
@@ -84,7 +84,7 @@ provider :identity
 <p>Weird combiniation of authorization mechanisms I know, but it will be illustrative. This is what a typical omniauth initializer looks like.  You specify which providers you want to be available and the necessary information required by the strategy.  Most of the strategies available have good documentation, with the possible exception of LDAP ( though it has enough to start ). Once we realized we wanted to have a single custom form (the default forms are kinda bland) that didn&#39;t require the specifying of a provider we started tinkering.</p>
 
 <p><script src='https://gist.github.com/2156513.js?file=gist-2.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># First we abstract the parameters of the LDAP</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># First we abstract the parameters of the LDAP</span>
 <span class="c"># strategy for use in our callback.</span>
 
 provider :LDAP,
@@ -136,10 +136,11 @@ end
 
 <p><span style="font-size:12px;"><a href="http://railscasts.com/episodes/235-omniauth-part-1">Railscasts Omniauth</a></span></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Hippo: your friend in 5010</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -76,10 +76,10 @@
 <h2>Installation</h2>
 
 <p>Hippo is available as a gem so simply type the following command once you have ruby:</p>
-<div class="highlight"><pre><code class="text"># gem install hippo
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># gem install hippo
 </code></pre></div>
 <p>Once you have it installed all you have to do is require it like so to begin.</p>
-<div class="highlight"><pre><code class="text">require &#39;rubygems&#39;
+<div class="highlight"><pre><code class="text language-text" data-lang="text">require &#39;rubygems&#39;
 require &#39;hippo&#39;
 </code></pre></div>
 <h2>Your first Transaction Set with Hippo</h2>
@@ -91,7 +91,7 @@ require &#39;hippo&#39;
 <p>The following code illustrates how you would create an instance of an 835 transaction set and populate its ST(Transaction Set Header) segment in Hippo.</p>
 
 <p><script src='https://gist.github.com/2156191.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;hippo&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">require <span class="s1">&#39;hippo&#39;</span>
 
   <span class="nv">ts</span> <span class="o">=</span> Hippo::TransactionSets::HIPAA_835::Base.new
   ts.ST <span class="k">do</span> |st|
@@ -110,7 +110,7 @@ require &#39;hippo&#39;
 <p>One of the fundamental constructs found in the X12 transaction set standard is the loop. Loops repeat within a section of the final output, sometimes an arbitrary number of times. Creating this structure with Hippo is easy. Simply call the loop by name like so:</p>
 
 <p><script src='https://gist.github.com/2156191.js?file=gist-2.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># These two forms are functionally equivalent.</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># These two forms are functionally equivalent.</span>
 
   ts.L1000A <span class="k">do</span> |l1000a|
     l1000a.NM1.EntityTypeQualifier        <span class="o">=</span> <span class="s1">&#39;2&#39;</span>
@@ -165,10 +165,11 @@ require &#39;hippo&#39;
 <li><span style="font-size:12px;">Hippo image by <a href="http://www.archigraphs.com/">archigraphs</a></span></li>
 </ul></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

@@ -54,7 +54,7 @@
        <div id="post">
 <h1>RVM and rbenv</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -66,11 +66,11 @@
 <p><img src="http://www.jonathan-jackson.net/images/rvm-rbenv-install.png" alt="rvm and rbenv side by side install"/></p>
 
 <p>In RVM you need to add this to your profile to load the RVM function.</p>
-<div class="highlight"><pre><code class="text"># or ~/.zshrc
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># or ~/.zshrc
 $ echo &#39;[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot; # Load RVM function&#39; &gt;&gt; ~/.bash_profile
 </code></pre></div>
 <p>In rbenv you need to add this to your profile to load the rbenv command-line function.</p>
-<div class="highlight"><pre><code class="text"># or ~/.zshrc
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># or ~/.zshrc
 $ echo &#39;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&#39; &gt;&gt; ~/.bash_profile
 $ echo &#39;eval &quot;$(rbenv init -)&quot;&#39; &gt;&gt; ~/.bash_profile #to enable shims and auto-complete
 </code></pre></div>
@@ -83,7 +83,7 @@ $ echo &#39;eval &quot;$(rbenv init -)&quot;&#39; &gt;&gt; ~/.bash_profile #to e
 <p>In RVM you install your rubies to <strong>/Users/$USER/.rvm/rubies/ruby-1.9.2-x</strong> in rbenv your rubies are installed to <strong>~/.rbenv/versions</strong>.  Sam Stephenson created a sister gem for rbenv called ruby-build which offers several convencience methods for installing/compiling your own rubies.</p>
 
 <p>For instance, once you have ruby-build installed you can type this:</p>
-<div class="highlight"><pre><code class="text">$ rbenv install ruby-1.9.2-x
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ rbenv install ruby-1.9.2-x
 </code></pre></div>
 <p>So now you have your rubies.  Best blog post EVAR! Wait, there&#39;s more...</p>
 
@@ -118,10 +118,11 @@ $ echo &#39;eval &quot;$(rbenv init -)&quot;&#39; &gt;&gt; ~/.bash_profile #to e
 <span style="font-size:12px;"><a href="https://github.com/sstephenson/rbenv">rbenv on github</a></span><br/>
 <span style="font-size:12px;"><a href="http://ragecomics.memebase.com/rage-builder/">Rage-Builder</a></span><br/></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

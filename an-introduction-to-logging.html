@@ -54,7 +54,7 @@
        <div id="post">
 <h1>An Introduction to Logging</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -64,7 +64,7 @@
 <h3>Installation</h3>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-1.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="nv">$ </span>gem install logging
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">$ </span>gem install logging
 <span class="c">#  Successfully installed logging-1.6.1</span>
 <span class="c">#  1 gem installed</span>
 <span class="c">#  Building YARD (yri) index for logging-1.6.1...</span>
@@ -76,7 +76,7 @@
 <p>Here we create individual logging objects rather than one monstrous global logger <a href="https://github.com/TwP/logging/blob/master/examples/loggers.rb">[1]</a>.  Once they have been individually created you can customize the behavior of each.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-2.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;logging&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">require <span class="s1">&#39;logging&#39;</span>
 
  Logging.logger.root.level <span class="o">=</span> :warn
 
@@ -95,7 +95,7 @@
 <p>Here we use multiple appenders <a href="https://github.com/TwP/logging/blob/master/examples/appenders.rb">[2]</a>. Appenders allow you to shunt your logging messages to different output media.  Here we set our messages to log to standard out and to a file.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-3.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;logging&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">require <span class="s1">&#39;logging&#39;</span>
 
 <span class="nv">log1</span> <span class="o">=</span> Logging.logger<span class="o">[</span><span class="s1">&#39;log1&#39;</span><span class="o">]</span>
 
@@ -113,7 +113,7 @@ log1.info <span class="s2">&quot;just some friendly advice&quot;</span>
 <p>Here we create log objects at initialization of class Foo and Foo::Bar <a href="https://github.com/TwP/logging/blob/master/examples/classes.rb">[3]</a>.  Once we&#39;ve done that we can refine our logging parameters to reveal behavior specific to each class.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-4.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;logging&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">require <span class="s1">&#39;logging&#39;</span>
 
 Logging.logger.root.appenders <span class="o">=</span> Logging.appenders.stdout
 Logging.logger.root.level <span class="o">=</span> :info
@@ -143,7 +143,7 @@ bar.warn <span class="s1">&#39;this is a warning from Foo::Bar&#39;</span>
 <p>Incorporate rails easily with the logging-rails gem <a href="https://github.com/TwP/logging-rails">[4]</a>.</p>
 
 <p><script src='https://gist.github.com/2156472.js?file=gist-5.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">gem <span class="s1">&#39;logging-rails&#39;</span>, :require <span class="o">=</span>&gt; <span class="s1">&#39;logging/rails&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">gem <span class="s1">&#39;logging-rails&#39;</span>, :require <span class="o">=</span>&gt; <span class="s1">&#39;logging/rails&#39;</span>
 rails generate logging:install
 </code></pre></div>
 <p></noscript></p>
@@ -167,10 +167,11 @@ rails generate logging:install
 <span style="font-size:12px;"><a href="http://pry.github.com/">Pry an alternative to IRB</a></span><br/>
 <span style="font-size:12px;"><a href="http://www.engineyard.com/blog/2010/extending-rails-3-with-railties/">Extending Rails 3 with Railties, 2010</a></span><br/></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

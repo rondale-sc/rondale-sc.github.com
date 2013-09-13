@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Playin&#39; with the Ruby GC</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -76,7 +76,7 @@
 <p>While doing the research I came across a nifty little script by the Narihiro Nakamura <a href="http://redmine.ruby-lang.org/attachments/959/bm_gc_fragmentation.rb">here</a>.  I modified it slightly, but kept the same idea of creating a number of objects to fill up the heap.</p>
 
 <p><script src='https://gist.github.com/2156260.js?file=gist-1.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># &#39;./gc_test.rb&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># &#39;./gc_test.rb&#39;</span>
 
 @m <span class="o">=</span> 1000000
 @b <span class="o">=</span> 2 * 5 * <span class="o">(</span>4**3<span class="o">)</span> + 1
@@ -105,7 +105,7 @@ puts run_test
 <p>This returns a result set from the GC profiler.  Which I call about a hundred times like so:</p>
 
 <p><script src='https://gist.github.com/2156260.js?file=gist-2.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh">require <span class="s1">&#39;bigdecimal&#39;</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">require <span class="s1">&#39;bigdecimal&#39;</span>
 require <span class="s1">&#39;pp&#39;</span>
 
 <span class="nv">output</span> <span class="o">=</span> Hash.new<span class="o">([])</span>
@@ -170,10 +170,11 @@ puts @totals.map<span class="o">{</span>|k,v| v + <span class="s2">&quot;\n&quot
   <li><span style="font-size:12px;"><a href="http://ruby-prof.rubyforge.org/">Ruby Prof</a></span></li>
 </ul></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

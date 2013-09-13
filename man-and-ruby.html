@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Man and Ruby</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -68,13 +68,13 @@
 <p><a href="http://carboni.ca/blog">Michael Edgar</a> submitted a patch <a href="http://rubyforge.org/tracker/index.php?func=detail&amp;aid=27691&amp;group_id=126&amp;atid=577">[1]</a> to rubygems to allow for explicit inclusion of man pages in the gemspec or implicit inclusion in the /man directory.  Unfortunately this patch has not been included despite being projected for inclusion in 1.4.  All is not lost, @defunkt, of GitHub fame and huge proponent of man page usage, wrote a nice little plugin called gem-man <a href="https://github.com/defunkt/gem-man">[2]</a>.</p>
 
 <p>Gem-man checks to see if any man pages exist and displays it accordingly.  If multiple man sections are found it will provide you with an option to select one. It can be installed like so.</p>
-<div class="highlight"><pre><code class="text">gem install gem-man
+<div class="highlight"><pre><code class="text language-text" data-lang="text">gem install gem-man
 gem man gem-man
 </code></pre></div>
 <p>If you pass gem-man the <code>-s</code> argument it will fall back to searching system files for your man page.  With that in mind you can create an easy alias which will let you use <code>man</code> to search both your systems man pages and any man pages found in your gems:</p>
 
 <p><script src='https://gist.github.com/2156493.js?file=gist-1.sh'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># for zsh</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># for zsh</span>
   <span class="c"># echo &#39;alias man=&quot;gem man -s&quot;&#39; &gt;&gt; ~/.zshrc</span>
   <span class="c"># source ~/.zshrc</span>
 
@@ -107,7 +107,7 @@ gem man gem-man
 </ol>
 
 <p>That&#39;s it.  Now all is left is to compile to roff and add to your project.</p>
-<div class="highlight"><pre><code class="text">$ ronn path/to/your/amazing/man.1.ronn
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ ronn path/to/your/amazing/man.1.ronn
   -&gt; roff: path/to/your/amazing/man.1
   -&gt; html: path/to/your/amazing/man.1.html
 </code></pre></div>
@@ -130,10 +130,11 @@ gem man gem-man
 <p><span style="font-size:12px;"><a href="http://ozmm.org/posts/man_what.html">Chris Wanstrath on Man</a></span><br/>
 <span style="font-size:12px;"><a href="http://tldp.org/HOWTO/Man-Page/">Jens Schweikhardt&#39;s Man Page tutorial</a></span><br/></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {

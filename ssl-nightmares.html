@@ -54,7 +54,7 @@
        <div id="post">
 <h1>SSL Nightmares</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -74,10 +74,10 @@
 <p><small>Many of the following examples are from a repo made by <a href="https://github.com/augustl">augustl</a> named <a href="https://github.com/augustl/net-http-cheat-sheet">net<em>http</em>cheatsheet</a>.  This repo is an excellent resource that will be further sited at the bottom of this post.</small></p>
 
 <p><script src='https://gist.github.com/5504735.js?file=standard_ssl.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="nv">http</span> <span class="o">=</span> Net::HTTP.new<span class="o">(</span><span class="s2">&quot;ssltest7.bbtest.net&quot;</span>, 443<span class="o">)</span>
-http.use_ssl <span class="o">=</span> <span class="nb">true</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">http</span>             <span class="o">=</span> Net::HTTP.new<span class="o">(</span><span class="s2">&quot;ssltest7.bbtest.net&quot;</span>, 443<span class="o">)</span>
+http.use_ssl     <span class="o">=</span> <span class="nb">true</span>
 http.verify_mode <span class="o">=</span> OpenSSL::SSL::VERIFY_PEER
-<span class="nv">response</span> <span class="o">=</span> http.request<span class="o">(</span>Net::HTTP::Get.new<span class="o">(</span><span class="s2">&quot;/&quot;</span><span class="o">))</span>
+<span class="nv">response</span>         <span class="o">=</span> http.request<span class="o">(</span>Net::HTTP::Get.new<span class="o">(</span><span class="s2">&quot;/&quot;</span><span class="o">))</span>
 </code></pre></div>
 <p></noscript></p>
 
@@ -98,7 +98,7 @@ http.verify_mode <span class="o">=</span> OpenSSL::SSL::VERIFY_PEER
 <p>Mutual Authentication is doing the handshake process (slightly different, but similar) from both perspectives, the client and the server.  This process ensures both identities. Let&#39;s send the client certificate to the server.  </p>
 
 <p><script src='https://gist.github.com/5504735.js?file=mutual_auth.rb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># PKCS12: Defines a file format commonly used to store private </span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># PKCS12: Defines a file format commonly used to store private </span>
 <span class="c"># keys with accompanying public key certificates, protected </span>
 <span class="c"># with a password based symmetric key.</span>
 <span class="nv">pkcs12</span> <span class="o">=</span> OpenSSL::PKCS12.new<span class="o">(</span>File.read<span class="o">(</span><span class="s2">&quot;/path/to/pkcs12&quot;</span><span class="o">)</span>
@@ -129,10 +129,11 @@ http.key         <span class="o">=</span> pkcs12.key
 <li><a href="http://www.youtube.com/watch?v=iQsKdtjwtYI">Video Rundown of how SSL works</a></small></li>
 </ul>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {
@@ -146,8 +147,8 @@ http.key         <span class="o">=</span> pkcs12.key
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'run-with-it';
-    var disqus_identifier = 'ssl-nightmares';
-    var disqus_url = 'http://www.jonathan-jackson.netssl-nightmares';
+    var disqus_identifier = '/ssl-nightmares';
+    var disqus_url = 'http://www.jonathan-jackson.net/ssl-nightmares';
     var disqus_developer = 1;
 
     /* * * DON'T EDIT BELOW THIS LINE * * */

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-  <title>Zero to Jekyll in Twenty Minutes</title>
+  <title>Phantom Js CLI options</title>
 
   <!-- Twitter Bootstrap -->
   <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
@@ -14,11 +14,11 @@
   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
   
-    <meta name="description" content="Hey everyone I've posted an article over on Rubysource.com be sure to check it out." />
+    <meta name="description" content="Quick tip about customizing phantom js through poltergeist." />
   
 
   
-    <meta http-equiv="date" content="Wednesday, 04  2012 00:00:00 GMT" />
+    <meta http-equiv="date" content="Friday, 13  2013 00:00:00 GMT" />
   
 
   <script type="text/javascript">
@@ -52,56 +52,34 @@
     <div class="container">
       <div id="content">
        <div id="post">
-<h1>Zero to Jekyll in Twenty Minutes</h1>
-
-<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
-                                         data-count="horizontal"
-                                         data-via="rondale_sc">Tweet</a>
-</span></p>
-
-<p>Hello everyone,</p>
-
-<p>I posted an article on <a href="http://rubysource.com/zero-to-jekyll-in-20-minutes/">Rubysource</a>.  It&#39;s my first time guest blogging, and I&#39;m really excited about it.  In the article I take you through some of the basics of Jekyll.  As you know I recently made the switch to Jekyll for a number of reasons.  In <em>Zero to Jekyll in Twenty Minutes</em> you&#39;ll get some details about the switch itself rather than just the reasons behind it.</p>
-
-<p>If you have a minute or twenty (...see what I did there? ;) you should hop on over to Rubysource and read the full article.  Also, if you have any questions about the article, Jekyll or just about anything else regarding <em>Run With It</em>, feel free to drop me a <a href="http://www.jonathan-jackson.net/mail.html">line</a>.</p>
-
-<p>Happy Coding!</p>
-
-<p>Jonathan Jackson</p>
-
+<h1 class="title">Phantom Js CLI options
 <span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span>
- <span class="has_js"><g:plusone size="medium"></g:plusone></span>
-<!-- Place this render call where appropriate -->
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
 
+</h1>
 
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'run-with-it';
-    var disqus_identifier = '/2012/04/04/zero-to-jekyll-in-twenty-minutes';
-    var disqus_url = 'http://www.jonathan-jackson.net/2012/04/04/zero-to-jekyll-in-twenty-minutes';
-    var disqus_developer = 1;
+<p>Recently ran into an issue where my cucumber suite was throwing a timeout error.  The error was thrown because an image hosted externally wasn&#39;t rendering.  Luckily Phantomjs has some amazing <a href="https://github.com/ariya/phantomjs/wiki/API-Reference">Command Line Options</a> available to help us along.  On of which is <code>--load-images</code> which allows us to prevent phantom from making the image request.</p>
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<p>Let&#39;s setup poltergeist (Phantomjs&#39; capybara driver) to accept these options...</p>
+
+<p><script src='https://gist.github.com/6553515.js?file=cli_options.rb'></script><noscript></p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">Capybara.javascript_driver <span class="o">=</span> :poltergeist
+Capybara.register_driver :poltergeist <span class="k">do</span> |app|
+  <span class="nv">options</span> <span class="o">=</span> <span class="o">{</span> 
+    phantomjs_options: <span class="o">[</span><span class="s1">&#39;--load-images=no&#39;</span><span class="o">]</span> 
+   <span class="o">}</span>
+  Capybara::Poltergeist::Driver.new<span class="o">(</span>app,options<span class="o">)</span>                                                                                                              end
+</code></pre></div>
+<p></noscript></p>
+
+<p>As you can see we can specify a list of the CLI options and they&#39;ll be set when we run our suite.  And there you have it, prevent phantomjs from requesting images!</p>
+
+<p>Thanks for reading!</p>
 
 </div>
+
       </div>
 
       <div id="side-bar">

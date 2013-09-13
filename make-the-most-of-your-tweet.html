@@ -54,7 +54,7 @@
        <div id="post">
 <h1>Make the most of your tweet</h1>
 
-<p><span><a href="http://twitter.com/share" class="twitter-share-button"
+<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
 </span></p>
@@ -75,7 +75,7 @@
                                     data-via="rondale_sc">Tweet</a>
 
 <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
-<div class="highlight"><pre><code class="text">&lt;/noscript&gt;
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;/noscript&gt;
 
 This is the basic outline for a tweet button.  The _data_ attributes allow you to customize the behavior of your button.  We&#39;ll focus on these [[1]](https://dev.twitter.com/docs/tweet-button):
 
@@ -142,7 +142,7 @@ end
 <p>Alright so now you have the short url for your site we&#39;ll come back to our Tweet Button.  Only now we&#39;ll set the <em>data-url</em> to our short url.  Not so fast!  We also have to set the <em>data-counturl</em> to the original url so that your count bubble will be accurate.</p>
 
 <p><script src='https://gist.github.com/2156432.js?file=gist-3.erb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># app/views/_tweet_button.html.erb</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># app/views/_tweet_button.html.erb</span>
 
 &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://twitter.com/share&quot;</span> <span class="nv">class</span><span class="o">=</span><span class="s2">&quot;twitter-share-button&quot;</span>
                                     data-url<span class="o">=</span><span class="s2">&quot;&lt;%= @article.short_url %&gt;&quot;</span>
@@ -155,7 +155,7 @@ end
 <p>Now we have a decent looking tweet.  It&#39;s going to use your &lt;title&gt; for your text by default.  I think this is a great default as it encourages you to use the &lt;title&gt; properly.  I think the easiest way of setting your title tag is to set &#39;&lt;%= yield :head %&gt;&#39; in your layout&#39;s &lt;head&gt; tag then:</p>
 
 <p><script src='https://gist.github.com/2156432.js?file=gist-4.erb'></script><noscript></p>
-<div class="highlight"><pre><code class="sh"><span class="c"># in app/view/articles/show</span>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># in app/view/articles/show</span>
 &lt;% content_for :head <span class="k">do</span> %&gt;
   &lt;%<span class="o">=</span> content_tag<span class="o">(</span><span class="s2">&quot;title&quot;</span>, @article.title<span class="o">)</span> %&gt;
 &lt;% end %&gt;
@@ -181,10 +181,11 @@ end
 <p><span style="font-size:12px;"><a href="https://github.com/augustl/net-http-cheat-sheet">Net HTTP cheat sheet</a></span><br/>
 <span style="font-size:12px;"><a href="http://code.google.com/apis/urlshortener/v1/getting_started.html">Google Shortener Getting Started</a></span><br/></p>
 
-<span><a href="http://twitter.com/share" class="twitter-share-button"
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
                                          data-count="horizontal"
                                          data-via="rondale_sc">Tweet</a>
-</span> <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
 <!-- Place this render call where appropriate -->
 <script type="text/javascript">
   (function() {
