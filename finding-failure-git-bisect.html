@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <title>Finding Failure - Git Bisect</title>
+
+  <!-- Twitter Bootstrap -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
+
+  <!-- My Custom CSS -->
+  <link rel="stylesheet" href="/css/custom.css" type="text/css" />
+
+  <link href="/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+
+  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
+  
+    <meta name="description" content="Any sufficiently large development team will assuredly run into a situation where a failure occurs in a codebase that isn't exposed by the test suite.  When this happens it helps to have something to reach for, something to help you narrow down that sea of incoming code into a manageable chunk to be debugged.  We're in luck, let's learn about Git's Bisect command" />
+  
+
+  
+    <meta http-equiv="date" content="Friday, 20  2013 00:00:00 GMT" />
+  
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25565068-1']);
+  _gaq.push(['_setDomainName', 'jonathan-jackson.net']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div id="header">
+      <h1>run<span class="kern">_</span>with_it <span style="font-size:12px;">Learning, sharing, coding.</span></h1>
+      <div class="row">
+        <div class="nav-offset site-nav"><a href="/" alt="home">Home</a></div>
+        <div class="site-nav"><a href="/about-me.html" alt="about-me">About Me</a></div>
+        <div class="site-nav"><a href="/mail.html" alt="contact-me">Email Me</a></div>
+      </div>
+    </div>
+    <div id="header-border"></div>
+
+    <div class="container">
+      <div id="content">
+       <div id="post">
+<h1>Finding Failure - Git Bisect</h1>
+
+<p>Originally posted at <a href="http://hashrocket.com/blog/posts/finding-failure-git-bisect">Hashrocket.com</a></p>
+
+<p>Any sufficiently large development team will assuredly run into a situation where a failure occurs in a codebase that isn&#39;t exposed by the test suite.  Depending on the teams&#39; commitment to test coverage this situation might be all too common.  When this happens it helps to have something to reach for, something to help you narrow down that sea of incoming code into a manageable chunk to be debugged.  With only a few team members this is something that you&#39;d likely do without thinking.  </p>
+
+<p>&quot;Oh, it&#39;s broken?  Must have been that commit from yesterday.&quot; -Joe Developer</p>
+
+<p>What happens when Joe&#39;s team is too large for him to review every commit?  Well, that&#39;s what I&#39;d like to talk about.  There is a tool for that:</p>
+
+<p>Git bisect!</p>
+
+<p>Git bisect is a tool that performs a binary search (more on this later) across a range of commits to help you find where an error was introduced.  Unfortunately, its use is not as wide spread as it should be. Personally, I found it quite intimidating at first, though now I find myself utilizing it everytime an issue like this arises.</p>
+
+<h1>Let&#39;s get started</h1>
+
+<p>If you&#39;re anything like me you want to get started with git bisect straight away.  With that in mind, we&#39;ll cover basic functionality first then move into what is actually happening later.  </p>
+
+<p>The first command is <code>git bisect start</code>, which begins the bisect.  With the bisect begun, you&#39;ll now need to mark a bad commit.  You&#39;ll do that with:</p>
+
+<p><code>git bisect bad</code></p>
+
+<p>That will mark HEAD as a bad commit.  Alternatively, you could pass the <code>sha</code> of a specific commit like so:</p>
+
+<p><code>git bisect bad &lt;sha&gt;</code></p>
+
+<p>Then, unsurprisingly, you&#39;ll want to set a good commit.  This will be the last known good commit. These two commands will set the outer bounds of the binary search.  After the <code>git bisect good &lt;sha&gt;</code> command, git will split the revisions and load the first guess.</p>
+
+<p>At this point you&#39;ll need to find a way to determine if that commit is broken or not.  Usually this can be accomplished by running a test or loading up your develpment environment.  When you know the state of the commit run <code>git bisect good</code> or <code>git bisect bad</code> to load the next revision.  Eventually git will tell you which commit the error was introduced.</p>
+
+<p>Ta da!  Git bisect in a nutshell.  </p>
+
+<h1>A little deeper</h1>
+
+<p>Git bisect is performs a binary search across your commits.  A binary search is also know as a half-interval search, and in my opinion, better describes what it does.  I&#39;m going to run through an example to illustrate how bisect works, but if you&#39;d like to get a better understanding of binary search look <a href="http://en.wikipedia.org/wiki/Binary_search_algorithm">here</a>.  </p>
+
+<p>Let&#39;s assume that we have 5 commits.  They&#39;ll look something like:</p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/commit_1_through_5_no_color.png" alt=""></p>
+
+<p>We notice that we have a failure at commit five.  We start git bisect off with the commands above:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">git bisect start
+git bisect good &lt;c1-sha&gt;
+git bisect bad
+</code></pre></div>
+<p>Git will do somethings under the hood (more on that later), and mark the commits like so:</p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/commits_1_and_5_marked.png" alt=""></p>
+
+<p>After that last command git will transition your current working branch to the next revision up for testing:</p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/commit_revision_3.png" alt=""></p>
+
+<p>We run our test to find that c3 is good and we tell git that it&#39;s good by running <code>git bisect good</code> again:</p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/commits_3_and_5_marked.png" alt=""></p>
+
+<p>And again git will take current working branch to the next revision up for testing:</p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/revision_commit_4.png" alt=""></p>
+
+<p>We run our spec and discover that c4 is the commit the error was introduced in.  </p>
+
+<p>In this example, with five commits, we were able to find the commit that introduced the error without having to test each individual commit.  We were able to omit testing of commit two.  Over a larger range of commits this saving will be, obviously, greater. (1 + log2 N) <a href="http://stackoverflow.com/questions/4713088/how-to-use-git-bisect/4714297#4714297">[3]</a></p>
+
+<h1>A little deeper, still</h1>
+
+<p>I run Hashrocket&#39;s <a href="https://github.com/hashrocket/dotmatrix">dotmatrix</a> on my development machine.  It sets a prompt that has information relevant to git when in a git directory.  I noticed, during a debugging session, that the prompt was aware of when a bisect was happening.  Naturally, this sparked my curiosity so I delved a little deeper to find out what git was doing under the surface.</p>
+
+<p>So what is git doing to facilitate the bisect?  Let&#39;s explore with an actual example of git bisect.</p>
+
+<p>If you&#39;d like to follow along you can pull down this <a href="https://github.com/rondale-sc/bisect-example">repo</a>.</p>
+
+<p>Let&#39;s assume we&#39;ve been developing a calculator program that adds two numbers together.  Everything is looking great, until we notice that our Rspec suite no longer passes.  In our haste to create the world&#39;s best calculator in Ruby we&#39;ve pushed bad code up to master.  We know to use bisect in this scenario so we start it up.</p>
+
+<p>We run <code>git bisect start</code> and to know what files git is creating we follow that with <code>tail -n +1 -- .git/BISECT_*</code> to see the following output:</p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/git-bisect-start-tail.png" alt="git-bisect-start-tail"></p>
+
+<p>We know that master is bad so let&#39;s mark it <code>git bisect bad</code> and again follow up with our tail command:</p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/git-bisect-bad-tail.png" alt="git-bisect-bad-tail"></p>
+
+<p>We can now see that git has logged the commit we&#39;ve marked as bad.   We remember explicitly that rspec ran green on our initial commit so we let git know that by typing <code>git bisect good HEAD~4</code></p>
+
+<p>Git tells us the commit that we&#39;ve jumped to for test, and how many more steps we have to go.  </p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/git-bisect-first-revision-tail.png" alt="git-bisect-first-revsion"></p>
+
+<p>We can see that git uses <code>.git/BISECT_EXPECTED_REV</code> to set which revision is currently under test.  Running our test suite verifies that this revision is good.  So we tell git <code>git bisect good</code>.  Git again tells which revision we&#39;re on, and how many we have left.  </p>
+
+<p>Our test suite fails on this commit.  So we mark it as bad with <code>git bisect bad</code></p>
+
+<p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/git-bisect-success.png" alt="git-bisect-success"></p>
+
+<p>To which Git tells us that this was the commit that introduced the error and prints the log for that commit.</p>
+
+<p>In this example we could have automated the whole thing with </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">git bisect run rspec calculator.rb
+</code></pre></div>
+<p>Which would have run the test suite against each revision and marked good or bad based on the exit code of the command.  </p>
+
+<h1>Conclusions</h1>
+
+<p>We&#39;ve learned that Git&#39;s bisect command is a powerful way to diagnose problems as they arise in a code base.  Though it can appear intimidating at first the command is actually quite simple.  So next time you run into an error remember to reach for this, it may save you some time.  :)</p>
+
+<p>TL;DR</p>
+
+<ol>
+<li><code>git bisect start</code></li>
+<li><code>git bisect bad</code></li>
+<li><code>git bisect good HEAD~4</code></li>
+<li><code>git bisect run rspec &lt;test_file&gt;</code></li>
+</ol>
+
+<p><small>References:</small></p>
+
+<ol>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-bisect.html">Linux Bisect Man Page</a></li>
+<li><a href="http://robots.thoughtbot.com/git-bisect">Git Bisect - Thoughtbot Article</a></li>
+<li><a href="http://stackoverflow.com/questions/4713088/how-to-use-git-bisect/4714297#4714297">Good Stack Overflow Answer</a></li>
+<li><a href="http://schacon.github.io/git/git-bisect-lk2009.html">Fighting regressions with git bisect</a></li>
+</ol>
+
+<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
+                                         data-count="horizontal"
+                                         data-via="rondale_sc">Tweet</a>
+</span>
+ <span class="has_js"><g:plusone size="medium"></g:plusone></span>
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'run-with-it';
+    var disqus_identifier = '/finding-failure-git-bisect';
+    var disqus_url = 'http://www.jonathan-jackson.net/finding-failure-git-bisect';
+    var disqus_developer = 1;
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</div>
+      </div>
+
+      <div id="side-bar">
+       <div><img src="/images/jonathan-jackson.jpg" width="167px;" height="167px;"/></div>
+<div><a href="https://twitter.com/rondale_sc" class="twitter-follow-button" alt="follow me on twitter" data-width="150px" data-show-count="false">Follow @rondale_sc</a></div>
+<div style="margin-top:5px;">
+  <h3>Hi, I'm Jon.</h3>
+  <p>I love learning new things.  Here is where I'll share what I learn.  Typically code, sometimes my experience, sometimes just a neat trick.</p>
+</div>
+<a href="/mail.html">
+  <img src="http://pairprogramwith.me/badge.png">
+</a>
+<div>
+  <h3>Projects</h3>
+  <ul>
+    <li><a href="http://rondale-sc.github.com/EspnRb/" alt="espn_rb, a lightweight ruby wrapper around the ESPN api." title="EspnRb">EspnRb</a></li>
+    <li><a href="http://jonathan-jackson.net/image_viewer_rails/" alt="ImageViewer image browser w/controls" title="Image Viewer">ImageViewer</a></li>
+    <li><a href="https://github.com/rjackson/pivot.js" alt="Pivot.js - reporting lib" title="Pivot.js">Pivot.js</a></li>
+    <li><a href="https://github.com/rondale-sc/run_with_it_redux" alt="This blog's Github Repo" title="Run With It Repo">Run With It</a></li>
+    <li><a href="https://github.com/TampaRuby/turbot.git" alt="IRC bot for TampaRb channel" title="Turbot">Turbot</a></li>
+    <li><a href="https://github.com/rondale-sc/remote_pair_chef" alt="Tool for provisioning EC2 instances quickly" title="RPC">Remove Pair Chef</a></li>
+    <li><a href="https://github.com/promedical/hippo" alt="Tool for interacting with HIPAA documents" title="Hippo">Hippo</a></li>
+  </ul>
+</div>
+<div><a href="http://feeds.feedburner.com/jonathan-jackson/WZqA" title="Subscribe to my feed" rel="alternate" type="application/rss+xml"><img src="/images/feeds.png" alt="" style="border:0;width:100px;height:100px;"/></a></div>
+
+      </div>
+    </div>
+    <div class="push"></div>
+  </div>
+  <div class="footer">
+    <p>Site designed by Jonathan Jackson.  With help from <a href="http://twitter.github.com/bootstrap/" alt="twitter bootstrap">@twbootstrap</a>, <a href="https://github.com/mojombo/jekyll" alt="jekyll">Jekyll</a>, and <a href="https://github.com/" alt="github">github</a></p>
+  </div>
+</body>
+</html>
