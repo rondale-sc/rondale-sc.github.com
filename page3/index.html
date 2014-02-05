@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-  <title>Code Metrics and You</title>
+  <title>Run With It</title>
 
   <!-- Twitter Bootstrap -->
   <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
@@ -14,11 +14,9 @@
   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
   
-    <meta name="description" content="Here we'll go over some of the rudiments of code metrics.  Learn how to detect overly complex code." />
+    <meta name="Description" content="Author: Jonathan Paul Jackson, Description: A great place to level up your programming prowess.  Learn more about Ruby, Javascript, and much more here at Run With It.">
   
 
-  
-    <meta http-equiv="date" content="Thursday, 03  2013 00:00:00 GMT" />
   
 
   <script type="text/javascript">
@@ -51,62 +49,76 @@
 
     <div class="container">
       <div id="content">
-       <div id="post">
-<h1>Code Metrics and You</h1>
+       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+<script src="/javascripts/run_with_it.js"></script>
 
-<p><span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
-                                         data-count="horizontal"
-                                         data-via="rondale_sc">Tweet</a>
-</span></p>
-
-<p>Hello everyone,  </p>
-
-<p>I&#39;ve written another article for Rubysource.  </p>
-
-<p>In it I discuss some of the basic ways to measure complexity in your code.  Hopefully, it will give you ways to gain better insight into the troublesome areas of your code. </p>
-
-<p>So be sure to give it a look:</p>
-
-<p><span style="font-size:24pt;"><a href="http://rubysource.com/code-metrics-and-you/">Code Metrics and You</a></span></p>
-
-<p>Thanks for reading.</p>
-
-<p>Best regards,
-Jonathan Jackson</p>
-
-<span style="float:right;"><a href="http://twitter.com/share" class="twitter-share-button"
-                                         data-count="horizontal"
-                                         data-via="rondale_sc">Tweet</a>
-</span>
- <span class="has_js"><g:plusone size="medium"></g:plusone></span>
-<!-- Place this render call where appropriate -->
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
-
-
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'run-with-it';
-    var disqus_identifier = '/code-metrics-and-you';
-    var disqus_url = 'http://www.jonathan-jackson.net/code-metrics-and-you';
-    var disqus_developer = 1;
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-
+<div class="span9" id="articles">
+  <div style="margin:0;padding:0;">
+    <noscript><h1 id="articles-header">Articles:</h1></noscript>
+    <div id="search_container"></div>
+    <div style="clear:both;width:100%;"></div>
+  </div>
+  <div id="search_results"></div>
+  <hr style="width:675px;"/>
+  <div id="article-listing">
+    <ul>
+    
+      <li><a href="/ruby-loves-sass">Ruby <3's Sass</a> (<span>06 Sep 2011</span>)<br/>
+        <p>SCSS is now standard in rails.  I previously have not used SASS because I don't particularly care for significant white space.  However, now having use SCSS just a little I know that I should have been on this bandwagon a long time ago.  Here I'll how to use ruby to define your own functions and then how to write a dynamic CSS grid using SCSS.</p>
+      </li>
+    
+    </ul>
+    <div class="pagination">
+      <ul>
+        
+          
+            <li>
+              <a href="/page2">&larr;</a>
+            </li>
+          
+        
+        
+          <li>
+            <a href="/">1</a>
+          </li>
+        
+        
+          
+            <li>
+              <a href="/page2">2</a>
+            </li>
+          
+        
+          
+            <li class="active">
+              <a href="#">3</a>
+            </li>
+          
+        
+        
+          <li class="disabled">
+            <a href="#">&rarr;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
 </div>
+
+<!-- Search Template -->
+<script type="text/template" id="search_template">
+    <div class="form-horizontal" style="margin-bottom:10px;">
+      <input type="text" id="search_input" placeholder="Search by Title" />
+    </div>
+</script>
+
+<!-- Backbone View -->
+<script type="text/javascript">
+  var sitemap = new SiteMap
+  var search_view = new  SearchView({el: $("#search_container"), sitemap: sitemap});
+</script>
       </div>
 
       <div id="side-bar">
