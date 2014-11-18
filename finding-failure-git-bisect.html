@@ -93,7 +93,7 @@
 <p><img src="http://hashrocket-production.s3.amazonaws.com/uploads/blog/misc/finding-failure-git-bisect-jj/commit_1_through_5_no_color.png" alt=""></p>
 
 <p>We notice that we have a failure at commit five.  We start git bisect off with the commands above:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">git bisect start
+<div class="highlight"><pre><code class="language-text" data-lang="text">git bisect start
 git bisect good &lt;c1-sha&gt;
 git bisect bad
 </code></pre></div>
@@ -150,7 +150,7 @@ git bisect bad
 <p>To which Git tells us that this was the commit that introduced the error and prints the log for that commit.</p>
 
 <p>In this example we could have automated the whole thing with </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">git bisect run rspec calculator.rb
+<div class="highlight"><pre><code class="language-text" data-lang="text">git bisect run rspec calculator.rb
 </code></pre></div>
 <p>Which would have run the test suite against each revision and marked good or bad based on the exit code of the command.  </p>
 
